@@ -32,7 +32,7 @@ INSERT INTO `PAISES` VALUES (null, 'SE', 'Sweden');
 
 
 
-INSERT INTO ROL_USUARIOS  (tipo,descripcion) VALUES ('ADMINISTRADOR','Usuario con permisos de administración, cambio de roles de los usuarios gestores, alta de especialidades, tipos de institución y tipos de empresa');
+/*INSERT INTO ROL_USUARIOS  (tipo,descripcion) VALUES ('ADMINISTRADOR','Usuario con permisos de administración, cambio de roles de los usuarios gestores, alta de especialidades, tipos de institución y tipos de empresa');
 INSERT INTO ROL_USUARIOS (tipo,descripcion) VALUES('REGISTRADO','Usuario con permisos de alta a alumnos, empresas, instituciones, generar movilidades');
 INSERT INTO ROL_USUARIOS (tipo,descripcion) VALUES('ANÓNIMO','Usuario no registrado que solamente tiene permisos de búsqueda básicas');
 
@@ -48,7 +48,7 @@ INSERT INTO ESTADOS (ESTADO,DESCRIPCION) VALUES('SOLICITADO','Se ha enviado la s
 INSERT INTO ESTADOS (ESTADO,DESCRIPCION) VALUES('EN TRÁMITE','La solicitud ha sido aceptada por el socio y está en proceso de tramitación');
 INSERT INTO ESTADOS (ESTADO,DESCRIPCION) VALUES('RESUELTO','La solicitud ha sido revisada y solucionada por el socio al que le fue solicitada');
 INSERT INTO ESTADOS (ESTADO,DESCRIPCION) VALUES('CANCELADA','La solicitud ha sido cancelada por el socio que la solicitó');
-INSERT INTO ESTADOS (ESTADO,DESCRIPCION) VALUES('RECHAZADA','La solicitud ha sido rechazada por el socio a la que fue solicitado');
+INSERT INTO ESTADOS (ESTADO,DESCRIPCION) VALUES('RECHAZADA','La solicitud ha sido rechazada por el socio a la que fue solicitado');*/
 
 
 INSERT INTO ROL_USUARIOS  (tipo,descripcion) VALUES ('ADMIN','User with administration permissions, user changing roles, register specialties and institution or companies types.');
