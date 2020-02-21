@@ -1,0 +1,7 @@
+#3B3B3B color # primary-botones
+#525252 color letras
+#dff8fd color nav+footer
+#f4f4f4 color avion
+#f8fcfd color section
+#FAFEFF color body
+#3C4F7C color links
