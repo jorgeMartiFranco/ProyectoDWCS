@@ -8,24 +8,8 @@
 			if($user = checkUser($username, $password)) {
 				session_start();
 				$_SESSION['user'] = $user;
-				header('Location: index.html');
 			}
 		}
 	}
+	header('Location: index.php');
 ?>
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>Formulario de login</title>
-		<meta charset = "UTF-8">
-	</head>
-	<body>	
-		<form action = "login.php" method = "POST">
-			<label for = "user">Usuario</label> 
-			<input id = "user" name = "username" type = "text" value = "<?=$username ?? '';?>">		
-			<label for = "pw">Clave</label> 
-			<input id = "pw" name = "password" type = "password">					
-			<input type = "submit">
-		</form>
-	</body>
-</html>
