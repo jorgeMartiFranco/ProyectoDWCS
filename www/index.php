@@ -70,15 +70,15 @@ $breakpoint = $user ? 'lg' : 'md';
 			<div class="modal-dialog modal-sm modal-dialog-centered" role="grid">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title">Login</h5>
+						<h5 class="modal-title ml-auto">Login</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
 					<div class="modal-body">
 						<form action="login.php" method="POST">
-							<input class="form-control" placeholder="Username / Email" type="text" name="username">
-							<input class="form-control" placeholder="Password" type="password" name="password">
+							<input class="form-control mb-2" placeholder="Username / Email" type="text" name="username">
+							<input class="form-control my-2" placeholder="Password" type="password" name="password">
 							<button class="btn btn-primary btn-block mt-3" type="submit">Login</button>
 						</form>
 					</div>
