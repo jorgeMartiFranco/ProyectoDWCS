@@ -5,7 +5,7 @@ $breakpoint = $user ? 'lg' : 'md';
 ?>
 <header class="navbar navbar-expand-<?=$breakpoint?> navbar-custom bg-main">
     <a class="navbar-brand" href="">
-        <img class="logo" src="img/logo.png" alt="Movility&sharp;">
+        <img class="logo" src="img/logoNuevo.png" alt="Movility&sharp;">
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -19,7 +19,7 @@ $breakpoint = $user ? 'lg' : 'md';
                 <a class="nav-link" href="">Contact</a>
             </li>
         </ul>
-        <form class="form-inline ml-auto mt-3 mt-<?=$breakpoint?>-0" method="GET" action="/search">
+        <form class="form-inline ml-auto mb-0 mt-3 mt-<?=$breakpoint?>-0 " method="GET" action="/search">
             <div class="input-group ml-auto" role="search">
                 <input class="form-control" type="search" placeholder="Search&hellip;" aria-label="Search">
                 <div class="input-group-append">
@@ -31,7 +31,7 @@ $breakpoint = $user ? 'lg' : 'md';
         if(is_null($user)) {?>
         <div class="btn-group ml-md-4 my-3 my-md-0" role="group">
             <button type="button" class="btn btn-main" data-toggle="modal" data-target="#modalLogin">Login</button>
-            <a role="button" class="btn btn-main" href="/register">Register</a>
+            <a role="button" class="btn btn-main" href="register.php">Register</a>
         </div>
         <?php
         } else {
