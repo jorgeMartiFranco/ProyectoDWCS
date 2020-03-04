@@ -26,7 +26,7 @@ include_once 'db.php';
             <div class="container border mt-3">
                 <ul class="nav nav-tabs" id="registerTab" role="tablist">
 
-                    <li class="nav-item">
+                    <li class="nav-item ">
                         <a class="nav-link active" href="#partner" id="partnerTab" data-toggle="tab" role="tab" aria-controls="partner" aria-selected="true">Partner</a>
                     </li>
                     <li class="nav-item">
@@ -38,81 +38,35 @@ include_once 'db.php';
                 <form method="POST">
                     <div class="tab-content">
                         <div class="tab-pane fade show active" id="partner" role="tabpanel" aria-labelledby="partner-tab">
-                            
-                            <script>createFormStruct()</script>
 
-                            <input class="form-control" type="text" placeholder="First name">
-                            <input class="form-control" type="text" placeholder="Last name">
-                            
-
-
-                            </div>
+                            <script>createFormStructRegister(2);</script>
 
                             <div class="form-row justify-content-center">
                                 <div class="form-col mx-3 my-2 my-md-3"> 
-                                    <input class="form-control" type="text" placeholder="Username"> 
+                                    <div class="input-group">
+                                    <select class="form-control">
+                                        <option>Select country...</option>
+                                        <?php
+                                        getCountries();
+                                        ?>
+                                    </select>
+                                    </div>
                                 </div>
-                                <div class="form-col mx-3 my-2 my-md-3">
-                                    <input class="form-control" type="text" placeholder="Email">
-                                </div>
-
-
                             </div>
-                            <div class="form-row justify-content-center">
-                                <div class="form-col mx-3 my-2 my-md-3"> 
-                                    <input class="form-control" type="password" placeholder="Password">
-                                </div>
-                                <div class="form-col mx-3 my-2 my-md-3">
-                                    <input class="form-control" type="password" placeholder="Confirm password">
-                                </div>
-
-
+                            <div class="container text-right">
+                            <div class="btn-group"> 
+                            <button class="btn btn-primary" id="clear">Clear</button>
+                            <button type="button" class="btn btn-primary" id="next">Next</button>
                             </div>
-
-                            <div class="form-row justify-content-center">
-                                <div class="form-col mx-3 my-2 my-md-3"> 
-                                    <input class="form-control" type="text" placeholder="Phone">
-                                </div>
-                                <div class="form-col mx-3 my-2 my-md-3">
-                                    <input class="form-control" type="text" placeholder="VAT">
-                                </div>
-
-
                             </div>
-
-                            <div class="form-row justify-content-center">
-                                <div class="form-col mx-3 my-2 my-md-3"> 
-                                    <input class="form-control" type="text" placeholder="Department">
-
-                                </div>
-                                <div class="form-col mx-3 my-2 my-md-3">
-                                    <input class="form-control" type="text" placeholder="Post">
-                                </div>
-
-
-                            </div>
-                            <div class="form-row justify-content-center">
-                                <div class="form-col mx-3 my-2 my-md-3"> 
-                                   <select class="custom-select">
-
-                                <?php
-                                getCountries();
-                                ?>
-                            </select>
-
-                                </div>
-                                <div class="form-col mx-3 my-2 my-md-3">
-                                    <input type="submit" value="Next" class="btn btn-primary">
-                                </div>
-
-
-                            </div>
-                            
-
-
                         </div>
-                    </div>
-                    <div class="tab-content">
+
+
+
+
+
+
+
                         <div class="tab-pane fade" id="institution" role="tabpanel" aria-labelledby="institution-tab">
 
 
