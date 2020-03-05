@@ -11,5 +11,5 @@
 			}
 		}
 	}
-	header('Location: /www');
+	header('Location: '.$_POST['redirect']);
 ?>

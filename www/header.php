@@ -62,6 +62,7 @@ if(is_null($user)) {?>
                 <form action="login.php" method="POST">
                     <input class="form-control mb-2" placeholder="Username / Email" type="text" name="username">
                     <input class="form-control my-2" placeholder="Password" type="password" name="password">
+                    <input type="hidden" name="redirect" value="<?=$_SERVER['PHP_SELF']?>">
                     <button class="btn btn-primary btn-block mt-3" type="submit">Login</button>
                 </form>
             </div>
