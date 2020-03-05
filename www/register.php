@@ -1,9 +1,7 @@
 <?php
 include_once 'db.php';
 ?>
-
 <html>
-
     <head>
         <title>Mobility&sharp;</title>
         <meta charset="utf-8" />
@@ -13,6 +11,7 @@ include_once 'db.php';
         <script src="js/jquery.min.js"></script>
         <script src="js/bootstrap.bundle.min.js"></script>
         <script src="js/custom.js"></script>
+        <script src="js/register.js"></script>
         <style>
             .logo {
                 width:150px;
@@ -21,11 +20,9 @@ include_once 'db.php';
     </head>
     <body>
         <?php include "header.php" ?>
-
         <div class="container-fluid">
             <div class="container border mt-3">
-                <ul class="nav nav-tabs" id="registerTab" role="tablist">
-
+                <ul class="nav nav-tabs mt-2" id="registerTab" role="tablist">
                     <li class="nav-item ">
                         <a class="nav-link active" href="#partner" id="partnerTab" data-toggle="tab" role="tab" aria-controls="partner" aria-selected="true">Partner</a>
                     </li>
@@ -33,14 +30,10 @@ include_once 'db.php';
                         <a class="nav-link disabled" href="#institution" id="institutionTab" data-toggle="tab" role="tab" aria-controls="institution" aria-selected="false">Institution</a>
                     </li>
                 </ul>
-
-
                 <form method="POST">
                     <div class="tab-content">
                         <div class="tab-pane fade show active" id="partner" role="tabpanel" aria-labelledby="partner-tab">
-
-                            <script>createFormStructRegister(2);</script>
-
+                            <script>createFormRegistro()</script>
                             <div class="form-row justify-content-center">
                                 <div class="form-col mx-3 my-2 my-md-3"> 
                                     <div class="input-group">
@@ -55,41 +48,23 @@ include_once 'db.php';
                             </div>
                             <div class="container text-right">
                             <div class="btn-group"> 
-                            <button class="btn btn-primary" id="clear">Clear</button>
-                            <button type="button" class="btn btn-primary" id="next">Next</button>
+                            <input type="reset" class="btn btn-danger rounded" value="Reset">
+                            <button type="button" class="btn btn-primary rounded ml-3" id="next">Next</button>
                             </div>
                             </div>
                         </div>
-
-
-
-
-
-
-
                         <div class="tab-pane fade" id="institution" role="tabpanel" aria-labelledby="institution-tab">
-
-
-
                             <input class="form-control" type="text" placeholder="">
                             <input class="form-control" type="text" placeholder="">
                             <input class="form-control" type="text" placeholder="">
                             <input class="form-control" type="text" placeholder="">
                             <input class="form-control" type="text" placeholder="">
                             <input class="form-control" type="text" placeholder="">
-
-
                         </div>
                     </div>
                 </form>
-
-
-
             </div>
-
-
         </div>
-
         <?php include 'footer.html' ?>
     </body>
 </html>
