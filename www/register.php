@@ -33,11 +33,11 @@ include_once 'db.php';
                 <form method="POST">
                     <div class="tab-content">
                         <div class="tab-pane fade show active" id="partner" role="tabpanel" aria-labelledby="partner-tab">
-                            <script>createFormRegistro()</script>
+                            <script>createFormRegisterPartner();</script>
                             <div class="form-row justify-content-center">
                                 <div class="form-col mx-3 my-2 my-md-3"> 
                                     <div class="input-group">
-                                    <select class="form-control">
+                                    <select class="form-control" name="countryPartner">
                                         <option>Select country...</option>
                                         <?php
                                         getCountries();
@@ -54,12 +54,32 @@ include_once 'db.php';
                             </div>
                         </div>
                         <div class="tab-pane fade" id="institution" role="tabpanel" aria-labelledby="institution-tab">
-                            <input class="form-control" type="text" placeholder="">
-                            <input class="form-control" type="text" placeholder="">
-                            <input class="form-control" type="text" placeholder="">
-                            <input class="form-control" type="text" placeholder="">
-                            <input class="form-control" type="text" placeholder="">
-                            <input class="form-control" type="text" placeholder="">
+                            
+                            <script>createFormRegisterInstitution();</script>
+                            <div class="form-row justify-content-center">
+                                <div class="form-col mx-3 my-2 my-md-3"> 
+                            <select class="form-control" name="countryInstitution">
+                                <option>Select institution type...</option>
+                                <?php 
+                                getInstitutionTypes()
+                                ?>
+                            </select>
+                                </div>
+                                <div class="form-col mx-3 my-2 my-md-3"> 
+                                    <select class="form-control">
+                                        <option>Select country...</option>
+                                        <?php
+                                        getCountries();
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="container text-right">
+                            <div class="btn-group"> 
+                            <input type="reset" class="btn btn-danger rounded" value="Reset">
+                            <button type="submit" class="btn btn-primary rounded ml-3" id="submitRegister">Register</button>
+                            </div>
+                            </div>
                         </div>
                     </div>
                 </form>
