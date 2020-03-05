@@ -33,3 +33,38 @@ function getCountries() {
         echo "<option value='$country[id]'>$country[nombre]</option>";
     }
 }
+
+
+function getInstitutionTypes(){
+    $pdo = load("root");
+    $stmt = $pdo->query("SELECT ID_TIPO_INSTITUCION, TIPO FROM TIPOS_INSTITUCION;");
+    $insTypes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+    foreach($insTypes as $type){
+        echo "<option value='$type[ID_TIPO_INSTITUCION]]'>$type[TIPO]</option>";
+        
+    }
+    
+}
+
+
+
+function registerPartnerInstitution(){
+    
+    $pdo = load("root");
+    try {
+        $name=$_POST["fName"]+$_POST["lName"];
+        $pdo->beginTransaction();
+        $stmt = $pdo->prepare("INSERT INTO PARTNER (NOMBRE_COMPLETO,EMAIL,TELEFONO,USUARIO,PASSWORD,VAT,CARGO,DEPARTAMENTO,R_ALOJAMIENTO,PAIS)"
+                . "VALUES (?,?,?,?,?,?,?,?,?,?);");
+        $stmt = $pdo->exec($name,$_POST[""],$_POST[""],$_POST[""],$_POST[""],$_POST[""],$_POST[""],$_POST[""],$_POST[""],$_POST[""]);
+        
+        
+        header("Location:index.php");
+        
+    }catch(Exception $e){
+        
+    }
+    
+    
+}
