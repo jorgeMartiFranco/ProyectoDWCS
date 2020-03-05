@@ -18,7 +18,7 @@ function createFormStruct(form, data, columns) {
             row.append(column);
             i++;
         }
-        console.log(form);
+        
         form.append(row);
     }
 }

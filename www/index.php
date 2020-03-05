@@ -21,12 +21,12 @@
 				<div class="row">
 					<form class="col col-md-10 col-lg-8 col-xl-6 mx-auto my-5" method="GET" action="/search">
 						<div class="form-group">
-							<label for="dbSearch">Buscar Instituciones</label>
-							<input class="form-control" type="text" id="dbSearch" placeholder="Nombre de la institución" name="s">
-							<small id="dbSearchHelp" class="form-text text-muted">Para realizar consultas específicas es necesario registrarse</small>
+							<label for="dbSearch">Search Institutions</label>
+							<input class="form-control" type="text" id="dbSearch" placeholder="Institution Name" name="s">
+							<small id="dbSearchHelp" class="form-text text-muted">To perform more specific querys registration is required</small>
 						</div>
 						<div class="text-center">
-							<button type="submit" class="btn btn-primary w-50">Buscar</button>
+							<button type="submit" class="btn btn-primary w-50">Search</button>
 						</div>
 					</form>
 				</div>
