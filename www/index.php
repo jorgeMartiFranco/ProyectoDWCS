@@ -21,9 +21,9 @@
 				<div class="row">
 					<form class="col col-md-10 col-lg-8 col-xl-6 mx-auto my-5" method="GET" action="/search">
 						<div class="form-group">
-							<label for="dbSearch">Search Institutions</label>
-							<input class="form-control" type="text" id="dbSearch" placeholder="Institution Name" name="s">
-							<small id="dbSearchHelp" class="form-text text-muted">To perform more specific querys registration is required</small>
+							<label for="dbSearch">Search institutions</label>
+							<input class="form-control" type="text" id="dbSearch" placeholder="Institution name" name="s">
+							<small id="dbSearchHelp" class="form-text text-muted">To perform more specific queries, registration is required</small>
 						</div>
 						<div class="text-center">
 							<button type="submit" class="btn btn-secondary w-50">Search</button>
