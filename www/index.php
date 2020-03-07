@@ -26,7 +26,7 @@
 							<small id="dbSearchHelp" class="form-text text-muted">To perform more specific querys registration is required</small>
 						</div>
 						<div class="text-center">
-							<button type="submit" class="btn btn-primary w-50">Search</button>
+							<button type="submit" class="btn btn-secondary w-50">Search</button>
 						</div>
 					</form>
 				</div>

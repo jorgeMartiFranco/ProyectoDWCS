@@ -3,7 +3,7 @@ session_start();
 $user = $_SESSION['user'] ?? NULL;
 $breakpoint = $user ? 'lg' : 'md'; 
 ?>
-<header class="navbar navbar-expand-<?=$breakpoint?> navbar-custom bg-main">
+<header class="navbar navbar-expand-<?=$breakpoint?> navbar-custom bg-secondary">
     <a class="navbar-brand" href="">
         <img class="logo" src="img/logoNuevo.png" alt="Movility&sharp;">
     </a>
@@ -23,15 +23,15 @@ $breakpoint = $user ? 'lg' : 'md';
             <div class="input-group ml-auto" role="search">
                 <input class="form-control" type="search" placeholder="Search&hellip;" aria-label="Search">
                 <div class="input-group-append">
-                    <button class="btn btn-primary" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+                    <button class="btn btn-accent" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
                 </div>
             </div>
         </form>
         <?php
         if(is_null($user)) {?>
         <div class="btn-group ml-md-4 my-3 my-md-0" role="group">
-            <button type="button" class="btn btn-main" data-toggle="modal" data-target="#modalLogin">Login</button>
-            <a role="button" class="btn btn-main" href="register.php">Register</a>
+            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modalLogin">Login</button>
+            <a role="button" class="btn btn-secondary" href="register.php">Register</a>
         </div>
         <?php
         } else {
@@ -39,8 +39,8 @@ $breakpoint = $user ? 'lg' : 'md';
         <div class="ml-lg-5 my-3 my-lg-0">
             <span class="align-middle">Welcome, <?=$user['usuario'];?></span>
             <div class="btn-group" role="group">
-                <a role="button" class="btn btn-main" href="/profile">Profile</a>
-                <a role="button" class="btn btn-main" href="logout.php">Logout</a>
+                <a role="button" class="btn btn-secondary" href="/profile">Profile</a>
+                <a role="button" class="btn btn-secondary" href="logout.php">Logout</a>
             </div>
         </div>
         <?php
@@ -63,7 +63,7 @@ if(is_null($user)) {?>
                     <input class="form-control mb-2" placeholder="Username / Email" type="text" name="username">
                     <input class="form-control my-2" placeholder="Password" type="password" name="password">
                     <input type="hidden" name="redirect" value="<?=$_SERVER['PHP_SELF']?>">
-                    <button class="btn btn-primary btn-block mt-3" type="submit">Login</button>
+                    <button class="btn btn-secondary btn-block mt-3" type="submit">Login</button>
                 </form>
             </div>
         </div>

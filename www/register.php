@@ -49,7 +49,7 @@ include_once 'db.php';
                             <div class="container text-right">
                             <div class="btn-group"> 
                             <input type="reset" class="btn btn-danger rounded" value="Reset">
-                            <button type="button" class="btn btn-primary rounded ml-3" id="next">Next</button>
+                            <button type="button" class="btn btn-secondary rounded ml-3" id="next">Next</button>
                             </div>
                             </div>
                         </div>
@@ -77,7 +77,7 @@ include_once 'db.php';
                             <div class="container text-right">
                             <div class="btn-group"> 
                             <input type="reset" class="btn btn-danger rounded" value="Reset">
-                            <button type="submit" class="btn btn-primary rounded ml-3" id="submitRegister">Register</button>
+                            <button type="submit" class="btn btn-secondary rounded ml-3" id="submitRegister">Register</button>
                             </div>
                             </div>
                         </div>
