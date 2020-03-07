@@ -1,32 +1,33 @@
 //Variables
-$body-bg: #f8fcfd;
-$body-color: #525252;
 
 //Colors
-$sharp: #3b3b3b;
-$primary: #3c99aa;
-$secondary: #4c65b7;
-$main: #e6f9fd;
-$content: #fafeff;
-$success: #44c961;
+$primary: #f4f4f4;
+$secondary: #145177;
+$accent: #f5cb5c;
+$font: #333333;
 
-//Themes
 $theme-colors: (
-    "sharp":        $sharp,
-    "main":         $main,
-    "content":      $content
+    "accent": $accent
 );
 
+//Body
+$body-bg: $primary;
+$body-color: $font;
+
 //Navbar (cambiar)
-$navbar-custom-color: rgba($sharp, .7);
-$navbar-custom-hover-color: rgba($sharp, .9);
-$navbar-custom-active-color: $sharp;
-$navbar-custom-disabled-color: rgba($sharp, .6);
+$navbar-custom-color: rgba($primary, .6);
+$navbar-custom-hover-color: rgba($primary, .8);
+$navbar-custom-active-color: $primary;
+$navbar-custom-disabled-color: rgba($primary, .4);
 $navbar-custom-toggler-icon-bg: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'><path stroke='#{$navbar-custom-color}' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg>");
-$navbar-custom-toggler-border-color: rgba($sharp, .3);
+$navbar-custom-toggler-border-color: rgba($primary, .2);
 
 $navbar-custom-brand-color: $navbar-custom-active-color;
 $navbar-custom-brand-hover-color: $navbar-custom-active-color;
+
+//YIQ
+$yiq-text-dark: $font;
+$yiq-text-light: $primary;
 
 //Imports
 @import "bootstrap/scss/bootstrap";
@@ -34,9 +35,12 @@ $navbar-custom-brand-hover-color: $navbar-custom-active-color;
 
 //Customization
 
-//Section
-section {
-    background-color: theme-color("content");
+//Background contrast
+.bg-secondary {
+    color: $primary;
+    a {
+        color: $accent;
+    }
 }
 
 //Navbar
@@ -89,5 +93,12 @@ section {
                 color: $navbar-custom-active-color;
             }
         }
+    }
+}
+
+//Buttons
+.bg-secondary {
+    .btn-secondary {
+        @include button-variant($secondary, $secondary, darken($primary, 7.5%), darken($primary, 10%), darken($primary, 10%), darken($primary, 12.5%));
     }
 }
