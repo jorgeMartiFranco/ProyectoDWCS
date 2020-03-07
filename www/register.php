@@ -19,7 +19,9 @@ include_once 'db.php';
         </style>
     </head>
     <body>
-        <?php include "header.php" ?>
+        <?php include "header.php";
+        if(!isset($_POST) or empty($_POST)) {
+        ?>
         <div class="container-fluid">
             <div class="container border mt-3">
                 <ul class="nav nav-tabs mt-2" id="registerTab" role="tablist">
@@ -35,56 +37,50 @@ include_once 'db.php';
                         <div class="tab-pane fade show active" id="partner" role="tabpanel" aria-labelledby="partner-tab">
                             <script>createFormRegisterPartner();</script>
                             <div class="form-row justify-content-center">
-                                <div class="form-col mx-3 my-2 my-md-3"> 
-                                    <div class="input-group">
-                                    <select class="form-control" name="countryPartner">
-                                        <option>Select country...</option>
-                                        <?php
-                                        getCountries();
-                                        ?>
-                                    </select>
-                                    </div>
+                                <div class="col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3 mx-md-3 my-2 my-md-3"> 
+                                    <button type="button" class="btn btn-secondary rounded btn-block" id="next">Next</button>
                                 </div>
-                            </div>
-                            <div class="container text-right">
-                            <div class="btn-group"> 
-                            <input type="reset" class="btn btn-danger rounded" value="Reset">
-                            <button type="button" class="btn btn-secondary rounded ml-3" id="next">Next</button>
-                            </div>
                             </div>
                         </div>
                         <div class="tab-pane fade" id="institution" role="tabpanel" aria-labelledby="institution-tab">
-                            
                             <script>createFormRegisterInstitution();</script>
                             <div class="form-row justify-content-center">
-                                <div class="form-col mx-3 my-2 my-md-3"> 
-                            <select class="form-control" name="countryInstitution">
-                                <option>Select institution type...</option>
-                                <?php 
-                                getInstitutionTypes()
-                                ?>
-                            </select>
+                                <div class="col-12 col-sm col-md-5 col-lg-4 mx-md-3 my-2 my-md-3"> 
+                                    <div class="input-group">
+                                        <select class="form-control" name="country">
+                                            <option disabled selected>Select country...</option>
+                                            <?php
+                                            getCountries();
+                                            ?>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div class="form-col mx-3 my-2 my-md-3"> 
-                                    <select class="form-control">
-                                        <option>Select country...</option>
-                                        <?php
-                                        getCountries();
+                                <div class="col-12 col-sm col-md-5 col-lg-4 mx-md-3 my-2 my-md-3"> 
+                                    <select class="form-control" name="type">
+                                        <option disabled selected>Select institution type...</option>
+                                        <?php 
+                                        getInstitutionTypes()
                                         ?>
                                     </select>
                                 </div>
                             </div>
-                            <div class="container text-right">
-                            <div class="btn-group"> 
-                            <input type="reset" class="btn btn-danger rounded" value="Reset">
-                            <button type="submit" class="btn btn-secondary rounded ml-3" id="submitRegister">Register</button>
-                            </div>
+                            <div class="form-row justify-content-center">
+                                <div class="col col-sm-6 col-md-5 col-lg-4 btn-group mt-2 mt-md-3" role="group"> 
+                                    <button type="button" class="btn btn-outline-secondary rounded mr-1 mr-md-3">Previous</button>
+                                    <button type="submit" class="btn btn-secondary rounded ml-2 ml-md-3 ml-md-4" id="submitRegister">Register</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
+        
+        <?php 
+        } else {
+           registerPartnerInstitution();
+        }
+        ?>
         <?php include 'footer.html' ?>
     </body>
 </html>
