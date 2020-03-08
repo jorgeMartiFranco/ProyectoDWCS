@@ -1,7 +1,7 @@
 <?php
 session_start();
 $user = $_SESSION['user'] ?? NULL;
-$breakpoint = $user ? 'lg' : 'md'; 
+$breakpoint = $user ? 'md' : 'sm'; 
 ?>
 <header class="navbar navbar-expand-<?=$breakpoint?> navbar-custom bg-secondary">
     <a class="navbar-brand" href="">
@@ -19,24 +19,16 @@ $breakpoint = $user ? 'lg' : 'md';
                 <a class="nav-link" href="">Contact</a>
             </li>
         </ul>
-        <form class="form-inline ml-auto mb-0 mt-3 mt-<?=$breakpoint?>-0 " method="GET" action="/search">
-            <div class="input-group ml-auto" role="search">
-                <input class="form-control" type="search" placeholder="Search&hellip;" aria-label="Search">
-                <div class="input-group-append">
-                    <button class="btn btn-accent" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
-                </div>
-            </div>
-        </form>
         <?php
         if(is_null($user)) {?>
-        <div class="btn-group ml-md-4 my-3 my-md-0" role="group">
+        <div class="btn-group ml-auto my-1 my-<?=$breakpoint?>-0" role="group">
             <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modalLogin">Login</button>
             <a role="button" class="btn btn-secondary" href="register.php">Register</a>
         </div>
         <?php
         } else {
         ?>
-        <div class="ml-lg-5 my-3 my-lg-0">
+        <div class="ml-<?=$breakpoint?>-auto my-1 my-<?=$breakpoint?>-0">
             <span class="align-middle">Welcome, <?=$user['usuario'];?></span>
             <div class="btn-group" role="group">
                 <a role="button" class="btn btn-secondary" href="/profile">Profile</a>
