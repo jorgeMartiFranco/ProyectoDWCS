@@ -56,7 +56,7 @@ include_once 'db.php';
                                     </div>
                                 </div>
                                 <div class="col-12 col-sm col-md-5 col-lg-4 mx-md-3 my-2 my-md-3"> 
-                                    <select class="form-control" name="type">
+                                    <select class="form-control" name="institutionType">
                                         <option disabled selected>Select institution type...</option>
                                         <?php 
                                         getInstitutionTypes()
