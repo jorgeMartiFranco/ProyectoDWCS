@@ -65,7 +65,7 @@ include_once 'db.php';
                                 </div>
                             </div>
                             <div class="form-row justify-content-center">
-                                <div class="col col-sm-6 col-md-5 col-lg-4 btn-group mt-2 mt-md-3" role="group"> 
+                                <div class="col col-sm-6 col-md-5 col-lg-4 btn-group my-2 my-md-3" role="group"> 
                                     <button type="button" class="btn btn-outline-secondary rounded mr-1 mr-md-3">Previous</button>
                                     <button type="submit" class="btn btn-secondary rounded ml-2 ml-md-3 ml-md-4" id="submitRegister">Register</button>
                                 </div>
