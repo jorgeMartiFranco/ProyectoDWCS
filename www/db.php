@@ -13,7 +13,7 @@ function load($user) {
 }
 
 function checkUser($username, $password) {
-    if($pdo = load("root")) {
+    if($pdo = load("login")) {
         $stmt = $pdo->prepare('SELECT usuario, email, `password` FROM socios WHERE lower(usuario)=:username OR lower(email)=:username');
         $stmt->execute([':username' => strtolower($username)]);
     
@@ -31,7 +31,7 @@ function checkUser($username, $password) {
 }
 
 function getCountries() {
-    if($pdo = load("root")) {
+    if($pdo = load("login")) {
         $stmt = $pdo->query("SELECT ID_PAIS as id, nombre  FROM PAISES");
         $countries = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -43,7 +43,7 @@ function getCountries() {
 
 
 function getInstitutionTypes(){
-    if($pdo = load("root")) {
+    if($pdo = load("login")) {
         $stmt = $pdo->query("SELECT ID_TIPO_INSTITUCION, TIPO FROM TIPOS_INSTITUCION;");
         $insTypes = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
@@ -56,7 +56,7 @@ function getInstitutionTypes(){
 
 
 function registerPartnerInstitution(){
-    if($pdo = load("root")) {
+    if($pdo = load("login")) {
         try {
             $name = $_POST["fName"]." ".$_POST["lName"];
             $email = $_POST["email"];
