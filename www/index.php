@@ -4,25 +4,17 @@
 		<title>Mobility&sharp;</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, user-scalable=no" />
-		<link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
-		<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+        <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+        <link rel="stylesheet" type="text/css" href="css/custom.css" />
 		<script src="js/jquery.min.js"></script>
 		<script src="js/bootstrap.bundle.min.js"></script>
-		<style>
-			.logo {
-				width:150px;
-			}
-		</style>
 	</head>
 	<body>
-		<?php include 'header.php';
-                
-                ?>
+		<?php include 'header.php'; ?>
 		<div class="container-fluid">
 			<div class="container">
-				<?php include 'search.html';
-                                
-                                ?>
+				<?php include 'search.html'; ?>
 				<div class="row mx-auto">
 					<section class="border rounded my-5 col-12 col-md">
 						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In tempus, ante sed tempor congue, arcu erat pellentesque arcu, a consequat augue eros non urna. In hendrerit euismod tellus eu semper. Donec congue diam a ipsum finibus cursus. Nulla sit amet nibh neque. Vestibulum non mollis turpis. Curabitur non hendrerit nunc, quis ultricies leo. Aenean est diam, suscipit sed arcu a, mollis eleifend nisi. Nullam nec efficitur risus, eu mollis erat. Cras dapibus est gravida est finibus, at tempor lorem iaculis. Praesent blandit at mauris ut tempus. Sed elementum tortor orci, at congue dui elementum a. Integer laoreet auctor venenatis. Cras a elit arcu. Praesent bibendum urna vel nunc molestie cursus. Sed lacinia felis vitae elit sagittis hendrerit. Etiam tortor erat, pellentesque vel sapien non, finibus venenatis mauris.</p>
@@ -37,8 +29,6 @@
 				</div>
 			</div>
 		</div>
-            
-            
-		<?php include 'footer.html'?>
+		<?php include 'footer.html' ?>
 	</body>
 </html>
