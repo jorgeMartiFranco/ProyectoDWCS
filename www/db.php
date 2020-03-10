@@ -56,33 +56,34 @@ function getInstitutionTypes(){
 
 
 function registerPartnerInstitution(){
+    $location = "Location: $_SERVER[PHP_SELF]?error"; //Redirects to self and flags an error by default
     if($pdo = load("login")) {
         try {
-            $name = $_POST["fName"]." ".$_POST["lName"];
-            $email = $_POST["email"];
-            $phone = $_POST["phone"];
-            $username = $_POST["username"];
-            $password = $_POST["password"];
-            $vat = ($_POST["vat"]) ? $_POST["vat"] : NULL;
-            $post = $_POST["post"];
-            $department = $_POST["department"];
+            $name = filter_input(INPUT_POST, "fName")." ".filter_input(INPUT_POST, "lName");
+            $email = filter_input(INPUT_POST, "email");
+            $phone = filter_input(INPUT_POST, "phone");
+            $username = filter_input(INPUT_POST, "username");
+            $password = filter_input(INPUT_POST, "password");
+            $vat = (filter_input(INPUT_POST, "vat")) ? filter_input(INPUT_POST, "vat") : NULL;
+            $post = filter_input(INPUT_POST, "post");
+            $department = filter_input(INPUT_POST, "despartment");
             $l_provider = 0; //not a provider
             $rol = 2; // registered user
-            $country = $_POST["country"];
+            $country = filter_input(INPUT_POST, "country");
             
             
-            $iName = $_POST["iName"];
-            $iEmail = $_POST["iEmail"];
-            $iPhone = $_POST["iPhone"];
-            $iVat = $_POST["iVat"];
-            $postalCode = $_POST["postalCode"];
-            $iLocation = $_POST["location"];
-            $web = $_POST["web"];
-            $description = $_POST["description"];
-            $institutionType = $_POST["institutionType"];
+            $iName = filter_input(INPUT_POST, "iName");
+            $iEmail = filter_input(INPUT_POST, "iEmail");
+            $iPhone = filter_input(INPUT_POST, "iPhone");
+            $iVat = (filter_input(INPUT_POST, "iVat")) ? filter_input(INPUT_POST, "iVat") : NULL;
+            $postalCode = filter_input(INPUT_POST, "postalCode");
+            $iLocation = filter_input(INPUT_POST, "location");
+            $web = filter_input(INPUT_POST, "web");
+            $description = filter_input(INPUT_POST, "description");
+            $institutionType = filter_input(INPUT_POST, "institutionType");
             
             $query = $pdo->query("SELECT ID_INSTITUCION FROM INSTITUCIONES WHERE NOMBRE='$iName'")->fetch(PDO::FETCH_ASSOC); //check if the institution already exists
-            $location = "Location: $_SERVER[PHP_SELF]?error"; //Redirects to self and flags an error by default
+            
 
             $partnerParams = [
                 ':name' => $name,
@@ -164,3 +165,18 @@ function sessionStoreUser($userParams) {
 
     $_SESSION['user'] = $user;
 }
+
+
+function searchInstitutions(){
+    
+    if($pdo = load("login")) {
+        $datos = [':nombre'=> filter_input(INPUT_GET, "nombre")];
+        $stmt = $pdo->prepare("SELECT * FROM EMPRESAS WHERE NOMBRE LIKE :nombre;");
+        $stmt->execute($datos);
+        $results=$stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        echo $results;
+        
+    }
+    
+    }
