@@ -15,21 +15,14 @@
 		</style>
 	</head>
 	<body>
-		<?php include 'header.php'?>
+		<?php include 'header.php';
+                
+                ?>
 		<div class="container-fluid">
 			<div class="container">
-				<div class="row">
-					<form class="col col-md-10 col-lg-8 col-xl-6 mx-auto my-5" method="GET" action="/search">
-						<div class="form-group">
-							<label for="dbSearch">Search institutions</label>
-							<input class="form-control" type="text" id="dbSearch" placeholder="Institution name" name="s">
-							<small id="dbSearchHelp" class="form-text text-muted">To perform more specific queries, registration is required</small>
-						</div>
-						<div class="text-center">
-							<button type="submit" class="btn btn-secondary w-50">Search</button>
-						</div>
-					</form>
-				</div>
+				<?php include 'search.html';
+                                
+                                ?>
 				<div class="row mx-auto">
 					<section class="border rounded my-5 col-12 col-md">
 						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In tempus, ante sed tempor congue, arcu erat pellentesque arcu, a consequat augue eros non urna. In hendrerit euismod tellus eu semper. Donec congue diam a ipsum finibus cursus. Nulla sit amet nibh neque. Vestibulum non mollis turpis. Curabitur non hendrerit nunc, quis ultricies leo. Aenean est diam, suscipit sed arcu a, mollis eleifend nisi. Nullam nec efficitur risus, eu mollis erat. Cras dapibus est gravida est finibus, at tempor lorem iaculis. Praesent blandit at mauris ut tempus. Sed elementum tortor orci, at congue dui elementum a. Integer laoreet auctor venenatis. Cras a elit arcu. Praesent bibendum urna vel nunc molestie cursus. Sed lacinia felis vitae elit sagittis hendrerit. Etiam tortor erat, pellentesque vel sapien non, finibus venenatis mauris.</p>
@@ -44,6 +37,8 @@
 				</div>
 			</div>
 		</div>
+            
+            
 		<?php include 'footer.html'?>
 	</body>
 </html>
