@@ -1,5 +1,6 @@
 <?php
-include_once 'db.php';
+include_once 'controller/db.php';
+use MobilitySharp\controller;
 ?>
 <html>
     <head>
@@ -46,7 +47,7 @@ include_once 'db.php';
                                         <select class="form-control" name="country">
                                             <option disabled selected>Select country...</option>
                                             <?php
-                                            getCountries();
+                                            controller\getCountries();
                                             ?>
                                         </select>
                                     </div>
@@ -55,7 +56,7 @@ include_once 'db.php';
                                     <select class="form-control" name="institutionType">
                                         <option disabled selected>Select institution type...</option>
                                         <?php 
-                                        getInstitutionTypes()
+                                        controller\getInstitutionTypes()
                                         ?>
                                     </select>
                                 </div>
@@ -74,7 +75,7 @@ include_once 'db.php';
         
         <?php 
         } else {
-           registerPartnerInstitution();
+            controller\registerPartnerInstitution();
         }
         ?>
         <?php include 'footer.html' ?>

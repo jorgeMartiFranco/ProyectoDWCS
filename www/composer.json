@@ -1,0 +1,11 @@
+{
+    "name": "mobility-sharp/mobility-sharp",
+    "description": "MobilitySharp is a PHP application for mobility management in other countries.",
+    "require": {
+        "phpmailer/phpmailer": "^6.1",
+        "doctrine/orm": "*"
+    },
+    "autoload": {
+        "psr-4": {"MobilitySharp\\": "model/"}
+    }
+}
