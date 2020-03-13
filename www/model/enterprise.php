@@ -5,13 +5,17 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="INSTITUCIONES")
+ * @ORM\Table(name="EMPRESAS")
  */
-class Institution {
-    /**
-     * @ORM\Id @ORM\Column(type="integer", name="ID_INSTITUCION") @ORM\GeneratedValue
+class Company  {
+     /**
+     * @ORM\Id @ORM\Column(type="integer", name="ID_EMPRESA") @ORM\GeneratedValue
      */
     private $id;
+    /**
+     * @ORM\Column(type="string", name="CARGO_RESPONSABLE")
+     */
+    private $ceo_post;
     /**
      * @ORM\Column(type="string", name="VAT")
      */
@@ -67,20 +71,25 @@ class Institution {
      */
     private $partner;
     /**
-     * @ORM\ManyToOne(TargetEntity="InstitutionType")
-     * @ORM\JoinColumn(name="TIPO",referencedColumnName="ID_TIPO_INSTITUCION")
+     * @ORM\ManyToOne(TargetEntity="CEO")
+     * @ORM\JoinColumn(name="RESPONSABLE",referencedColumnName="ID_RESPONSABLE")
+     */
+    private $ceo;
+    /**
+     * @ORM\ManyToOne(TargetEntity="EnterpriseType")
+     * @ORM\JoinColumn(name="TIPO",referencedColumnName="ID_TIPO_EMPRESA")
      */
     private $type;
     
     /**
-     * @ORM\ManyToMany(TargetEntity="SpecialtyType", inversedBy="institutions"
-     * @ORM\JoinTable(name="instituciones_especialidades", @ORM\JoinColumn(name="INSTITUCION", referencedColumnName="ID_INSTITUCION"),
+     * @ORM\ManyToMany(TargetEntity="SpecialtyType", inversedBy="companies"
+     * @ORM\JoinTable(name="empresas_especialidades", @ORM\JoinColumn(name="EMPRESA", referencedColumnName="ID_EMPRESA"),
      * @ORM\JoinColumn(name="ESPECIALIDAD", referencedColumnName="ID_ESPECIALIDAD"))
      */
     private $specialties;
     
-    
-    function __construct($name, $email, $telephone, $postal_code, $location, $country, $partner, $type) {
+    function __construct($ceo_post, $name, $email, $telephone, $postal_code, $location, $country, $partner, $ceo, $type) {
+        $this->ceo_post = $ceo_post;
         $this->name = $name;
         $this->email = $email;
         $this->telephone = $telephone;
@@ -88,13 +97,17 @@ class Institution {
         $this->location = $location;
         $this->country = $country;
         $this->partner = $partner;
+        $this->ceo = $ceo;
         $this->type = $type;
-        $this->specialties = new \Doctrine\Common\Collections\ArrayCollection();
-        
+        $this->specialties = new \Doctrine\Common\Collections\ArrayCollection;
     }
     
     function getId() {
         return $this->id;
+    }
+
+    function getCeo_Post() {
+        return $this->ceo_post;
     }
 
     function getVat() {
@@ -149,12 +162,16 @@ class Institution {
         return $this->partner;
     }
 
+    function getCeo() {
+        return $this->ceo;
+    }
+
     function getType() {
         return $this->type;
     }
 
-    function getSpecialties() {
-        return $this->specialties;
+    function setCeo_Post($ceo_post) {
+        $this->ceo_post = $ceo_post;
     }
 
     function setVat($vat) {
@@ -209,12 +226,12 @@ class Institution {
         $this->partner = $partner;
     }
 
-    function setType($type) {
-        $this->type = $type;
+    function setCeo($ceo) {
+        $this->responsible = $ceo;
     }
 
-    function setSpecialties($specialties) {
-        $this->specialties = $specialties;
+    function setType($type) {
+        $this->type = $type;
     }
 
 
@@ -223,11 +240,11 @@ class Institution {
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="TIPOS_INSTITUCION")
+ * @ORM\Table(name="TIPOS_EMPRESA")
  */
-class InstitutionType {
+class EnterpriseType  {
     /**
-     * @ORM\Id @ORM\Column(type="integer", name="ID_TIPO_INSTITUCION") @ORM\GeneratedValue
+     * @ORM\Id @ORM\Column(type="integer", name="ID_TIPO_EMPRESA") @ORM\GeneratedValue
      */
     private $id;
     /**
@@ -238,7 +255,6 @@ class InstitutionType {
      * @ORM\Column(type="string", name="DESCRIPCION")
      */
     private $description;
-    
     
     function __construct($type) {
         $this->type = $type;
@@ -266,5 +282,67 @@ class InstitutionType {
 
 
 
-    
 }
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="RESPONSABLES")
+ */
+class CEO   {
+    /**
+     * @ORM\Id @ORM\Column(type="integer", name="ID_RESPONSABLE") @ORM\GeneratedValue
+     */
+    private $id;
+    /**
+     * @ORM\Column(type="string", name="EMAIL")
+     */
+    private $email;
+    /**
+     * @ORM\Column(type="string", name="NOMBRE_COMPLETO")
+     */
+    private $full_name;
+    /**
+     * @ORM\Column(type="string", name="TELEFONO")
+     */
+    private $telephone;
+            
+    
+    function __construct($email, $full_name) {
+        $this->email = $email;
+        $this->full_name = $full_name;
+    }
+
+    function getId() {
+        return $this->id;
+    }
+
+    function getEmail() {
+        return $this->email;
+    }
+
+    function getFull_name() {
+        return $this->full_name;
+    }
+
+    function getTelephone() {
+        return $this->telephone;
+    }
+
+    function setEmail($email) {
+        $this->email = $email;
+    }
+
+    function setFull_name($full_name) {
+        $this->full_name = $full_name;
+    }
+
+    function setTelephone($telephone) {
+        $this->telephone = $telephone;
+    }
+
+
+}
+
+
+?>
+
