@@ -41,7 +41,7 @@ $yiq-text-light: $primary;
 //Background contrast
 .bg-secondary {
     color: $primary;
-    a {
+    a:not([class~="btn"]) {
         color: $accent;
     }
 }
@@ -103,5 +103,30 @@ $yiq-text-light: $primary;
 .bg-secondary {
     .btn-secondary {
         @include button-variant($secondary, $secondary, $primary, lighten($primary, 2.5%), lighten($primary, 2.5%), lighten($primary, 5%));
+    }
+}
+
+//Logo
+.logo {
+    width:150px;
+}
+
+//Info Blocks (Image with text overlay)
+.info-block {
+    position: relative;
+    
+    .text-block {
+        position: absolute;
+        background-color: rgba(20, 81, 119, 0.72);
+        height: 100%;
+        width: 100%;
+        top: 0;
+        left: 0;
+    }
+}
+
+@media (orientation: portrait) and (max-width: 576px) {
+    .info-block > img {
+        max-height: 400px;
     }
 }

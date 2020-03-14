@@ -6,7 +6,6 @@
 		<meta name="viewport" content="width=device-width, user-scalable=no" />
         <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
         <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
-        <link rel="stylesheet" type="text/css" href="css/custom.css" />
 		<script src="js/jquery.min.js"></script>
 		<script src="js/bootstrap.bundle.min.js"></script>
 	</head>
@@ -15,19 +14,38 @@
 		<div class="container-fluid">
 			<div class="container">
 				<?php include 'search.html'; ?>
-				<div class="row mx-auto">
-					<section class="border rounded my-5 col-12 col-md">
-						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In tempus, ante sed tempor congue, arcu erat pellentesque arcu, a consequat augue eros non urna. In hendrerit euismod tellus eu semper. Donec congue diam a ipsum finibus cursus. Nulla sit amet nibh neque. Vestibulum non mollis turpis. Curabitur non hendrerit nunc, quis ultricies leo. Aenean est diam, suscipit sed arcu a, mollis eleifend nisi. Nullam nec efficitur risus, eu mollis erat. Cras dapibus est gravida est finibus, at tempor lorem iaculis. Praesent blandit at mauris ut tempus. Sed elementum tortor orci, at congue dui elementum a. Integer laoreet auctor venenatis. Cras a elit arcu. Praesent bibendum urna vel nunc molestie cursus. Sed lacinia felis vitae elit sagittis hendrerit. Etiam tortor erat, pellentesque vel sapien non, finibus venenatis mauris.</p>
-						<p>Donec enim sapien, fringilla eget feugiat vel, tincidunt nec nisl. Cras risus diam, venenatis ut felis eu, posuere mollis quam. Etiam imperdiet laoreet blandit. Sed sem massa, lacinia id interdum malesuada, porta aliquet nibh. Cras at mi dapibus, pretium eros non, tempor neque. Integer non aliquet nibh. Aliquam in lacinia tellus, et rhoncus nunc. Morbi sodales, arcu a laoreet bibendum, sem velit auctor mi, sit amet tincidunt nibh arcu sed erat. Donec consequat massa blandit lectus dignissim vestibulum. Aenean placerat fermentum mauris, non ultricies ante imperdiet eget. Etiam a dui libero.</p>
-						<p>Integer placerat ipsum lorem, non efficitur elit bibendum faucibus. Integer molestie molestie tellus vel posuere. Donec neque nulla, viverra vel diam nec, vehicula dapibus purus. Duis non ultricies ipsum. Suspendisse potenti. Mauris semper suscipit eros, eget consectetur enim suscipit in. Integer augue nibh, viverra in feugiat vel, bibendum at leo. Suspendisse convallis diam vitae bibendum elementum.</p>
-					</section>
-					<section class="border rounded my-5 col-12 col-md">
-						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In tempus, ante sed tempor congue, arcu erat pellentesque arcu, a consequat augue eros non urna. In hendrerit euismod tellus eu semper. Donec congue diam a ipsum finibus cursus. Nulla sit amet nibh neque. Vestibulum non mollis turpis. Curabitur non hendrerit nunc, quis ultricies leo. Aenean est diam, suscipit sed arcu a, mollis eleifend nisi. Nullam nec efficitur risus, eu mollis erat. Cras dapibus est gravida est finibus, at tempor lorem iaculis. Praesent blandit at mauris ut tempus. Sed elementum tortor orci, at congue dui elementum a. Integer laoreet auctor venenatis. Cras a elit arcu. Praesent bibendum urna vel nunc molestie cursus. Sed lacinia felis vitae elit sagittis hendrerit. Etiam tortor erat, pellentesque vel sapien non, finibus venenatis mauris.</p>
-						<p>Donec enim sapien, fringilla eget feugiat vel, tincidunt nec nisl. Cras risus diam, venenatis ut felis eu, posuere mollis quam. Etiam imperdiet laoreet blandit. Sed sem massa, lacinia id interdum malesuada, porta aliquet nibh. Cras at mi dapibus, pretium eros non, tempor neque. Integer non aliquet nibh. Aliquam in lacinia tellus, et rhoncus nunc. Morbi sodales, arcu a laoreet bibendum, sem velit auctor mi, sit amet tincidunt nibh arcu sed erat. Donec consequat massa blandit lectus dignissim vestibulum. Aenean placerat fermentum mauris, non ultricies ante imperdiet eget. Etiam a dui libero.</p>
-						<p>Integer placerat ipsum lorem, non efficitur elit bibendum faucibus. Integer molestie molestie tellus vel posuere. Donec neque nulla, viverra vel diam nec, vehicula dapibus purus. Duis non ultricies ipsum. Suspendisse potenti. Mauris semper suscipit eros, eget consectetur enim suscipit in. Integer augue nibh, viverra in feugiat vel, bibendum at leo. Suspendisse convallis diam vitae bibendum elementum.</p>
-					</section>
-				</div>
 			</div>
+			<?php if(is_null($user)) { ?>
+			<section class="info-block row bg-secondary">
+				<img class="img-fluid" src="img/new_york_skyline.jpg" alt="New York City"/>
+				<div class="text-block row no-gutters flex-column">
+					<div class="col d-none d-lg-flex flex-grow-0">
+						<h1 class="display-1 ml-5">Register</h1>
+					</div>
+					<div class="col col-md-8 col-lg-6 mx-auto my-auto align-self-center">
+						<div class="row no-gutters h-100 align-items-center">
+							<div class="col px-3">
+								<p>Register now to be able to take advantage of the full capabilities of <strong>Mobility&sharp;</strong></p>
+								<div class="d-none d-sm-block">
+									<p>As a registered partner you can:</p>
+									<ul>
+										<li>Perform complex and specific queries to find enterprises or institutions.</li>
+										<li>Manage your students mobilities.</li>
+										<li>Contact with other partners registered in the platform to coordinate the lodgment of your students.</li>
+										<li>Contribute on the platform by adding new enterprises around you.</li>
+									</ul>
+								</div>
+								<div class="text-center">
+									<a class="btn btn-accent" role="button" href="register.php">Register now</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+			<?php } else { ?>
+
+			<?php } ?>
 		</div>
 		<?php include 'footer.html' ?>
 	</body>

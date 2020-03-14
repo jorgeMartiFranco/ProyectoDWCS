@@ -10015,7 +10015,7 @@ h3 {
 .bg-secondary {
   color: #f4f4f4;
 }
-.bg-secondary a {
+.bg-secondary a:not([class~=btn]) {
   color: #f5cb5c;
 }
 
@@ -10085,6 +10085,28 @@ h3 {
 }
 .bg-secondary .btn-secondary:not(:disabled):not(.disabled):active:focus, .bg-secondary .btn-secondary:not(:disabled):not(.disabled).active:focus, .show > .bg-secondary .btn-secondary.dropdown-toggle:focus {
   box-shadow: 0 0 0 0.2rem rgba(54, 105, 138, 0.5);
+}
+
+.logo {
+  width: 150px;
+}
+
+.info-block {
+  position: relative;
+}
+.info-block .text-block {
+  position: absolute;
+  background-color: rgba(20, 81, 119, 0.72);
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+
+@media (orientation: portrait) and (max-width: 576px) {
+  .info-block > img {
+    max-height: 400px;
+  }
 }
 
 /*# sourceMappingURL=bootstrap.css.map */
