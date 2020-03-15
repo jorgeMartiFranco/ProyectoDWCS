@@ -13,7 +13,7 @@
 		<?php include 'header.php'; ?>
 		<div class="container-fluid">
 			<div class="container">
-				<?php include 'search.html'; ?>
+				<?php include 'search.php'; ?>
 			</div>
 			<?php if(is_null($user)) { ?>
 			<section class="info-block row bg-secondary">
