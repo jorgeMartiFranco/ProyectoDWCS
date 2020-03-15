@@ -79,7 +79,7 @@ class Partner {
      */
     private $country;
     
-    function __construct($password, $username, $full_name, $email, $telephone, $post, $department, $role, $country) {
+    function __construct($password, $username, $full_name, $email, $telephone, $post, $department, $role, $country,$registration_date) {
         $this->password = $password;
         $this->username = $username;
         $this->full_name = $full_name;
@@ -89,6 +89,7 @@ class Partner {
         $this->department = $department;
         $this->role = $role;
         $this->country = $country;
+        $this->registration_date = $registration_date;
     }
     
     function getId() {
@@ -228,52 +229,6 @@ class Partner {
 }
 
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="ROL_USUARIOS")
- */
-class Role {
-    /**
-     * @ORM\Id @ORM\Column(type="integer", name="ID_ROL") @ORM\GeneratedValue
-     */
-    private $id;
-    /**
-     * @ORM\Column(type="integer", name="TIPO")
-     */
-    private $type;
-    /**
-     * @ORM\Column(type="integer", name="DESCRIPCION")
-     */
-    private $description;
-    
-    function __construct($type) {
-        $this->type = $type;
-    }
-    
-    function getId() {
-        return $this->id;
-    }
 
-    function getType() {
-        return $this->type;
-    }
-
-    function getDescription() {
-        return $this->description;
-    }
-    
-    function setType($type) {
-        $this->type = $type;
-    }
-
-    function setDescription($description) {
-        $this->description = $description;
-    }
-
-
-
-
-
-}
 ?>
 

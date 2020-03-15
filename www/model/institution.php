@@ -80,7 +80,7 @@ class Institution {
     private $specialties;
     
     
-    function __construct($name, $email, $telephone, $postal_code, $location, $country, $partner, $type) {
+    function __construct($name, $email, $telephone, $postal_code, $location, $country, $partner, $type,$registration_date) {
         $this->name = $name;
         $this->email = $email;
         $this->telephone = $telephone;
@@ -90,6 +90,7 @@ class Institution {
         $this->partner = $partner;
         $this->type = $type;
         $this->specialties = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->registration_date=$registration_date;
         
     }
     
@@ -221,50 +222,3 @@ class Institution {
 
 }
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="TIPOS_INSTITUCION")
- */
-class InstitutionType {
-    /**
-     * @ORM\Id @ORM\Column(type="integer", name="ID_TIPO_INSTITUCION") @ORM\GeneratedValue
-     */
-    private $id;
-    /**
-     * @ORM\Column(type="string", name="TIPO")
-     */
-    private $type;
-    /**
-     * @ORM\Column(type="string", name="DESCRIPCION")
-     */
-    private $description;
-    
-    
-    function __construct($type) {
-        $this->type = $type;
-    }
-    
-    function getId() {
-        return $this->id;
-    }
-
-    function getType() {
-        return $this->type;
-    }
-
-    function getDescription() {
-        return $this->description;
-    }
-
-    function setType($type) {
-        $this->type = $type;
-    }
-
-    function setDescription($description) {
-        $this->description = $description;
-    }
-
-
-
-    
-}

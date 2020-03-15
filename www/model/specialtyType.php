@@ -22,15 +22,15 @@ class SpecialtyType    {
     private $description;
     
     /**
-    * @ManyToMany(targetEntity="Institution", mappedBy="specialties")
+    * @ORM\ManyToMany(targetEntity="Institution", mappedBy="specialties")
     */
     private $institutions;
     /**
-    * @ManyToMany(targetEntity="Enterprise", mappedBy="specialties")
+    * @ORM\ManyToMany(targetEntity="Enterprise", mappedBy="specialties")
     */
     private $enterprises;
     /**
-    * @ManyToMany(targetEntity="Student", mappedBy="specialties")
+    * @ORM\ManyToMany(targetEntity="Student", mappedBy="specialties")
     */
     private $students;
     
