@@ -61,28 +61,28 @@ class Company  {
      */
     private $modification_date;
     /**
-     * @ORM\ManyToOne(TargetEntity="Country")
+     * @ORM\ManyToOne(targetEntity="Country")
      * @ORM\JoinColumn(name="PAIS",referencedColumnName="ID_PAIS")
      */
     private $country;
     /**
-     * @ORM\ManyToOne(TargetEntity="Partner")
+     * @ORM\ManyToOne(targetEntity="Partner")
      * @ORM\JoinColumn(name="SOCIO",referencedColumnName="ID_SOCIO")
      */
     private $partner;
     /**
-     * @ORM\ManyToOne(TargetEntity="CEO")
+     * @ORM\ManyToOne(targetEntity="CEO")
      * @ORM\JoinColumn(name="RESPONSABLE",referencedColumnName="ID_RESPONSABLE")
      */
     private $ceo;
     /**
-     * @ORM\ManyToOne(TargetEntity="EnterpriseType")
+     * @ORM\ManyToOne(targetEntity="EnterpriseType")
      * @ORM\JoinColumn(name="TIPO",referencedColumnName="ID_TIPO_EMPRESA")
      */
     private $type;
     
     /**
-     * @ORM\ManyToMany(TargetEntity="SpecialtyType", inversedBy="companies"
+     * @ORM\ManyToMany(targetEntity="SpecialtyType", inversedBy="companies")
      * @ORM\JoinTable(name="empresas_especialidades", @ORM\JoinColumn(name="EMPRESA", referencedColumnName="ID_EMPRESA"),
      * @ORM\JoinColumn(name="ESPECIALIDAD", referencedColumnName="ID_ESPECIALIDAD"))
      */

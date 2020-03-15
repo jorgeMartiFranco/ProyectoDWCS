@@ -6,6 +6,6 @@
         "doctrine/orm": "*"
     },
     "autoload": {
-        "psr-4": {"MobilitySharp\\": "model/"}
+        "psr-4": {"MobilitySharp\\model\\": "model/"}
     }
 }

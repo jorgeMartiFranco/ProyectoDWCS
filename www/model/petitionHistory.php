@@ -26,19 +26,19 @@ class PetitionHistory   {
     private $date;
         
     /**
-     * @ORM\ManyToOne(TargetEntity="Status")
+     * @ORM\ManyToOne(targetEntity="Status")
      * @ORM\JoinColumn(name="ESTADO",referencedColumnName="ID_ESTADO")
      */
     private $status;
     
     /**
-     * @ORM\ManyToOne(TargetEntity="Partner")
+     * @ORM\ManyToOne(targetEntity="Partner")
      * @ORM\JoinColumn(name="SOCIO",referencedColumnName="ID_SOCIO")
      */
     private $sender_partner;
     
     /**
-     * @ORM\ManyToOne(TargetEntity="Partner")
+     * @ORM\ManyToOne(targetEntity="Partner")
      * @ORM\JoinColumn(name="SOCIO",referencedColumnName="ID_SOCIO")
      */
     private $receiver_partner;

@@ -57,23 +57,23 @@ class Institution {
      */
     private $modification_date;
     /**
-     * @ORM\ManyToOne(TargetEntity="Country")
+     * @ORM\ManyToOne(targetEntity="Country")
      * @ORM\JoinColumn(name="PAIS",referencedColumnName="ID_PAIS")
      */
     private $country;
     /**
-     * @ORM\ManyToOne(TargetEntity="Partner")
+     * @ORM\ManyToOne(targetEntity="Partner")
      * @ORM\JoinColumn(name="SOCIO",referencedColumnName="ID_SOCIO")
      */
     private $partner;
     /**
-     * @ORM\ManyToOne(TargetEntity="InstitutionType")
+     * @ORM\ManyToOne(targetEntity="InstitutionType")
      * @ORM\JoinColumn(name="TIPO",referencedColumnName="ID_TIPO_INSTITUCION")
      */
     private $type;
     
     /**
-     * @ORM\ManyToMany(TargetEntity="SpecialtyType", inversedBy="institutions"
+     * @ORM\ManyToMany(targetEntity="SpecialtyType", inversedBy="institutions")
      * @ORM\JoinTable(name="instituciones_especialidades", @ORM\JoinColumn(name="INSTITUCION", referencedColumnName="ID_INSTITUCION"),
      * @ORM\JoinColumn(name="ESPECIALIDAD", referencedColumnName="ID_ESPECIALIDAD"))
      */

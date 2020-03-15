@@ -28,12 +28,12 @@ class EnterpriseMobility  {
      */
     private $registration_date;
     /**
-     * @ORM\OneToOne(TargetEntity="Student")
+     * @ORM\OneToOne(targetEntity="Student")
      * @ORM\JoinColumn(name="ALUMNO",referencedColumnName="ID_ALUMNO")
      */
     private $student;
     /**
-     * @ORM\OneToOne(TargetEntity="Enterprise")
+     * @ORM\OneToOne(targetEntity="Enterprise")
      * @ORM\JoinColumn(name="EMPRESA",referencedColumnName="ID_EMPRESA")
      */
     private $enterprise;

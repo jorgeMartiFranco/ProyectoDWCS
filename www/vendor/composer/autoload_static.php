@@ -27,7 +27,7 @@ class ComposerStaticInit8985cd4b52d357f9a02bda12ee43ee3a
         ),
         'M' => 
         array (
-            'MobilitySharp\\' => 14,
+            'MobilitySharp\\model\\' => 20,
         ),
         'D' => 
         array (
@@ -73,7 +73,7 @@ class ComposerStaticInit8985cd4b52d357f9a02bda12ee43ee3a
         array (
             0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
         ),
-        'MobilitySharp\\' => 
+        'MobilitySharp\\model\\' => 
         array (
             0 => __DIR__ . '/../..' . '/model',
         ),

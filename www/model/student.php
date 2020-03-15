@@ -42,13 +42,13 @@ class Student  {
     private $modification_date;
     
     /**
-     * @ORM\ManyToOne(TargetEntity="Partner")
+     * @ORM\ManyToOne(targetEntity="Partner")
      * @ORM\JoinColumn(name="SOCIO",referencedColumnName="ID_SOCIO")
      */
     private $partner;
     
     /**
-     * @ORM\ManyToMany(TargetEntity="SpecialtyType", inversedBy="students"
+     * @ORM\ManyToMany(targetEntity="SpecialtyType", inversedBy="students")
      * @ORM\JoinTable(name="alumnos_especialidades", @ORM\JoinColumn(name="ALUMNO", referencedColumnName="ID_ALUMNO"),
      * @ORM\JoinColumn(name="ESPECIALIDAD", referencedColumnName="ID_ESPECIALIDAD"))
      */

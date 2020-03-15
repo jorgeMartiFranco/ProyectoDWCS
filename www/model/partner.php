@@ -64,17 +64,17 @@ class Partner {
      */
     private $score;
     /**
-     * @ORM\ManyToOne(TargetEntity="Role")
+     * @ORM\ManyToOne(targetEntity="Role")
      * @ORM\JoinColumn(name="ROL",referencedColumnName="ID_ROL")
      */
     private $role;
     /**
-     * @ORM\ManyToOne(TargetEntity="Institution")
+     * @ORM\ManyToOne(targetEntity="Institution")
      * @ORM\JoinColumn(name="INSTITUCION",referencedColumnName="ID_INSTITUCION")
      */
     private $institution;
     /**
-     * @ORM\ManyToOne(TargetEntity="Country")
+     * @ORM\ManyToOne(targetEntity="Country")
      * @ORM\JoinColumn(name="PAIS",referencedColumnName="ID_PAIS")
      */
     private $country;
@@ -227,6 +227,7 @@ class Partner {
 
 }
 
+
 /**
  * @ORM\Entity
  * @ORM\Table(name="ROL_USUARIOS")
@@ -274,3 +275,5 @@ class Role {
 
 
 }
+?>
+

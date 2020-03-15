@@ -1,21 +1,45 @@
 <?php
 namespace MobilitySharp\controller;
+require_once 'vendor/autoload.php';
 use \PDO;
+use \Doctrine\ORM\Tools\Setup;
+use \Doctrine\ORM\EntityManager;
 
-function load($user) {
+function load($user) : EntityManager {
     $global = parse_ini_file("config/db-global.ini");
     $account = parse_ini_file("config/db-$user.ini");
+    $isDevMode = false;
+
+    /*
     $pdo = new PDO("mysql:host=$global[host];dbname=$global[dbname];charset=$global[charset]", $account['username'], $account['password'] ?? NULL);
     
     if($global['debug'] && $global['debug'] === "true") {
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
-    return $pdo;
+    return $pdo;*/
+
+    if($global['debug'] && $global['debug'] === "true") {
+        $isDevMode = true;
+    }
+    $paths = ["model"];
+    $dbParams = [
+        'driver' => 'pdo_mysql',
+        'host' => $global['host'],
+        'dbname' => $global['dbname'],
+        'charset' => $global['charset'],
+        'user' => $account['username'],
+        'password' => $account['password']
+    ];
+    $config = Setup::createAnnotationMetadataConfiguration($paths, $isDevMode, null, null, false);
+    $config->setProxyNamespace("MobilitySharp\model");
+    $config->setAutoGenerateProxyClasses(true);
+    return EntityManager::create($dbParams, $config);
+    
 }
 
 function checkUser($username, $password) {
-    if($pdo = load("login")) {
+   /* if($pdo = load("login")) {
         $stmt = $pdo->prepare('SELECT usuario, email, `password` FROM socios WHERE lower(usuario)=:username OR lower(email)=:username');
         $stmt->execute([':username' => strtolower($username)]);
     
@@ -29,7 +53,27 @@ function checkUser($username, $password) {
         }
     
     }
-    return FALSE;
+    return FALSE;*/
+    try {
+        $entityM = load("login");
+        $user=$entityM->getRepository("MobilitySharp\model\Partner")->findOneBy(["username"=>$username]); //falta tener en cuenta que el usuario puede acceder con username o email
+        if($user!==FALSE){
+            if(password_verify($password, $user->getPassword())){
+                
+                
+                return ['usuario'=>$user->getUsername(),
+                        'email'=>$user->getEmail(),
+                        'password'=>$user->getPassword()
+                ];
+            }
+        }
+        echo "Llega aqui";
+        return FALSE;
+
+    } catch (Exception $ex) {
+        echo $ex->getMessage();
+    }
+
 }
 
 function getCountries() {
