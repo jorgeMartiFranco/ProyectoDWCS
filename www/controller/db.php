@@ -106,7 +106,7 @@ function registerPartnerInstitution() {
     //if($pdo = load("login")) {
     $entityM = load("login");
     try {
-        $date=new \DateTime(date('Y-m-d'));
+        $date = new \DateTime(date('Y-m-d'));
         $name = filter_input(INPUT_POST, "fName") . " " . filter_input(INPUT_POST, "lName");
         $email = filter_input(INPUT_POST, "email");
         $phone = filter_input(INPUT_POST, "phone");
@@ -116,8 +116,8 @@ function registerPartnerInstitution() {
         $post = filter_input(INPUT_POST, "post");
         $department = filter_input(INPUT_POST, "department");
         $l_provider = 0; //not a provider
-        $role = $entityM->getRepository("MobilitySharp\model\Role")->findOneBy(["type"=>'REGISTERED']); // registered user
-        $country = $entityM->find("MobilitySharp\model\Country",filter_input(INPUT_POST, "country"));
+        $role = $entityM->getRepository("MobilitySharp\model\Role")->findOneBy(["type" => 'REGISTERED']); // registered user
+        $country = $entityM->find("MobilitySharp\model\Country", filter_input(INPUT_POST, "country"));
 
 
         $iName = filter_input(INPUT_POST, "iName");
@@ -128,7 +128,7 @@ function registerPartnerInstitution() {
         $iLocation = filter_input(INPUT_POST, "location");
         $web = filter_input(INPUT_POST, "web");
         $description = filter_input(INPUT_POST, "description");
-        $institutionType = $entityM->find("MobilitySharp\model\InstitutionType",filter_input(INPUT_POST, "institutionType"));
+        $institutionType = $entityM->find("MobilitySharp\model\InstitutionType", filter_input(INPUT_POST, "institutionType"));
 
         //$query = $pdo->query("SELECT ID_INSTITUCION FROM INSTITUCIONES WHERE NOMBRE='$iName'")->fetch(PDO::FETCH_ASSOC); //check if the institution already exists
         $institution = $entityM->getRepository("MobilitySharp\model\Institution")->findOneBy(["name" => $iName]);
@@ -139,18 +139,18 @@ function registerPartnerInstitution() {
             ':password' => password_hash($password, PASSWORD_DEFAULT),
         ];
 
-        
+
 
         if (is_null($institution)) {
             $entityM->getConnection()->beginTransaction();
-            $partner = new \MobilitySharp\model\Partner(password_hash($password, PASSWORD_DEFAULT), $username, $name, $email, $phone, $post, $department, $role, $country,$date);
+            $partner = new \MobilitySharp\model\Partner(password_hash($password, PASSWORD_DEFAULT), $username, $name, $email, $phone, $post, $department, $role, $country, $date);
             //$pdo->beginTransaction();
             // $stmt = $pdo->prepare("INSERT INTO SOCIOS (NOMBRE_COMPLETO,EMAIL,TELEFONO,USUARIO,PASSWORD,VAT,CARGO,DEPARTAMENTO,R_ALOJAMIENTO,ROL,PAIS)"
             //         . "VALUES (:name, :email, :phone, :username, :password, :vat, :post, :department, :l_provider, :rol, :country);");
             $entityM->persist($partner);
             $entityM->flush();
 
-            $institution = new \MobilitySharp\model\Institution($iName, $iEmail, $iPhone, $postalCode, $iLocation, $country, $partner, $institutionType,$date);
+            $institution = new \MobilitySharp\model\Institution($iName, $iEmail, $iPhone, $postalCode, $iLocation, $country, $partner, $institutionType, $date);
             $entityM->persist($institution);
             $entityM->flush();
             //if($stmt->execute($partnerParams)) {
@@ -171,21 +171,20 @@ function registerPartnerInstitution() {
                 $entityM->getConnection()->rollback();
             }
         } else {
-            
-            $partner = new \MobilitySharp\model\Partner(password_hash($password, PASSWORD_DEFAULT), $username, $name, $email, $phone, $post, $department, $role, $country,$date);
+
+            $partner = new \MobilitySharp\model\Partner(password_hash($password, PASSWORD_DEFAULT), $username, $name, $email, $phone, $post, $department, $role, $country, $date);
             $partner->setInstitution($institution);
             $entityM->persist($partner);
             $entityM->flush();
             //$stmt = $pdo->prepare("INSERT INTO SOCIOS (NOMBRE_COMPLETO,EMAIL,TELEFONO,USUARIO,PASSWORD,VAT,CARGO,DEPARTAMENTO,R_ALOJAMIENTO,ROL,PAIS,INSTITUCION)"
-                 //  . "VALUES (:name, :email, :phone, :username, :password, :vat, :post, :department, :l_provider, :rol, :country, :institution);");
-            
-                sessionStoreUser($partnerParams);
-                $location = "Location:index.php?registered";
-            
-    }
+            //  . "VALUES (:name, :email, :phone, :username, :password, :vat, :post, :department, :l_provider, :rol, :country, :institution);");
+
+            sessionStoreUser($partnerParams);
+            $location = "Location:index.php?registered";
+        }
         header($location);
     } catch (Exception $e) {
-        
+
         header($location);
     }
 }
@@ -203,14 +202,16 @@ function sessionStoreUser($userParams) {
 function searchInstitutions() {
 
     $entityM = load("login");
-    $enterprises = $entityM->getRepository("MobilitySharp\model\Enterprise")->findBy(["name"=>filter_input(INPUT_GET, "institutionName")]);
-    
+
     //if ($pdo = load("login")) {
-    
-    /*$stmt = $pdo->prepare("SELECT * FROM EMPRESAS WHERE NOMBRE LIKE :nombre;");
-        $stmt->execute($datos);
-        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);*/
-     var_dump($enterprises);
-    //echo $enterprises;
-    
+
+    /* $stmt = $pdo->prepare("SELECT * FROM EMPRESAS WHERE NOMBRE LIKE :nombre;");
+      $stmt->execute($datos);
+      $results = $stmt->fetchAll(PDO::FETCH_ASSOC); */
+    $query = $entityM->createQuery("SELECT e FROM MobilitySharp\model\Enterprise e WHERE e.name LIKE :enterprise")
+            ->setParameter('enterprise','%'. filter_input(INPUT_GET, "enterpriseName").'%');
+    $enterprises = $query->getResult();
+    return $enterprises;
 }
+
+
