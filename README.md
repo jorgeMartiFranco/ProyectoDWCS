@@ -9,11 +9,11 @@
 
 ## Built With
 
-* [PHP](https://www.php.net/docs.php) 
-* [Javascript](https://developer.mozilla.org/es/docs/Web/JavaScript)
-* [MariaDB](https://mariadb.com/kb/en/documentation/) 
+* [PHP](https://www.php.net/docs.php)
 * [Doctrine](https://www.doctrine-project.org/projects/doctrine-orm/en/2.7/index.html)
-* [HTML](https://devdocs.io/html/) 
+* [Javascript](https://developer.mozilla.org/es/docs/Web/JavaScript)
+* [MariaDB](https://mariadb.com/kb/en/documentation/)
+* [HTML](https://devdocs.io/html/)
 * [CSS](https://devdocs.io/css/)
 * [SASS](https://sass-lang.com/documentation)
 
