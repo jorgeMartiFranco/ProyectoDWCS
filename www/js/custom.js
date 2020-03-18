@@ -1,10 +1,36 @@
+$(document).ready(function() {
+    $("#sidenavCollapse").click(function(){
+        var sidenav = $('#sidenav');
+        sidenav.toggleClass("collapsed");
+        if(sidenav.hasClass("collapsed")) {
+            $("#wrapper").css("background-color", "rgba(0,0,0,0.3)");
+        }
+        
+    });
+});
+
+
+
 function createFormStruct(form, data, columns) {
     var i = 0;
-    while (i < data.length) {
+    var pair;
+    var count=0;
+    var entries=data.length;
+    if(entries%columns==0){
+        pair=true;
+    }
+    else {
+        pair=false;
+    }
+    
+    while (i < entries) {
         let row = $("<div>");
         row.addClass('form-row justify-content-center');
         
         for (var j = 0; j < columns; j++) {
+            if(count==entries){
+                break;
+            }
             let column = $("<div>");
             column.addClass('col-12 col-sm col-md-5 col-lg-4 mx-md-3 my-2 my-md-3');
             let input = $('<input>');
@@ -18,7 +44,11 @@ function createFormStruct(form, data, columns) {
             }
             column.append(input);
             row.append(column);
+            
+            
             i++;
+            count++;
+
         }
         
         form.append(row);
