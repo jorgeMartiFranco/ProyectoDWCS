@@ -88,7 +88,7 @@ class Enterprise  {
      */
     private $specialties;
     
-    function __construct($ceo_post, $name, $email, $telephone, $postal_code, $location, $country, $partner, $ceo, $type) {
+    function __construct($ceo_post, $name, $email, $telephone, $postal_code, $location, $country, $partner, $ceo, $type,$registration_date) {
         $this->ceo_post = $ceo_post;
         $this->name = $name;
         $this->email = $email;
@@ -99,6 +99,7 @@ class Enterprise  {
         $this->partner = $partner;
         $this->ceo = $ceo;
         $this->type = $type;
+        $this->registration_date = $registration_date;
         $this->specialties = new \Doctrine\Common\Collections\ArrayCollection;
     }
     

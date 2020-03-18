@@ -54,11 +54,12 @@ class Student  {
      */
     private $specialties;
     
-    function __construct($full_name, $gender, $birth_date, $partner) {
+    function __construct($full_name, $gender, $birth_date, $partner,$registration_date) {
         $this->full_name = $full_name;
         $this->gender = $gender;
         $this->birth_date = $birth_date;
         $this->partner = $partner;
+        $this->registration_date=$registration_date;
         $this->specialties = new \Doctrine\Common\Collections\ArrayCollection;
     }
 

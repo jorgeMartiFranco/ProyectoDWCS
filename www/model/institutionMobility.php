@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="MOVILIDADES_INSTITUCIONES")
  */
-class EnterpriseMobility  {
+class InstitutionMobility  {
     /**
      * @ORM\Id @ORM\Column(type="integer", name="ID_MOVILIDAD") @ORM\GeneratedValue
      */
@@ -34,18 +34,18 @@ class EnterpriseMobility  {
      */
     private $student;
     /**
-     * @ORM\OneToOne(targetEntity="Enterprise")
+     * @ORM\OneToOne(targetEntity="Institution")
      * @ORM\JoinColumn(name="INSTITUCION",referencedColumnName="ID_INSTITUCION")
      */
-    private $enterprise;
+    private $institution;
     
     
-    function __construct($start_date, $estimated_end_date, $registration_date, $student, $enterprise) {
+    function __construct($start_date, $estimated_end_date, $registration_date, $student, $institution) {
         $this->start_date = $start_date;
         $this->estimated_end_date = $estimated_end_date;
         $this->registration_date = $registration_date;
         $this->student = $student;
-        $this->enterprise = $enterprise;
+        $this->institution = $institution;
     }
     
     
@@ -73,8 +73,8 @@ class EnterpriseMobility  {
         return $this->student;
     }
 
-    function getEnterprise() {
-        return $this->enterprise;
+    function getInstitution() {
+        return $this->institution;
     }
 
     function setStart_date($start_date) {
@@ -97,8 +97,8 @@ class EnterpriseMobility  {
         $this->student = $student;
     }
 
-    function setEnterprise($enterprise) {
-        $this->enterprise = $enterprise;
+    function setInstitution($institution) {
+        $this->institution = $institution;
     }
 
 
