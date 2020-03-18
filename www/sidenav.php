@@ -13,7 +13,7 @@
                         <a href="registerEnterprise.php">New Enterprise</a>
                     </li>
                     <li>
-                        <a href="/myEnterprises">My Enterprises</a>
+                        <a href="myEnterprises.php">My Enterprises</a>
                     </li>
                     
                 </ul>
@@ -23,15 +23,57 @@
                 <a href="#studentsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Students</a>
                 <ul class="collapse list-unstyled" id="studentSubmenu">
                     <li>
-                        <a href="/registerStudent">New Student</a>
+                        <a href="registerStudent.php">New Student</a>
                     </li>
                     <li>
-                        <a href="/myStudents">My Students</a>
+                        <a href="myStudents.php">My Students</a>
                     </li>
                     
                 </ul>
             </li>
             
+            <li class="active">
+                <a href="#institutionsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Institutions</a>
+                <ul class="collapse list-unstyled" id="studentSubmenu">
+                    <li>
+                        <a href="myInstitution.php">My Institution</a>
+                    </li>
+                    
+                    
+                </ul>
+            </li>
+            
+            <li class="active">
+                <a href="#mobilitiesSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Mobilities</a>
+                <ul class="collapse list-unstyled show" id="studentSubmenu">
+                    <li>
+                        <a href="registerEnterpriseMobility.php">New Enterprise Mobility</a>
+                    </li>
+                    <li>
+                        <a href="registerInstitutionMobility.php">New Institution Mobility</a>
+                    </li>
+                    <li><a href="myMobilities.php">My Mobilities</a></li>
+                    
+                </ul>
+            </li>
+            <?php
+            if($_SESSION["user"]["role"]==='ADMIN'){
+                
+            
+            ?>
+            <li class="active">
+                <a href="#specialtiesSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Specialties</a>
+                <ul class="collapse list-unstyled" id="studentSubmenu">
+                    <li>
+                        <a href="/registerStudent">New specialty</a>
+                    </li>
+                    
+                    
+                </ul>
+            </li>
+            <?php
+            }
+            ?>
            
         </ul>
         
