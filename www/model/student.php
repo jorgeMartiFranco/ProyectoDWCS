@@ -21,11 +21,11 @@ class Student  {
      */
     private $full_name;
     /**
-     * @ORM\Column(type="string", name="CARGO_RESPONSABLE")
+     * @ORM\Column(type="string", name="GENERO")
      */
     private $gender;
     /**
-     * @ORM\Column(type="string", name="GENERO")
+     * @ORM\Column(type="date", name="FECHA_NACIMIENTO")
      */
     private $birth_date;
     /**
@@ -49,8 +49,8 @@ class Student  {
     
     /**
      * @ORM\ManyToMany(targetEntity="SpecialtyType", inversedBy="students")
-     * @ORM\JoinTable(name="alumnos_especialidades", @ORM\JoinColumn(name="ALUMNO", referencedColumnName="ID_ALUMNO"),
-     * @ORM\JoinColumn(name="ESPECIALIDAD", referencedColumnName="ID_ESPECIALIDAD"))
+     * @ORM\JoinTable(name="alumnos_especialidades", joinColumns={@ORM\JoinColumn(name="ALUMNO", referencedColumnName="ID_ALUMNO")},
+     * inverseJoinColumns={@ORM\JoinColumn(name="ESPECIALIDAD", referencedColumnName="ID_ESPECIALIDAD")})
      */
     private $specialties;
     

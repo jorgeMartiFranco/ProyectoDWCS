@@ -74,8 +74,8 @@ class Institution {
     
     /**
      * @ORM\ManyToMany(targetEntity="SpecialtyType", inversedBy="institutions")
-     * @ORM\JoinTable(name="instituciones_especialidades", @ORM\JoinColumn(name="INSTITUCION", referencedColumnName="ID_INSTITUCION"),
-     * @ORM\JoinColumn(name="ESPECIALIDAD", referencedColumnName="ID_ESPECIALIDAD"))
+     * @ORM\JoinTable(name="instituciones_especialidades", joinColumns={@ORM\JoinColumn(name="INSTITUCION", referencedColumnName="ID_INSTITUCION")},
+     * inverseJoinColumns={@ORM\JoinColumn(name="ESPECIALIDAD", referencedColumnName="ID_ESPECIALIDAD")})
      */
     private $specialties;
     
