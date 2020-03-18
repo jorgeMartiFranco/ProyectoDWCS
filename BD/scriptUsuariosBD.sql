@@ -4,8 +4,15 @@ CREATE USER IF NOT EXISTS 'movilidades_registered'@'localhost' IDENTIFIED WITH m
 GRANT SELECT ON GESTIONMOVILIDADES.SOCIOS TO 'movilidades_login'@'localhost';
 GRANT SELECT ON GESTIONMOVILIDADES.ROL_USUARIOS TO 'movilidades_login'@'localhost';
 GRANT SELECT ON GESTIONMOVILIDADES.EMPRESAS TO 'movilidades_login'@'localhost';
+GRANT SELECT ON GESTIONMOVILIDADES.TIPOS_EMPRESA TO 'movilidades_login'@'localhost';
 GRANT SELECT ON GESTIONMOVILIDADES.PAISES TO 'movilidades_login'@'localhost';
 GRANT SELECT ON GESTIONMOVILIDADES.TIPOS_INSTITUCION TO 'movilidades_login'@'localhost';
 GRANT INSERT ON GESTIONMOVILIDADES.SOCIOS TO 'movilidades_login'@'localhost';
 GRANT INSERT ON GESTIONMOVILIDADES.INSTITUCIONES TO 'movilidades_login'@'localhost';
 GRANT UPDATE (INSTITUCION) ON GESTIONMOVILIDADES.SOCIOS TO 'movilidades_login'@'localhost';
+GRANT SELECT ON GESTIONMOVILIDADES.TIPOS_EMPRESA TO 'movilidades_registered'@'localhost';
+GRANT SELECT ON GESTIONMOVILIDADES.RESPONSABLES TO 'movilidades_registered'@'localhost';
+GRANT SELECT ON GESTIONMOVILIDADES.EMPRESAS TO 'movilidades_registered'@'localhost';
+GRANT SELECT ON GESTIONMOVILIDADES.PAISES TO 'movilidades_registered'@'localhost';
+GRANT SELECT ON GESTIONMOVILIDADES.SOCIOS TO 'movilidades_registered'@'localhost';
+GRANT INSERT ON GESTIONMOVILIDADES.EMPRESAS TO 'movilidades_registered'@'localhost';
