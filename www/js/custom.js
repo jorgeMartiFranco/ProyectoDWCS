@@ -28,7 +28,7 @@ function createFormStruct(form, data, columns) {
         row.addClass('form-row justify-content-center');
         
         for (var j = 0; j < columns; j++) {
-            if(count==entries){
+            if(count==entries&&pair==false){
                 break;
             }
             let column = $("<div>");
