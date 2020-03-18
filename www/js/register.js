@@ -67,4 +67,28 @@ function createFormInsertEnterprise(){
     
     
     createFormStruct(form,arrayColumns,2);
+
+}
+function createFormInsertStudent(){
+    
+    var form = $("#student");
+    var arrayColumns = [
+        {type: "text", placeholder: "First name", name: "fName", id: "fname", required: true},
+        {type: "text", placeholder: "Last name", name: "lName", id: "lName", required: true},
+        {type: "date", placeholder: "", name: "birthDate", id: "birthDate", required: true},
+        {type: "text", placeholder: "VAT", name: "sVat", id: "sVat"}
+     ];
+    
+    
+    createFormStruct(form,arrayColumns,2);
+}
+
+function createFormInsertEnterpriseMobility(){
+    var form = $("#enterpriseMobility");
+    var arrayColumns = [
+        {type: "date", placeholder: "", name: "startDate", id: "startDate", required: true},
+        {type: "date", placeholder: "", name: "estimatedEndDate", id: "estimatedEndDate", required: true}
+     ];
+     
+     createFormStruct(form,arrayColumns,2);
 }
