@@ -18,9 +18,10 @@ use MobilitySharp\controller;
         <?php include "header.php";
         if(!isset($_POST) or empty($_POST)) {
         ?>
-        <div class="container-fluid">
-            <div class="container border mt-3 text-center pt-3">
-                <h1>Insert new enterprise</h1>
+        <div class="container-fluid text-center mt-3 mt-lg-5">
+            <h1>Insert new enterprise</h1>
+            <div class="container border mt-3 pt-3">
+                
                 <form method="POST" id="enterprise" action="registerEnterprise.php">
                    
                            
