@@ -46,3 +46,25 @@ function createFormRegisterInstitution(){
     
     
 }
+
+
+function createFormInsertEnterprise(){
+    
+    var form = $("#enterprise");
+    var arrayColumns = [
+        {type: "text", placeholder: "Name", name: "eName", id: "ename", required: true},
+        {type: "email", placeholder: "Email", name: "eEmail", id: "eEmail", required: true},
+        {type: "phone", placeholder: "Phone", name: "ePhone", id: "ePhone", required: true},
+        {type: "text", placeholder: "VAT", name: "eVat", id: "eVat"},
+        {type: "text", placeholder: "Postal Code", name: "postalCode", id: "postalCode", required: true},
+        {type: "text", placeholder: "Location", name: "location", id: "location", required: true},
+        {type: "text", placeholder: "Web", name: "web", id: "web"},
+        {type: "text", placeholder: "Description", name: "description", id: "description"},
+        {type: "text", placeholder: "Ceo post", name: "ceoPost", id: "ceoPost"}
+        
+        
+    ];
+    
+    
+    createFormStruct(form,arrayColumns,2);
+}
