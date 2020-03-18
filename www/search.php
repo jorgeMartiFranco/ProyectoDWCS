@@ -1,6 +1,12 @@
 <?php?>
 <html>
-<head>
+
+        <body>
+<?php
+include "controller\db.php";
+if((isset($_GET['enterpriseName']) or !empty($_GET["enterpriseName"]))) {
+    ?>
+        <head>
 		<title>Mobility&sharp;</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, user-scalable=no" />
@@ -10,13 +16,9 @@
 		<script src="js/jquery.min.js"></script>
 		<script src="js/bootstrap.bundle.min.js"></script>
 		<script src="js/custom.js"></script>
-	</head>
-        <body>
-<?php
-include "controller\db.php";
-if((isset($_GET['enterpriseName']) or !empty($_GET["enterpriseName"]))) {
+	</head><?php
     include "header.php";
-    \MobilitySharp\controller\searchInstitutionsAdvanced();
+    \MobilitySharp\controller\searchInstitutionsBasic();
     include "footer.html";
     ?>
 
@@ -33,7 +35,7 @@ if((isset($_GET['enterpriseName']) or !empty($_GET["enterpriseName"]))) {
             <?php if(is_null($user)) { ?>
                 <small id="dbSearchHelp" class="form-text text-muted">To perform more specific queries, registration is required</small>
             <?php } else { ?>
-                <small class="form-text"><a  href="">Advanced search</a></small>
+                <small class="form-text"><a  href="advancedSearch.php">Advanced search</a></small>
             <?php } ?>
         </div>
         <div class="text-center">
