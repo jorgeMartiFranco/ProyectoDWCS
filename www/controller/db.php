@@ -43,7 +43,8 @@ function checkUser($username, $password) {
                     'id'=>$user->getId(),
                     'usuario' => $user->getUsername(),
                     'email' => $user->getEmail(),
-                    'password' => $user->getPassword()
+                    'password' => $user->getPassword(),
+                    'role'=>$user->getRole()->getType()
                 ];
             }
         }
@@ -273,25 +274,29 @@ function insertStudent() {
 
     $entityM = load("registered");
 
-    $enterprise = $entityM->getRepository("MobilitySharp\model\Student")->findOneBy(["name" => filter_input(INPUT_POST, "sName")]);
 
-    if (is_null($enterprise)) {
-        $full_name = filter_input(INPUT_POST, "full_name");
+    
+        $full_name = filter_input(INPUT_POST, "fName")." ". filter_input(INPUT_POST, "lName");
         $gender = filter_input(INPUT_POST, "gender");
-        $birth_date = filter_input(INPUT_POST, "birth_date");
-        $partner = $entityM->find("MobilitySharp\model\Partner", filter_input(INPUT_POST, "partner"));
+        $birth_date = filter_input(INPUT_POST, "birthDate");
+        $partner = $entityM->find("MobilitySharp\model\Partner", $_SESSION["user"]["id"]);
         $registration_date = new \DateTime(date("Y-m-d"));
-        $student = new \MobilitySharp\model\Student($full_name, $gender, $birth_date, $partner, $registration_date);
+        if($gender=="Male"){
+            $gender='M';
+        }
+        else {
+            $gender='F';
+        }
+        $student = new \MobilitySharp\model\Student($full_name, $gender, new \DateTime($birth_date), $partner, $registration_date);
 
-        if ($vat = filter_input(INPUT_POST, "vat")) {
-            $enterprise->setVat($vat);
+        if ($vat = filter_input(INPUT_POST, "sVat")) {
+            $student->setVat($vat);
         }
 
         $entityM->persist($student);
         $entityM->flush();
-    } else {
-        return FALSE;
-    }
+        header("Location:index.php");
+   
 }
 
 function insertSpecialty() {
@@ -437,16 +442,60 @@ function listAllInstitutions() {
 
 function listPartnerEnterprises() {
     $entityM = load("registered");
-    $partner = $entityM->getRepository("MobilitySharp\model\Partner")->findOneBy("username", $_SESSION['user']['usuario']);
-    $enterprises = $entityM->getRepository("MobilitySharp\model\Enterprise")->findBy("partner", $partner);
-    echo $enterprises;
+    $partner = $entityM->find("MobilitySharp\model\Partner",$_SESSION["user"]["id"]);
+    $enterprises = $entityM->getRepository("MobilitySharp\model\Enterprise")->findBy(["partner"=> $partner]);
+    echo "<div class='row text-center my-2 my-lg-5 border justify-content-around'>";
+    foreach ($enterprises as $enterprise){
+        echo "<div class='col-12 col-md-7 col-lg-5 border border-dark rounded my-2 my-lg-5'>"
+            
+            . "<div class='row'><div class='col border-right border-dark'><h1>".$enterprise->getName()."</h1></div>"
+                . "<div class='col'><h4 class='text-secondary'>".$enterprise->getType()->getType()."</h4>"
+                . "<h5>".$enterprise->getCountry()->getName()."</h5></div></div>"
+                . "<div class='row'>"
+                . "<div class='col border-top border-dark'><p>".$enterprise->getEmail()."</p><p>".$enterprise->getTelephone()."</p><p>".$enterprise->getLocation().", ".$enterprise->getPostal_code()."</p>"
+                . "<h6><a href='https://".$enterprise->getWeb()."'>".$enterprise->getWeb()."</a></h6></div></div>"
+                . "<div class='row'><div class='col border-top border-dark'><p>".$enterprise->getDescription()."</p></div></div>"
+                ."</div>";
+    }
+    echo "</div>";
 }
 
 function listPartnerStudents() {
     $entityM = load("registered");
-    $partner = $entityM->getRepository("MobilitySharp\model\Partner")->findOneBy("username", $_SESSION['user']['usuario']);
-    $students = $entityM->getRepository("MobilitySharp\model\Student")->findBy("partner", $partner);
-    echo $students;
+    $partner = $entityM->find("MobilitySharp\model\Partner",$_SESSION["user"]["id"]);
+    $students = $entityM->getRepository("MobilitySharp\model\Student")->findBy(["partner"=> $partner]);
+    
+    echo "<div class='row text-center my-2 my-lg-5 border justify-content-around'>";
+    foreach ($students as $student){
+        if($student->getGender()=="M"){
+            $gender="Male";
+        }
+        else {
+            $gender="Female";
+        }
+        $date= date_format($student->getBirth_date(), 'Y-m-d');
+        echo "<div class='col-12 col-md-7 col-lg-5 border border-dark rounded my-2 my-lg-5'>"
+            
+            . "<div class='row'><div class='col border-bottom border-dark p-1 p-lg-2'><h2>".$student->getFull_Name()."</h2></div></div>"
+                . "<div class='row'><div class='col border-bottom border-dark p-1 p-lg-2'><h5 class='text-secondary'>".$gender."</h5>"
+                . "<h4>".$date."</h4></div></div>"
+                . "<div class='row'>"
+                . "<div class='col border-bottom border-dark p-1 p-lg-2'><h3 class='text-secondary'>Specialties</h3></div></div>";
+                
+                    foreach ($student->getSpecialties() as $specialty){
+                    echo "<div class='row'>"
+                . "<div class='col border-top border-dark p-1 p-lg-2'>".
+                    "<h4>".$specialty->getType()."</h4>"
+                   . "<p>".$specialty->getDescription()."</p></div></div>";
+                    
+                
+                }
+                
+                 
+                echo "</div>"
+                ;
+    }
+    echo "</div>";
 }
 
 
@@ -467,3 +516,113 @@ function getEnterpriseType(){
         echo '<option value='.$enterprise->getId().'>'.$enterprise->getType().'</option>';
     }
 }
+
+
+function getPartnerStudents(){
+    $entityM = load("registered");
+    $partner = $entityM->find("MobilitySharp\model\Partner",$_SESSION["user"]["id"]);
+    $students = $entityM->getRepository("MobilitySharp\model\Student")->findBy(["partner"=>$partner]);
+    
+    foreach ($students as $student){
+        echo '<option value='.$student->getId().'>'.$student->getFull_name().'</option>';
+    }
+}
+
+function getAllEnterprises(){
+    $entityM = load("registered");
+    
+    $enterprises = $entityM->getRepository("MobilitySharp\model\Enterprise")->findAll();
+    
+    foreach ($enterprises as $enterprise){
+        echo '<option value='.$enterprise->getId().'>'.$enterprise->getName().'</option>';
+    }
+}
+
+
+function insertEnterpriseMobility(){
+    $entityM = load("registered");
+    $startDate= filter_input(INPUT_POST, "startDate");
+    $estimatedEndDate= filter_input(INPUT_POST, "estimatedEndDate");
+    $student=$entityM->find("MobilitySharp\model\Student", filter_input(INPUT_POST, "student"));
+    $enterprise=$entityM->find("MobilitySharp\model\Enterprise", filter_input(INPUT_POST, "enterprise"));
+    $registrationDate=new \DateTime(date("Y-m-d"));
+    $mobility=new \MobilitySharp\model\EnterpriseMobility(new \DateTime($startDate), new \DateTime($estimatedEndDate), $registrationDate, $student, $enterprise);
+    
+    $entityM->persist($mobility);
+    $entityM->flush();
+}
+
+function getAllInstitutions(){
+    $entityM = load("registered");
+    
+    $institutions = $entityM->getRepository("MobilitySharp\model\Institution")->findAll();
+    
+    foreach ($institutions as $institution){
+        echo '<option value='.$institution->getId().'>'.$institution->getName().'</option>';
+    }
+}
+
+function insertInstitutionMobility(){
+    $entityM = load("registered");
+    $startDate= filter_input(INPUT_POST, "startDate");
+    $estimatedEndDate= filter_input(INPUT_POST, "estimatedEndDate");
+    $student=$entityM->find("MobilitySharp\model\Student", filter_input(INPUT_POST, "student"));
+    $institution=$entityM->find("MobilitySharp\model\Institution", filter_input(INPUT_POST, "institution"));
+    $registrationDate=new \DateTime(date("Y-m-d"));
+    $mobility=new \MobilitySharp\model\InstitutionMobility(new \DateTime($startDate), new \DateTime($estimatedEndDate), $registrationDate, $student, $institution);
+    
+    $entityM->persist($mobility);
+    $entityM->flush();
+}
+
+
+
+function listPartnerMobilities(){
+    $entityM= load("registered");
+    
+    $partner = $entityM->find("MobilitySharp\model\Partner",$_SESSION["user"]["id"]);
+    $students=$entityM->getRepository("MobilitySharp\model\Student")->findBy(["partner"=>$partner]);
+    $eMobilities=$entityM->getRepository("MobilitySharp\model\EnterpriseMobility")->findBy(["student"=>$students]);
+    $iMobilities=$entityM->getRepository("MobilitySharp\model\InstitutionMobility")->findBy(["student"=>$students]);
+    
+    $mobilities= array_merge($eMobilities,$iMobilities);
+    
+    
+        
+    
+   echo "<div class='row text-center my-2 my-lg-5 border justify-content-around'>";
+   foreach ($mobilities as $mobility){
+       
+       $startDate=date_format($mobility->getStart_date(), 'Y-m-d');
+       $estimatedEndDate=date_format($mobility->getEstimated_end_date(), 'Y-m-d');
+        echo "<div class='col-12 col-md-7 col-lg-5 border border-dark rounded my-2 my-lg-5'>".
+                "<div class='row'>"
+                . "<div class='col border-bottom border-right border-dark'>Student</div>"
+                . "<div class='col border-bottom border-dark'>Institution</div>"
+                . "</div>"
+            
+            . "<div class='row'><div class='col border-right border-dark'><h5>".$mobility->getStudent()->getFull_name()."</h5></div>"
+                . "<div class='col'><h4 class='text-secondary'>".$mobility->getInstitution()->getName()."</h4>"
+                . "<h5>".$mobility->getInstitution()->getCountry()->getName()."</h5></div></div>"
+                
+                ."<div class='row'>"
+                . "<div class='col border-top border-right border-dark pt-2'>"
+                . "<h6>Start date</h6></div>"
+                . "<div class='col border-top border-dark pt-2'>"
+                . "<h6>Estimated end date</h6></div></div>"
+                . "<div class='row'>"
+                . "<div class='col border-top border-right border-dark'>"
+                . "<p>".$startDate."</p></div>"
+                . "<div class='col border-top border-dark'>"
+                . "<p>".$estimatedEndDate."</p></div></div></div>"
+                ;
+    }
+    echo "</div>";
+}
+
+
+
+
+
+
+
