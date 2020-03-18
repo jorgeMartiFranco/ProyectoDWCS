@@ -10,6 +10,7 @@
 			if($user = controller\checkUser($username, $password)) {
 				session_start();
 				$_SESSION['user'] = $user;
+                                
 			}
 		}
 	}

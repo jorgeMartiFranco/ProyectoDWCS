@@ -4,7 +4,7 @@ $user = $_SESSION['user'] ?? NULL;
 $breakpoint = $user ? 'md' : 'sm'; 
 ?>
 <header class="navbar navbar-expand-<?=$breakpoint?> navbar-custom bg-secondary">
-    <a class="navbar-brand" href="">
+    <a class="navbar-brand mt-2" href="">
         <img class="logo" src="img/logoNuevo.png" alt="Movility&sharp;">
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
