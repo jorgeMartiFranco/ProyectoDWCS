@@ -8,7 +8,7 @@
         <ul class="list-unstyled">
             <li class="active">
                 <a href="#enterprisesSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Enterprises</a>
-                <ul class="collapse list-unstyled" id="enterprisesSubmenu">
+                <ul class="collapse list-unstyled " id="enterprisesSubmenu">
                     <li>
                         <a href="registerEnterprise.php">New Enterprise</a>
                     </li>
@@ -19,7 +19,7 @@
                 </ul>
             </li>
            
-            <li class="active">
+            <li>
                 <a href="#studentsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Students</a>
                 <ul class="collapse list-unstyled" id="studentSubmenu">
                     <li>
@@ -32,7 +32,7 @@
                 </ul>
             </li>
             
-            <li class="active">
+            <li>
                 <a href="#institutionsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Institutions</a>
                 <ul class="collapse list-unstyled" id="studentSubmenu">
                     <li>
@@ -43,9 +43,9 @@
                 </ul>
             </li>
             
-            <li class="active">
+            <li>
                 <a href="#mobilitiesSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Mobilities</a>
-                <ul class="collapse list-unstyled show" id="studentSubmenu">
+                <ul class="collapse list-unstyled" id="studentSubmenu">
                     <li>
                         <a href="registerEnterpriseMobility.php">New Enterprise Mobility</a>
                     </li>
@@ -61,11 +61,14 @@
                 
             
             ?>
-            <li class="active">
+            <li>
                 <a href="#specialtiesSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Specialties</a>
                 <ul class="collapse list-unstyled" id="studentSubmenu">
                     <li>
-                        <a href="/registerStudent">New specialty</a>
+                        <a href="registerSpecialty.php">New specialty</a>
+                    </li>
+                    <li>
+                        <a href="allSpecialties.php">All specialties</a>
                     </li>
                     
                     
