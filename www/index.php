@@ -52,7 +52,9 @@
 					<!-- Aquí van los elementos del panel de control -->
 				</section>
 				<section class="container">
-					<?php include 'search.php'; ?>
+					<?php 
+                                        include 'score.php';
+                                        include 'search.php'; ?>
 				</section>
 				<?php } ?>
 			</div>
