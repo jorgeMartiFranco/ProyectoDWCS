@@ -21,7 +21,7 @@
            
             <li>
                 <a href="#studentsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Students</a>
-                <ul class="collapse list-unstyled" id="studentSubmenu">
+                <ul class="collapse list-unstyled" id="studentsSubmenu">
                     <li>
                         <a href="registerStudent.php">New Student</a>
                     </li>
@@ -34,7 +34,7 @@
             
             <li>
                 <a href="#institutionsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Institutions</a>
-                <ul class="collapse list-unstyled" id="studentSubmenu">
+                <ul class="collapse list-unstyled" id="institutionsSubmenu">
                     <li>
                         <a href="myInstitution.php">My Institution</a>
                     </li>
@@ -45,7 +45,7 @@
             
             <li>
                 <a href="#mobilitiesSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Mobilities</a>
-                <ul class="collapse list-unstyled" id="studentSubmenu">
+                <ul class="collapse list-unstyled" id="mobilitiesSubmenu">
                     <li>
                         <a href="registerEnterpriseMobility.php">New Enterprise Mobility</a>
                     </li>
@@ -63,7 +63,7 @@
             ?>
             <li>
                 <a href="#specialtiesSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Specialties</a>
-                <ul class="collapse list-unstyled" id="studentSubmenu">
+                <ul class="collapse list-unstyled" id="specialtiesSubmenu">
                     <li>
                         <a href="registerSpecialty.php">New specialty</a>
                     </li>
