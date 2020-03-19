@@ -92,3 +92,13 @@ function createFormInsertEnterpriseMobility(){
      
      createFormStruct(form,arrayColumns,2);
 }
+
+function createFormInsertSpecialty(){
+    var form = $("#specialty");
+    var arrayColumns = [
+        {type: "text", placeholder: "Name", name: "type", id: "type", required: true},
+        {type: "text", placeholder: "Description", name: "description", id: "description"}
+     ];
+     
+     createFormStruct(form,arrayColumns,2);
+}
