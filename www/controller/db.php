@@ -303,12 +303,15 @@ function insertSpecialty() {
 
     $entityM = load("admin");
 
-    $specialtyType = $entityM->getRepository("MobilitySharp\model\SpecialtyType")->findOneBy(["type" => filter_input(INPUT_POST, "spType")]);
+    $specialtyType = $entityM->getRepository("MobilitySharp\model\SpecialtyType")->findOneBy(["type" => filter_input(INPUT_POST, "type")]);
 
     if (is_null($specialtyType)) {
 
-        $type = filter_input(INPUT_POST, "specialtyType");
+        $type = filter_input(INPUT_POST, "type");
         $specialtyType = new \MobilitySharp\model\SpecialtyType($type);
+        if($description= filter_input(INPUT_POST, "description")){
+            $specialtyType->setDescription($description);
+        }
         $entityM->persist($specialtyType);
         $entityM->flush();
     } else {
@@ -448,13 +451,13 @@ function listPartnerEnterprises() {
     foreach ($enterprises as $enterprise){
         echo "<div class='col-12 col-md-7 col-lg-5 border border-dark rounded my-2 my-lg-5'>"
             
-            . "<div class='row'><div class='col border-right border-dark'><h1>".$enterprise->getName()."</h1></div>"
+            . "<div class='row'><div class='col border-right border-dark bg-secondary'><h1>".$enterprise->getName()."</h1></div>"
                 . "<div class='col'><h4 class='text-secondary'>".$enterprise->getType()->getType()."</h4>"
                 . "<h5>".$enterprise->getCountry()->getName()."</h5></div></div>"
                 . "<div class='row'>"
                 . "<div class='col border-top border-dark'><p>".$enterprise->getEmail()."</p><p>".$enterprise->getTelephone()."</p><p>".$enterprise->getLocation().", ".$enterprise->getPostal_code()."</p>"
                 . "<h6><a href='https://".$enterprise->getWeb()."'>".$enterprise->getWeb()."</a></h6></div></div>"
-                . "<div class='row'><div class='col border-top border-dark'><p>".$enterprise->getDescription()."</p></div></div>"
+                . "<div class='row text-justify'><div class='col border-top border-dark'><p>".$enterprise->getDescription()."</p></div></div>"
                 ."</div>";
     }
     echo "</div>";
@@ -476,11 +479,11 @@ function listPartnerStudents() {
         $date= date_format($student->getBirth_date(), 'Y-m-d');
         echo "<div class='col-12 col-md-7 col-lg-5 border border-dark rounded my-2 my-lg-5'>"
             
-            . "<div class='row'><div class='col border-bottom border-dark p-1 p-lg-2'><h2>".$student->getFull_Name()."</h2></div></div>"
+            . "<div class='row bg-secondary'><div class='col border-bottom border-dark p-1 p-lg-2'><h2>".$student->getFull_Name()."</h2></div></div>"
                 . "<div class='row'><div class='col border-bottom border-dark p-1 p-lg-2'><h5 class='text-secondary'>".$gender."</h5>"
                 . "<h4>".$date."</h4></div></div>"
-                . "<div class='row'>"
-                . "<div class='col border-bottom border-dark p-1 p-lg-2'><h3 class='text-secondary'>Specialties</h3></div></div>";
+                . "<div class='row bg-secondary'>"
+                . "<div class='col border-bottom border-dark p-1 p-lg-2'><h3>Specialties</h3></div></div>";
                 
                     foreach ($student->getSpecialties() as $specialty){
                     echo "<div class='row'>"
@@ -596,25 +599,25 @@ function listPartnerMobilities(){
        $startDate=date_format($mobility->getStart_date(), 'Y-m-d');
        $estimatedEndDate=date_format($mobility->getEstimated_end_date(), 'Y-m-d');
         echo "<div class='col-12 col-md-7 col-lg-5 border border-dark rounded my-2 my-lg-5'>".
-                "<div class='row'>"
-                . "<div class='col border-bottom border-right border-dark'>Student</div>"
-                . "<div class='col border-bottom border-dark'>Institution</div>"
+                "<div class='row bg-secondary'>"
+                . "<div class='col border-bottom border-right border-dark'><h6>Student</h6></div>"
+                . "<div class='col border-bottom border-dark'><h6>Institution</h6></div>"
                 . "</div>"
             
             . "<div class='row'><div class='col border-right border-dark'><h5>".$mobility->getStudent()->getFull_name()."</h5></div>"
                 . "<div class='col'><h4 class='text-secondary'>".$mobility->getInstitution()->getName()."</h4>"
                 . "<h5>".$mobility->getInstitution()->getCountry()->getName()."</h5></div></div>"
                 
-                ."<div class='row'>"
+                ."<div class='row bg-secondary'>"
                 . "<div class='col border-top border-right border-dark pt-2'>"
                 . "<h6>Start date</h6></div>"
                 . "<div class='col border-top border-dark pt-2'>"
                 . "<h6>Estimated end date</h6></div></div>"
                 . "<div class='row'>"
                 . "<div class='col border-top border-right border-dark'>"
-                . "<p>".$startDate."</p></div>"
+                . "<h5>".$startDate."</h5></div>"
                 . "<div class='col border-top border-dark'>"
-                . "<p>".$estimatedEndDate."</p></div></div></div>"
+                . "<h5>".$estimatedEndDate."</h5></div></div></div>"
                 ;
     }
     echo "</div>";
@@ -622,6 +625,22 @@ function listPartnerMobilities(){
 
 
 
+function listAllSpecialties(){
+   
+    $entityM = load("admin");
+    $specialties = $entityM->getRepository("MobilitySharp\model\SpecialtyType")->findAll();
+    
+    echo "<div class='row text-center my-2 my-lg-5 border justify-content-around'>";
+    foreach ($specialties as $specialty){
+        echo "<div class='col-12 col-md-7 col-lg-5 border border-dark rounded my-2 my-lg-5'>"
+            
+            . "<div class='row '><div class='col border-right border-bottom border-dark bg-secondary'><h1>".$specialty->getType()."</h1></div></div>"
+                . "<div class='row p-3'>"
+                . "<div class='col'><h5>".$specialty->getDescription()."</h5></div></div>"
+                ."</div>";
+    }
+    echo "</div>";
+}
 
 
 
