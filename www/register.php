@@ -41,27 +41,7 @@ use MobilitySharp\controller;
                         <div class="tab-pane fade" id="institution" role="tabpanel" aria-labelledby="institution-tab">
                             <script>createFormRegisterInstitution();</script>
                             <div class="form-row justify-content-center">
-                                <div class="col-12 col-sm col-md-5 col-lg-4 mx-md-3 my-2 my-md-3"> 
-                                    <div class="input-group">
-                                        <select class="form-control" name="country">
-                                            <option disabled selected>Select country...</option>
-                                            <?php
-                                            controller\getCountries();
-                                            ?>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-sm col-md-5 col-lg-4 mx-md-3 my-2 my-md-3"> 
-                                    <select class="form-control" name="institutionType">
-                                        <option disabled selected>Select institution type...</option>
-                                        <?php 
-                                        controller\getInstitutionTypes()
-                                        ?>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-row justify-content-center">
-                                <div class="col col-sm-6 col-md-5 col-lg-4 btn-group my-2 my-md-3" role="group"> 
+                                <div class="col col-sm-10 col-md-5 col-lg-4 btn-group my-2 my-md-3" role="group"> 
                                     <button type="button" class="btn btn-outline-secondary rounded mr-1 mr-md-3">Previous</button>
                                     <button type="submit" class="btn btn-secondary rounded ml-2 ml-md-3 ml-md-4" id="submitRegister">Register</button>
                                 </div>
@@ -71,7 +51,6 @@ use MobilitySharp\controller;
                 </form>
             </div>
         </div>
-        
         <?php 
         } else {
             controller\registerPartnerInstitution();

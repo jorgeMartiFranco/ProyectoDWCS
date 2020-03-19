@@ -1,3 +1,5 @@
+var baseurl = '/www/';
+
 $("document").ready(function () {
 
     $("#next").click(function () {
@@ -23,7 +25,7 @@ function createFormRegisterPartner() {
         {type: "text", placeholder: "Department", name: "department", id: "department", required: true},
         {type: "text", placeholder: "Post", name: "post", id: "post", required: true}
     ];
-    createFormStruct(form, arrayColumns, 2);
+    createFormStruct(form, arrayColumns);
 }
 
 
@@ -38,11 +40,15 @@ function createFormRegisterInstitution(){
         {type: "text", placeholder: "Postal Code", name: "postalCode", id: "postalCode", required: true},
         {type: "text", placeholder: "Location", name: "location", id: "location", required: true},
         {type: "text", placeholder: "Web", name: "web", id: "web"},
-        {type: "text", placeholder: "Description", name: "description", id: "description"}
+        {type: "text", placeholder: "Description", name: "description", id: "description"},
+        {type: "select", placeholder: "Select country...", name: "country"},
+        {type: "select", placeholder: "Select institution type...", name: "institutionType"}
     ];
+
+    var urls = [baseurl + 'controller/json.php?countries'];
     
     
-    createFormStruct(form,arrayColumns,2);
+    createFormStruct(form, arrayColumns, urls);
     
     
 }
