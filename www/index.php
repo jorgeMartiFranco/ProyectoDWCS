@@ -54,7 +54,8 @@
 				<section class="container">
 					<?php 
                                         include 'score.php';
-                                        include 'search.php'; ?>
+                                        include 'search.php';
+                                        include 'topInstitutions.php'?>
 				</section>
 				<?php } ?>
 			</div>
