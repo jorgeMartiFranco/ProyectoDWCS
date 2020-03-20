@@ -6,26 +6,27 @@ use MobilitySharp\controller;
 
 <html>
     <head>
-        <title>Mobility&sharp;</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, user-scalable=no" />
-                <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
-		<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
-		<link rel="stylesheet" type="text/css" href="css/custom.css" />
-		<script src="js/jquery.min.js"></script>
-		<script src="js/bootstrap.bundle.min.js"></script>
-		<script src="js/custom.js"></script>
+        <?php
+        include "head.html";
+        ?>
     </head>
     <body>
         <?php
         include "header.php";
+        
         ?>
-        <div class="container-fluid text-center mt-3 mt-lg-5"> <h1>Your students</h1>
+        <div class="wrapper">
+    <?php
+    include "sidenav.php";?>
+        <div class="container-fluid mt-3 mt-lg-5 mx-3 mx-lg-5">
+            <div class="row"><div class="col"><h2>Your students</h2></div></div>
+            
        
             <?php
                     controller\listPartnerStudents();
         ?>
             </div>
+        </div>
         <?php include "footer.html";?>
     </body>
 </html>

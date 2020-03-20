@@ -3,17 +3,9 @@ if((isset($_GET['enterpriseName']) or !empty($_GET["enterpriseName"]))) {
     include_once "controller\db.php";
 ?>
 <html>
-    <head>
-        <title>Mobility&sharp;</title>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, user-scalable=no" />
-        <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
-        <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
-        <link rel="stylesheet" type="text/css" href="css/custom.css" />
-        <script src="js/jquery.min.js"></script>
-        <script src="js/bootstrap.bundle.min.js"></script>
-        <script src="js/custom.js"></script>
-    </head>
+    <?php
+    include "head.html";
+    ?>
     <body>
     <?php
         include "header.php";

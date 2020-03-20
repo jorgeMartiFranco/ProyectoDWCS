@@ -9,21 +9,19 @@ include_once 'controller/db.php';
 use MobilitySharp\controller;
 ?>
 <html>
-    <head>
-        <title>Mobility&sharp;</title>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, user-scalable=no" />
-        <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
-        <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
-        <script src="js/jquery.min.js"></script>
-        <script src="js/bootstrap.bundle.min.js"></script>
-        <script src="js/custom.js"></script>
-        <script src="js/register.js"></script>
-    </head>
+    <?php
+    include "head.html";
+    ?>
     <body>
+       
+        
         <?php include "header.php";
+        
+        ?> <script src="js/register.js"></script><?php
         if(!isset($_POST) or empty($_POST)) {
+            
         ?>
+        
         <div class="container-fluid">
             <div class="container border mt-3">
                 <ul class="nav nav-tabs mt-2" id="registerTab" role="tablist">

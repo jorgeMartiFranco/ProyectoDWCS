@@ -3,34 +3,40 @@ include_once 'controller/db.php';
 use MobilitySharp\controller;
 ?>
 <html>
-    <head>
-        <title>Mobility&sharp;</title>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, user-scalable=no" />
-        <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
-        <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
-        <script src="js/jquery.min.js"></script>
-        <script src="js/bootstrap.bundle.min.js"></script>
-       
-    </head>
+   <?php
+   include "head.html";
+   ?>
     <body>
         <?php include "header.php";
+        
+        ?>
+            <script src="js/register.js"></script>
+            <div class="wrapper">
+    <?php
+    include "sidenav.php";?>
+                <?php
+        
         if(!isset($_POST) or empty($_POST)) {
         ?>
-        <div class="container-fluid text-center mt-3 mt-lg-5">
-            <h1>Register new institution mobility</h1>
-            <div class="container border mt-3 pt-3">
+        
+        <div class="container-fluid mt-3 mt-lg-5 mx-3 mx-lg-5 mb-3 mb-lg-5">
+            <?php
+            if(controller\partnerStudents()){
+            ?>
+            <div class="row"><div class="col"><h2>Register new institution mobility</h2></div></div>
+            
+            <div class="container border-top border-dark pt-3 pb-3">
                 
                 <form method="POST" id="institutionMobility" action="registerInstitutionMobility.php">
                    
                     <div class="form-row justify-content-center">
                         <div class="col-12 col-sm col-md-5 col-lg-4 mx-md-3 my-2 my-md-3">
-                            <h2>Start date</h2>
+                            <h4>Start date</h4>
                             <input class="form-control mt-3" type="date" name="startDate" id="startDate" required>
                             
                         </div>
                         <div class="col-12 col-sm col-md-5 col-lg-4 mx-md-3 my-2 my-md-3">
-                            <h2>Estimated end date</h2>
+                            <h4>Estimated end date</h4>
                             <input class="form-control mt-3" type="date" name="estimatedEndDate" id="estimatedEndDate" required>
                         </div>
                     </div>
@@ -63,7 +69,22 @@ use MobilitySharp\controller;
                             </div>
             </form>
                         </div>
+            <?php
+            }
+            else {
+                ?>
+            <div class="container border mt-3 pt-3">
+                <div class="row"><div class="col"><h4>You have to register at least one student</h4></div></div>
+                <ul>
+                    <li><div class="row text-left m-3"><div class="col"><h5><a href="registerStudent.php">Register student</a></h5></div></div></li>
+                    
+                </ul>
+                </div>
+            <?php
+            }
+            ?>
         </div>
+            </div>
          <?php 
         } else {
             controller\insertInstitutionMobility();
