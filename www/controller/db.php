@@ -22,7 +22,7 @@ function load($user): EntityManager {
         'dbname' => $global['dbname'],
         'charset' => $global['charset'],
         'user' => $account['username'],
-        'password' => $account['password']
+        'password' => $account['password']??""
     ];
     $config = Setup::createAnnotationMetadataConfiguration($paths, $isDevMode, null, null, false);
     $config->setProxyNamespace("MobilitySharp\model");
@@ -34,7 +34,15 @@ function checkUser($username, $password) {
 
     try {
         $entityM = load("login");
-        $user = $entityM->getRepository("MobilitySharp\model\Partner")->findOneBy([["username","email"] => $username]); //falta tener en cuenta que el usuario puede acceder con username o email
+        $queryUser = $entityM->createQueryBuilder();
+
+        $queryUser->addSelect("p")
+            ->from("MobilitySharp\model\Partner", 'p')
+            ->where("p.username = :username")
+            ->orWhere("p.email = :username")
+            ->setParameter("username", $username);
+        $user = $queryUser->getQuery()->getSingleResult();
+        
         if ($user !== null) {
             if (password_verify($password, $user->getPassword())) {
 
@@ -109,7 +117,6 @@ function registerPartnerInstitution() {
         $description = filter_input(INPUT_POST, "description");
         $institutionType = $entityM->find("MobilitySharp\model\InstitutionType", filter_input(INPUT_POST, "institutionType"));
 
-        //$query = $pdo->query("SELECT ID_INSTITUCION FROM INSTITUCIONES WHERE NOMBRE='$iName'")->fetch(PDO::FETCH_ASSOC); //check if the institution already exists
         $institution = $entityM->getRepository("MobilitySharp\model\Institution")->findOneBy(["name" => $iName]);
 
         
@@ -119,6 +126,8 @@ function registerPartnerInstitution() {
         if (is_null($institution)) {
             $entityM->getConnection()->beginTransaction();
             $partner = new \MobilitySharp\model\Partner(password_hash($password, PASSWORD_DEFAULT), $username, $name, $email, $phone, $post, $department, $role, $country, $date);
+            $score=$entityM->getRepository("MobilitySharp\model\ScoreType")->findOneBy(["type"=>'REGISTER']);
+            $partner->setScore($score->getValue());
             $entityM->persist($partner);
             $entityM->flush();
             $institution = new \MobilitySharp\model\Institution($iName, $iEmail, $iPhone, $postalCode, $iLocation, $country, $partner, $institutionType, $date);
@@ -133,6 +142,7 @@ function registerPartnerInstitution() {
                     ':email' => $email,
                     ':username' => $username,
             '       :password' => password_hash($password, PASSWORD_DEFAULT),
+                    ':role'=>$partner->getRole()->getId()
                 ];
                 sessionStoreUser($partnerParams);
                 $location = "Location:index.php?registered";
@@ -143,6 +153,8 @@ function registerPartnerInstitution() {
 
             $partner = new \MobilitySharp\model\Partner(password_hash($password, PASSWORD_DEFAULT), $username, $name, $email, $phone, $post, $department, $role, $country, $date);
             $partner->setInstitution($institution);
+            $score=$entityM->getRepository("MobilitySharp\model\ScoreType")->findOneBy(["type"=>'REGISTER']);
+            $partner->setScore($score->getValue());
             $entityM->persist($partner);
             $entityM->flush();
             sessionStoreUser($partnerParams);
@@ -440,7 +452,7 @@ function listAllEnterprises() {
 
     $entityM = load("registered");
     $enterprises = $entityM->getRepository("MobilitySharp\model\Enterprise")->findAll();
-    echo $enterprises;
+    return $enterprises;
 }
 
 function listAllInstitutions() {
@@ -453,7 +465,7 @@ function listPartnerEnterprises() {
     $entityM = load("registered");
     $partner = $entityM->find("MobilitySharp\model\Partner", $_SESSION["user"]["id"]);
     $enterprises = $entityM->getRepository("MobilitySharp\model\Enterprise")->findBy(["partner" => $partner]);
-    echo "<div class='row text-center my-2 my-lg-5 border justify-content-around'>";
+    echo "<div class='row text-center border-top border-dark justify-content-around'>";
     foreach ($enterprises as $enterprise) {
         echo "<div class='col-12 col-md-7 col-lg-5 border border-dark rounded my-2 my-lg-5'>"
         . "<div class='row border-bottom border-dark'><div class='col border-right border-dark bg-secondary'><h1>" . $enterprise->getName() . "</h1></div>"
@@ -475,7 +487,7 @@ function listPartnerStudents() {
     $partner = $entityM->find("MobilitySharp\model\Partner", $_SESSION["user"]["id"]);
     $students = $entityM->getRepository("MobilitySharp\model\Student")->findBy(["partner" => $partner]);
 
-    echo "<div class='row text-center my-2 my-lg-5 border justify-content-around'>";
+    echo "<div class='row text-center border-top border-dark justify-content-around'>";
     foreach ($students as $student) {
         if ($student->getGender() == "M") {
             $gender = "Male";
@@ -634,7 +646,7 @@ function listAllSpecialties() {
     $entityM = load("admin");
     $specialties = $entityM->getRepository("MobilitySharp\model\SpecialtyType")->findAll();
 
-    echo "<div class='row text-center my-2 my-lg-5 border justify-content-around'>";
+    echo "<div class='row text-center border-top border-dark justify-content-around'>";
     foreach ($specialties as $specialty) {
         echo "<div class='col-12 col-md-7 col-lg-5 border border-dark rounded my-2 my-lg-5'>"
         . "<div class='row '><div class='col border-right border-bottom border-dark bg-secondary'><h1>" . $specialty->getType() . "</h1></div></div>"
@@ -739,7 +751,7 @@ function listPartnerInstitution(){
     $partner=$entityM->find("MobilitySharp\model\Partner",$_SESSION["user"]["id"]);
     $institution=$entityM->getRepository("MobilitySharp\model\Institution")->findOneBy(["partner"=>$partner]);
     
-    echo "<div class='container text-center mt-3'><div class='row text-center my-2 my-lg-5 justify-content-center '>"
+    echo "<div class='container text-center border-top border-dark'><div class='row text-center my-2 my-lg-5 justify-content-center '>"
     . "<div class='col col-12 col-lg-8 col-xl-6 border border-dark mb-3'>"
     . "<div class='row bg-secondary p-3'><div class='col'><h3>".$institution->getName()."</h3></div></div>"
     . "<div class='row p-2'><div class='col'><h4>".$institution->getEmail()."</h4></div></div>"
@@ -762,4 +774,12 @@ function insertEnterpriseType(){
     
     $entityM->persist($enterpriseType);
     $entityM->flush();
+}
+
+function partnerStudents() {
+    $entityM = load("registered");
+    $partner = $entityM->find("MobilitySharp\model\Partner", $_SESSION["user"]["id"]);
+    $students = $entityM->getRepository("MobilitySharp\model\Student")->findBy(["partner" => $partner]);
+
+    return $students;
 }
