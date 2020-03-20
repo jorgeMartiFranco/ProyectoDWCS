@@ -1,4 +1,10 @@
 <?php
+session_start();
+if(isset($_SESSION['user'])) {
+    header('Location: /');
+}
+session_destroy();
+
 include_once 'controller/db.php';
 use MobilitySharp\controller;
 ?>

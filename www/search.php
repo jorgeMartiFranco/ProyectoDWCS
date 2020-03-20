@@ -26,9 +26,9 @@ if((isset($_GET['enterpriseName']) or !empty($_GET["enterpriseName"]))) {
 } else if(isset($_SESSION)){
 ?>
 <div class="row">
-    <form class="col col-md-10 col-lg-8 col-xl-6 mx-auto my-5" method="GET" action="search.php">
+    <form class="col col-md-12 col-lg-10 col-xl-8 mx-auto my-5 border p-5" method="GET" action="search.php">
         <div class="form-group">
-            <label for="dbSearch">Search institutions</label>
+            <h6 for="dbSearch">Search institutions</h6>
             <input class="form-control" type="text" id="dbSearch" placeholder="Institution name" name="enterpriseName">
             <?php if(is_null($user)) { ?>
                 <small id="dbSearchHelp" class="form-text text-muted">To perform more specific queries, registration is required</small>

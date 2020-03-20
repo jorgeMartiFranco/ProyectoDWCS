@@ -45,13 +45,14 @@ function createFormRegisterInstitution(){
         {type: "select", placeholder: "Select institution type...", name: "institutionType"}
     ];
 
-    var urls = [baseurl + 'controller/json.php?countries'];
+    var urls = [baseurl + 'controller/json.php?countries', baseurl + 'controller/json.php?institutionTypes'];
     
     
     createFormStruct(form, arrayColumns, urls);
     
     
 }
+
 
 
 function createFormInsertEnterprise(){
@@ -103,6 +104,27 @@ function createFormInsertSpecialty(){
     var form = $("#specialty");
     var arrayColumns = [
         {type: "text", placeholder: "Name", name: "type", id: "type", required: true},
+        {type: "text", placeholder: "Description", name: "description", id: "description"}
+     ];
+     
+     createFormStruct(form,arrayColumns,2);
+}
+
+
+function createFormInsertInstitutionType(){
+    var form = $("#institutionType");
+    var arrayColumns = [
+        {type: "text", placeholder: "Type", name: "type", id: "type", required: true},
+        {type: "text", placeholder: "Description", name: "description", id: "description"}
+     ];
+     
+     createFormStruct(form,arrayColumns,2);
+}
+
+function createFormInsertEnterpriseType(){
+    var form = $("#enterpriseType");
+    var arrayColumns = [
+        {type: "text", placeholder: "Type", name: "type", id: "type", required: true},
         {type: "text", placeholder: "Description", name: "description", id: "description"}
      ];
      

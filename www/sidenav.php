@@ -15,6 +15,15 @@
                     <li>
                         <a href="myEnterprises.php">My Enterprises</a>
                     </li>
+                    <?php
+                     if($_SESSION["user"]["role"]==='ADMIN'){
+                    ?>
+                    <li>
+                        <a href="registerEnterpriseType.php">New Enterprise Type</a>
+                    </li>
+                    <?php
+                     }
+                     ?>
                     
                 </ul>
             </li>
@@ -38,8 +47,15 @@
                     <li>
                         <a href="myInstitution.php">My Institution</a>
                     </li>
-                    
-                    
+                    <?php
+                     if($_SESSION["user"]["role"]==='ADMIN'){
+                    ?>
+                    <li>
+                        <a href="registerInstitutionType.php">New Institution Type</a>
+                    </li>
+                    <?php
+                     }
+                     ?>
                 </ul>
             </li>
             
