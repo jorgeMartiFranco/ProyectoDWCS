@@ -22,7 +22,7 @@ function load($user): EntityManager {
         'dbname' => $global['dbname'],
         'charset' => $global['charset'],
         'user' => $account['username'],
-        'password' => $account['password']??""
+        'password' => $account['password'] ?? ""
     ];
     $config = Setup::createAnnotationMetadataConfiguration($paths, $isDevMode, null, null, false);
     $config->setProxyNamespace("MobilitySharp\model");
@@ -37,12 +37,12 @@ function checkUser($username, $password) {
         $queryUser = $entityM->createQueryBuilder();
 
         $queryUser->addSelect("p")
-            ->from("MobilitySharp\model\Partner", 'p')
-            ->where("p.username = :username")
-            ->orWhere("p.email = :username")
-            ->setParameter("username", $username);
+                ->from("MobilitySharp\model\Partner", 'p')
+                ->where("p.username = :username")
+                ->orWhere("p.email = :username")
+                ->setParameter("username", $username);
         $user = $queryUser->getQuery()->getSingleResult();
-        
+
         if ($user !== null) {
             if (password_verify($password, $user->getPassword())) {
 
@@ -119,14 +119,14 @@ function registerPartnerInstitution() {
 
         $institution = $entityM->getRepository("MobilitySharp\model\Institution")->findOneBy(["name" => $iName]);
 
-        
+
 
 
 
         if (is_null($institution)) {
             $entityM->getConnection()->beginTransaction();
             $partner = new \MobilitySharp\model\Partner(password_hash($password, PASSWORD_DEFAULT), $username, $name, $email, $phone, $post, $department, $role, $country, $date);
-            $score=$entityM->getRepository("MobilitySharp\model\ScoreType")->findOneBy(["type"=>'REGISTER']);
+            $score = $entityM->getRepository("MobilitySharp\model\ScoreType")->findOneBy(["type" => 'REGISTER']);
             $partner->setScore($score->getValue());
             $entityM->persist($partner);
             $entityM->flush();
@@ -141,8 +141,8 @@ function registerPartnerInstitution() {
                     ':id' => $partner->getId(),
                     ':email' => $email,
                     ':username' => $username,
-            '       :password' => password_hash($password, PASSWORD_DEFAULT),
-                    ':role'=>$partner->getRole()->getId()
+                    '       :password' => password_hash($password, PASSWORD_DEFAULT),
+                    ':role' => $partner->getRole()->getId()
                 ];
                 sessionStoreUser($partnerParams);
                 $location = "Location:index.php?registered";
@@ -153,7 +153,7 @@ function registerPartnerInstitution() {
 
             $partner = new \MobilitySharp\model\Partner(password_hash($password, PASSWORD_DEFAULT), $username, $name, $email, $phone, $post, $department, $role, $country, $date);
             $partner->setInstitution($institution);
-            $score=$entityM->getRepository("MobilitySharp\model\ScoreType")->findOneBy(["type"=>'REGISTER']);
+            $score = $entityM->getRepository("MobilitySharp\model\ScoreType")->findOneBy(["type" => 'REGISTER']);
             $partner->setScore($score->getValue());
             $entityM->persist($partner);
             $entityM->flush();
@@ -169,7 +169,7 @@ function registerPartnerInstitution() {
 
 function sessionStoreUser($userParams) {
     $user = [
-        'id'=> $userParams[':id'],
+        'id' => $userParams[':id'],
         'usuario' => $userParams[':username'],
         'email' => $userParams[':email'],
         'password' => $userParams[':password']
@@ -345,7 +345,7 @@ function insertInstitutionType() {
         if ($description = filter_input(INPUT_POST, "description")) {
             $institutionType->setDescription($description);
         }
-        
+
         $entityM->persist($institutionType);
         $entityM->flush();
     } else {
@@ -355,30 +355,38 @@ function insertInstitutionType() {
 
 function insertInstitutionSpecialty() {
     $entityM = load("registered");
-    $institution = $entityM->find("\MobilitySharp\model\Institution", filter_input(INPUT_POST, "institution"));   //get this with a select
-    $specialty = $entityM->find("\MobilitySharp\model\SpecialtyType", filter_input(INPUT_POST, "specialty")); //get this with a select
-
-    $entityM->getConnection()->beginTransaction();
-    $institution->getSpecialties()->add($specialty);
-    $specialty->getInstitutions()->add($institution);
-    $entityM->persist($institution);
-    $entityM->persist($specialty);
-    $entityM->flush();
-    $entityM->getConnection()->commit();
+    $partner = $entityM->find("MobilitySharp\model\Partner", $_SESSION["user"]["id"]);
+    $institution = $entityM->getRepository("\MobilitySharp\model\Institution")->findOneBy(["partner" => $partner]);
+      
+    $specialty = $entityM->find("\MobilitySharp\model\SpecialtyType", filter_input(INPUT_POST, "specialty")); 
+    try {
+        $entityM->getConnection()->beginTransaction();
+        $institution->getSpecialties()->add($specialty);
+        $specialty->getInstitutions()->add($institution);
+        $entityM->persist($institution);
+        $entityM->persist($specialty);
+        $entityM->flush();
+        $entityM->getConnection()->commit();
+    } catch (Exception $ex) {
+        $entityM->getConnection()->rollback();
+    }
 }
 
 function insertEnterpriseSpecialty() {
     $entityM = load("registered");
     $enterprise = $entityM->find("\MobilitySharp\model\Enterprise", filter_input(INPUT_POST, "enterprise"));  //get this with a select
     $specialty = $entityM->find("\MobilitySharp\model\SpecialtyType", filter_input(INPUT_POST, "specialty")); //get this with a select
-
-    $entityM->getConnection()->beginTransaction();
-    $enterprise->getSpecialties()->add($specialty);
-    $specialty->getEnterprises()->add($institution);
-    $entityM->persist($enterprise);
-    $entityM->persist($specialty);
-    $entityM->flush();
-    $entityM->getConnection()->commit();
+    try {
+        $entityM->getConnection()->beginTransaction();
+        $enterprise->getSpecialties()->add($specialty);
+        $specialty->getEnterprises()->add($enterprise);
+        $entityM->persist($enterprise);
+        $entityM->persist($specialty);
+        $entityM->flush();
+        $entityM->getConnection()->commit();
+    } catch (Exception $ex) {
+        $entityM->getConnection()->rollback();
+    }
 }
 
 function insertStudentSpecialty() {
@@ -677,101 +685,95 @@ function listLastPartnerScores() {
 
     foreach ($scores as $score) {
         echo
-        "<div class='row p-1'><div class='col'><h6>".$score->getScore_type()->getType()."</h6></div><div class='col'><h6>" . date_format($score->getDate(), "Y-m-d H:i:s") . "</h6></div><div class='col'><h6>" . $score->getScore_type()->getValue() . "</h6></div></div>";
+        "<div class='row p-1'><div class='col'><h6>" . $score->getScore_type()->getType() . "</h6></div><div class='col'><h6>" . date_format($score->getDate(), "Y-m-d H:i:s") . "</h6></div><div class='col'><h6>" . $score->getScore_type()->getValue() . "</h6></div></div>";
     }
     echo "<div class='row border-top border-dark bg-secondary p-2'><div class='col'><h4>Your score: " . $partner->getScore() . "</h4></div></div>"
     . "</div></div></div>";
 }
 
-
-
-function listTopInstitutions(){
-    $entityM=load("registered");
+function listTopInstitutions() {
+    $entityM = load("registered");
     $queryInstitutions = $entityM->createQueryBuilder();
     $queryInstitutions->addSelect('i')
             ->from("MobilitySharp\model\InstitutionMobility", 'i')
             ->groupBy("i.institution")
-            ->orderBy("COUNT(i.institution)","DESC")
+            ->orderBy("COUNT(i.institution)", "DESC")
             ->setMaxResults(3);
     $institutions = $queryInstitutions->getQuery()->getResult();
-    
- 
-    
+
+
+
     echo "<div class='container text-center mt-3'><h1>Top institutions</h1><div class='row text-center my-2 my-lg-5 py-3 justify-content-center'>";
-    foreach ($institutions as $institution){
-        $query = $entityM->createQuery('SELECT COUNT(i.institution) FROM MobilitySharp\model\InstitutionMobility i WHERE i.institution=(SELECT ins.id FROM MobilitySharp\model\Institution ins where ins.id='.$institution->getInstitution()->getId().')');
+    foreach ($institutions as $institution) {
+        $query = $entityM->createQuery('SELECT COUNT(i.institution) FROM MobilitySharp\model\InstitutionMobility i WHERE i.institution=(SELECT ins.id FROM MobilitySharp\model\Institution ins where ins.id=' . $institution->getInstitution()->getId() . ')');
         $result = $query->getSingleScalarResult();
-        if($result==1){
-            $message="mobility";
-        }
-        else {
-            $message="mobilities";
+        if ($result == 1) {
+            $message = "mobility";
+        } else {
+            $message = "mobilities";
         }
         echo "<div class='col col-7 col-lg-5 col-xl-3 border border-dark mb-3'>";
-        echo "<div class='row bg-secondary'><div class='col p-2'><h3>".$institution->getInstitution()->getName()."<h3></div></div>"
-            . "<div class='row p-2'><div class='col'>-&nbsp;&nbsp;<b>".$result." $message</b>&nbsp;&nbsp;-</div></div>";
+        echo "<div class='row bg-secondary'><div class='col p-2'><h3>" . $institution->getInstitution()->getName() . "<h3></div></div>"
+        . "<div class='row p-2'><div class='col'>-&nbsp;&nbsp;<b>" . $result . " $message</b>&nbsp;&nbsp;-</div></div>";
         echo "</div>";
     }
     echo "</div></div>";
 }
 
-function listTopEnterprises(){
-    $entityM=load("registered");
+function listTopEnterprises() {
+    $entityM = load("registered");
     $queryEnterprise = $entityM->createQueryBuilder();
     $queryEnterprise->addSelect('e')
             ->from("MobilitySharp\model\EnterpriseMobility", 'e')
             ->groupBy("e.enterprise")
-            ->orderBy("COUNT(e.enterprise)","DESC")
+            ->orderBy("COUNT(e.enterprise)", "DESC")
             ->setMaxResults(3);
     $enterprises = $queryEnterprise->getQuery()->getResult();
-    
- 
-    
+
+
+
     echo "<div class='container text-center mt-3'><h1>Top enterprises</h1><div class='row text-center my-2 my-lg-5 justify-content-center'>";
-    foreach ($enterprises as $enterprise){
-        $query = $entityM->createQuery('SELECT COUNT(e.enterprise) FROM MobilitySharp\model\EnterpriseMobility e WHERE e.enterprise=(SELECT en.id FROM MobilitySharp\model\Enterprise en where en.id='.$enterprise->getEnterprise()->getId().')');
+    foreach ($enterprises as $enterprise) {
+        $query = $entityM->createQuery('SELECT COUNT(e.enterprise) FROM MobilitySharp\model\EnterpriseMobility e WHERE e.enterprise=(SELECT en.id FROM MobilitySharp\model\Enterprise en where en.id=' . $enterprise->getEnterprise()->getId() . ')');
         $result = $query->getSingleScalarResult();
-        if($result==1){
-            $message="mobility";
-        }
-        else {
-            $message="mobilities";
+        if ($result == 1) {
+            $message = "mobility";
+        } else {
+            $message = "mobilities";
         }
         echo "<div class='col col-7 col-lg-5 col-xl-3 border border-dark mb-3'>";
-        echo "<div class='row bg-secondary'><div class='col p-2'><h3>".$enterprise->getEnterprise()->getName()."<h3></div></div>"
-            . "<div class='row p-2'><div class='col'>-&nbsp;&nbsp;<b>".$result." $message</b>&nbsp;&nbsp;-</div></div>";
+        echo "<div class='row bg-secondary'><div class='col p-2'><h3>" . $enterprise->getEnterprise()->getName() . "<h3></div></div>"
+        . "<div class='row p-2'><div class='col'>-&nbsp;&nbsp;<b>" . $result . " $message</b>&nbsp;&nbsp;-</div></div>";
         echo "</div>";
     }
     echo "</div></div>";
 }
- 
 
-function listPartnerInstitution(){
+function listPartnerInstitution() {
     $entityM = load("registered");
-    $partner=$entityM->find("MobilitySharp\model\Partner",$_SESSION["user"]["id"]);
-    $institution=$entityM->getRepository("MobilitySharp\model\Institution")->findOneBy(["partner"=>$partner]);
-    
+    $partner = $entityM->find("MobilitySharp\model\Partner", $_SESSION["user"]["id"]);
+    $institution = $entityM->getRepository("MobilitySharp\model\Institution")->findOneBy(["partner" => $partner]);
+
     echo "<div class='container text-center border-top border-dark'><div class='row text-center my-2 my-lg-5 justify-content-center '>"
     . "<div class='col col-12 col-lg-8 col-xl-6 border border-dark mb-3'>"
-    . "<div class='row bg-secondary p-3'><div class='col'><h3>".$institution->getName()."</h3></div></div>"
-    . "<div class='row p-2'><div class='col'><h4>".$institution->getEmail()."</h4></div></div>"
-    . "<div class='row p-2'><div class='col'><h6>".$institution->getLocation().", ".$institution->getPostal_code()."</h6></div></div>"
-    . "<div class='row p-2'><div class='col'><b>".$institution->getTelephone()."</b></div></div>"
-    . "<div class='row p-2'><div class='col'>".$institution->getWeb()."</div></div>"
+    . "<div class='row bg-secondary p-3'><div class='col'><h3>" . $institution->getName() . "</h3></div></div>"
+    . "<div class='row p-2'><div class='col'><h4>" . $institution->getEmail() . "</h4></div></div>"
+    . "<div class='row p-2'><div class='col'><h6>" . $institution->getLocation() . ", " . $institution->getPostal_code() . "</h6></div></div>"
+    . "<div class='row p-2'><div class='col'><b>" . $institution->getTelephone() . "</b></div></div>"
+    . "<div class='row p-2'><div class='col'>" . $institution->getWeb() . "</div></div>"
     . "</div></div></div>";
 }
 
+function insertEnterpriseType() {
+    $entityM = load("admin");
+    $type = filter_input(INPUT_POST, "type");
 
-function insertEnterpriseType(){
-    $entityM=load("admin");
-    $type= filter_input(INPUT_POST, "type");
-    
-    $enterpriseType=new \MobilitySharp\model\EnterpriseType($type);
-    
-    if($description= filter_input(INPUT_POST, "description")){
+    $enterpriseType = new \MobilitySharp\model\EnterpriseType($type);
+
+    if ($description = filter_input(INPUT_POST, "description")) {
         $enterpriseType->setDescription($description);
     }
-    
+
     $entityM->persist($enterpriseType);
     $entityM->flush();
 }
@@ -782,4 +784,30 @@ function partnerStudents() {
     $students = $entityM->getRepository("MobilitySharp\model\Student")->findBy(["partner" => $partner]);
 
     return $students;
+}
+
+function getAllSpecialties() {
+    $entityM = load("admin");
+    $specialties = $entityM->getRepository("MobilitySharp\model\SpecialtyType")->findAll();
+
+    foreach ($specialties as $specialty) {
+        echo "<option value=" . $specialty->getId() . ">" . $specialty->getType() . "</option>";
+    }
+}
+
+function partnerEnterprises() {
+    $entityM = load("registered");
+    $partner = $entityM->find("MobilitySharp\model\Partner", $_SESSION['user']['id']);
+    $enterprises = $entityM->getRepository("MobilitySharp\model\Enterprise")->findBy(["partner" => $partner]);
+    foreach ($enterprises as $enterprise) {
+        echo "<option value=" . $enterprise->getId() . ">" . $enterprise->getName() . "</option>";
+    }
+}
+
+function getPartnerEnterprises() {
+
+    $entityM = load("registered");
+    $partner = $entityM->find("MobilitySharp\model\Partner", $_SESSION['user']['id']);
+    $enterprises = $entityM->getRepository("MobilitySharp\model\Enterprise")->findBy(["partner" => $partner]);
+    return $enterprises;
 }
