@@ -71,7 +71,7 @@ class EnterpriseMobility  {
         return $this->student;
     }
 
-    function getInstitution() {
+    function getEnterprise() {
         return $this->enterprise;
     }
 
