@@ -2,7 +2,7 @@
 
 namespace MobilitySharp\controller;
 
-require_once "_DIR_ ./../vendor/autoload.php";
+require_once __DIR__ . '/../vendor/autoload.php';
 
 use \Doctrine\ORM\Tools\Setup;
 use \Doctrine\ORM\EntityManager;
@@ -34,7 +34,7 @@ function checkUser($username, $password) {
 
     try {
         $entityM = load("login");
-        $user = $entityM->getRepository("MobilitySharp\model\Partner")->findOneBy(["username" => $username]); //falta tener en cuenta que el usuario puede acceder con username o email
+        $user = $entityM->getRepository("MobilitySharp\model\Partner")->findOneBy([["username","email"] => $username]); //falta tener en cuenta que el usuario puede acceder con username o email
         if ($user !== null) {
             if (password_verify($password, $user->getPassword())) {
 
@@ -71,10 +71,13 @@ function getInstitutionTypes() {
 
     $entityM = load("login");
     $insTypes = $entityM->getRepository("MobilitySharp\model\InstitutionType")->findAll();
+    $json = [];
 
     foreach ($insTypes as $type) {
-        echo "<option value='" . $type->getId() . "'>" . $type->getType() . "</option>";
+        array_push($json, ["value" => $type->getId(), "text" => $type->getType()]);
     }
+
+    echo json_encode($json);
 }
 
 function registerPartnerInstitution() {
@@ -109,11 +112,7 @@ function registerPartnerInstitution() {
         //$query = $pdo->query("SELECT ID_INSTITUCION FROM INSTITUCIONES WHERE NOMBRE='$iName'")->fetch(PDO::FETCH_ASSOC); //check if the institution already exists
         $institution = $entityM->getRepository("MobilitySharp\model\Institution")->findOneBy(["name" => $iName]);
 
-        $partnerParams = [
-            ':email' => $email,
-            ':username' => $username,
-            ':password' => password_hash($password, PASSWORD_DEFAULT),
-        ];
+        
 
 
 
@@ -122,7 +121,6 @@ function registerPartnerInstitution() {
             $partner = new \MobilitySharp\model\Partner(password_hash($password, PASSWORD_DEFAULT), $username, $name, $email, $phone, $post, $department, $role, $country, $date);
             $entityM->persist($partner);
             $entityM->flush();
-
             $institution = new \MobilitySharp\model\Institution($iName, $iEmail, $iPhone, $postalCode, $iLocation, $country, $partner, $institutionType, $date);
             $partner->setInstitution($institution);
             $entityM->persist($institution);
@@ -130,6 +128,12 @@ function registerPartnerInstitution() {
             $entityM->flush();
 
             if ($entityM->getConnection()->commit()) {
+                $partnerParams = [
+                    ':id' => $partner->getId(),
+                    ':email' => $email,
+                    ':username' => $username,
+            '       :password' => password_hash($password, PASSWORD_DEFAULT),
+                ];
                 sessionStoreUser($partnerParams);
                 $location = "Location:index.php?registered";
             } else {
@@ -153,6 +157,7 @@ function registerPartnerInstitution() {
 
 function sessionStoreUser($userParams) {
     $user = [
+        'id'=> $userParams[':id'],
         'usuario' => $userParams[':username'],
         'email' => $userParams[':email'],
         'password' => $userParams[':password']
@@ -319,15 +324,18 @@ function insertSpecialty() {
 
 function insertInstitutionType() {
     $entityM = load("admin");
-    $institutionType = $entityM->getRepository("MobilitySharp\model\InstitutionType")->findOneBy(["type" => filter_input(INPUT_POST, "iType")]);
+    $institutionType = $entityM->getRepository("MobilitySharp\model\InstitutionType")->findOneBy(["type" => filter_input(INPUT_POST, "type")]);
 
     if (is_null($institutionType)) {
-        $type = filter_input(INPUT_POST, "institutionType");
+        $type = filter_input(INPUT_POST, "type");
         $institutionType = new \MobilitySharp\model\InstitutionType($type);
 
         if ($description = filter_input(INPUT_POST, "description")) {
             $institutionType->setDescription($description);
         }
+        
+        $entityM->persist($institutionType);
+        $entityM->flush();
     } else {
         return FALSE;
     }
@@ -651,15 +659,15 @@ function listLastPartnerScores() {
             ->setParameter("partner", $partner)
             ->setMaxResults(5);
     $scores = $queryScores->getQuery()->getResult();
-    echo "<div class='container text-center mt-3 mt-lg-5'><h1>Your last scores</h1><div class='row text-center my-2 my-lg-5 justify-content-center'>"
-    . "<div class='col col-12 col-lg-8 col-xl-6 border border-dark'>"
-    . "<div class='row border-bottom border-dark'><div class='col border-right border-dark bg-secondary'><h3>Date</h3></div><div class='col bg-secondary'><h3>Score</h3></div></div>";
+    echo "<div class='container mt-3 mt-lg-5'><div class='row justify-content-center'><div class='col col-12 col-lg-10 col-xl-8'><h3>Your last scores</h3></div></div><div class='row text-center justify-content-center'>"
+    . "<div class='col col-12 col-lg-10 col-xl-8 border border-dark'>"
+    . "<div class='row border-bottom border-dark p-2 bg-secondary'><div class='col border-right border-dark'><h3>Action</h3></div><div class='col border-right border-dark '><h3>Date</h3></div><div class='col'><h3>Score</h3></div></div>";
 
     foreach ($scores as $score) {
         echo
-        "<div class='row p-1'><div class='col'><h6>" . date_format($score->getDate(), "Y-m-d H:i:s") . "</h6></div><div class='col'><h6>" . $score->getScore_type()->getValue() . "</h6></div></div>";
+        "<div class='row p-1'><div class='col'><h6>".$score->getScore_type()->getType()."</h6></div><div class='col'><h6>" . date_format($score->getDate(), "Y-m-d H:i:s") . "</h6></div><div class='col'><h6>" . $score->getScore_type()->getValue() . "</h6></div></div>";
     }
-    echo "<div class='row border-top border-dark bg-secondary'><div class='col'><h4>Your score: " . $partner->getScore() . "</h4></div></div>"
+    echo "<div class='row border-top border-dark bg-secondary p-2'><div class='col'><h4>Your score: " . $partner->getScore() . "</h4></div></div>"
     . "</div></div></div>";
 }
 
@@ -677,7 +685,7 @@ function listTopInstitutions(){
     
  
     
-    echo "<div class='container text-center mt-3'><h1>Top institutions</h1><div class='row text-center my-2 my-lg-5 justify-content-center'>";
+    echo "<div class='container text-center mt-3'><h1>Top institutions</h1><div class='row text-center my-2 my-lg-5 py-3 justify-content-center'>";
     foreach ($institutions as $institution){
         $query = $entityM->createQuery('SELECT COUNT(i.institution) FROM MobilitySharp\model\InstitutionMobility i WHERE i.institution=(SELECT ins.id FROM MobilitySharp\model\Institution ins where ins.id='.$institution->getInstitution()->getId().')');
         $result = $query->getSingleScalarResult();
@@ -689,7 +697,7 @@ function listTopInstitutions(){
         }
         echo "<div class='col col-7 col-lg-5 col-xl-3 border border-dark mb-3'>";
         echo "<div class='row bg-secondary'><div class='col p-2'><h3>".$institution->getInstitution()->getName()."<h3></div></div>"
-            . "<div class='row p-2'><div class='col'><b>".$result." $message</b></div></div>";
+            . "<div class='row p-2'><div class='col'>-&nbsp;&nbsp;<b>".$result." $message</b>&nbsp;&nbsp;-</div></div>";
         echo "</div>";
     }
     echo "</div></div>";
@@ -719,12 +727,12 @@ function listTopEnterprises(){
         }
         echo "<div class='col col-7 col-lg-5 col-xl-3 border border-dark mb-3'>";
         echo "<div class='row bg-secondary'><div class='col p-2'><h3>".$enterprise->getEnterprise()->getName()."<h3></div></div>"
-            . "<div class='row p-2'><div class='col'><b>".$result." $message</b></div></div>";
+            . "<div class='row p-2'><div class='col'>-&nbsp;&nbsp;<b>".$result." $message</b>&nbsp;&nbsp;-</div></div>";
         echo "</div>";
     }
     echo "</div></div>";
 }
-
+ 
 
 function listPartnerInstitution(){
     $entityM = load("registered");
@@ -739,4 +747,19 @@ function listPartnerInstitution(){
     . "<div class='row p-2'><div class='col'><b>".$institution->getTelephone()."</b></div></div>"
     . "<div class='row p-2'><div class='col'>".$institution->getWeb()."</div></div>"
     . "</div></div></div>";
+}
+
+
+function insertEnterpriseType(){
+    $entityM=load("admin");
+    $type= filter_input(INPUT_POST, "type");
+    
+    $enterpriseType=new \MobilitySharp\model\EnterpriseType($type);
+    
+    if($description= filter_input(INPUT_POST, "description")){
+        $enterpriseType->setDescription($description);
+    }
+    
+    $entityM->persist($enterpriseType);
+    $entityM->flush();
 }
