@@ -2,7 +2,7 @@
 
 namespace MobilitySharp\controller;
 
-require_once _DIR_ . '/../vendor/autoload.php';
+require_once "_DIR_ ./../vendor/autoload.php";
 
 use \Doctrine\ORM\Tools\Setup;
 use \Doctrine\ORM\EntityManager;
@@ -651,7 +651,7 @@ function listLastPartnerScores() {
             ->setParameter("partner", $partner)
             ->setMaxResults(5);
     $scores = $queryScores->getQuery()->getResult();
-    echo "<div class='container text-center mt-3'><h1>Your last scores</h1><div class='row text-center my-2 my-lg-5 justify-content-center'>"
+    echo "<div class='container text-center mt-3 mt-lg-5'><h1>Your last scores</h1><div class='row text-center my-2 my-lg-5 justify-content-center'>"
     . "<div class='col col-12 col-lg-8 col-xl-6 border border-dark'>"
     . "<div class='row border-bottom border-dark'><div class='col border-right border-dark bg-secondary'><h3>Date</h3></div><div class='col bg-secondary'><h3>Score</h3></div></div>";
 
@@ -659,6 +659,84 @@ function listLastPartnerScores() {
         echo
         "<div class='row p-1'><div class='col'><h6>" . date_format($score->getDate(), "Y-m-d H:i:s") . "</h6></div><div class='col'><h6>" . $score->getScore_type()->getValue() . "</h6></div></div>";
     }
-    echo "<div class='row border-top border-dark bg-secondary'><div class='col'><h4>Score: " . $partner->getScore() . "</h4></div></div>"
+    echo "<div class='row border-top border-dark bg-secondary'><div class='col'><h4>Your score: " . $partner->getScore() . "</h4></div></div>"
+    . "</div></div></div>";
+}
+
+
+
+function listTopInstitutions(){
+    $entityM=load("registered");
+    $queryInstitutions = $entityM->createQueryBuilder();
+    $queryInstitutions->addSelect('i')
+            ->from("MobilitySharp\model\InstitutionMobility", 'i')
+            ->groupBy("i.institution")
+            ->orderBy("COUNT(i.institution)","DESC")
+            ->setMaxResults(3);
+    $institutions = $queryInstitutions->getQuery()->getResult();
+    
+ 
+    
+    echo "<div class='container text-center mt-3'><h1>Top institutions</h1><div class='row text-center my-2 my-lg-5 justify-content-center'>";
+    foreach ($institutions as $institution){
+        $query = $entityM->createQuery('SELECT COUNT(i.institution) FROM MobilitySharp\model\InstitutionMobility i WHERE i.institution=(SELECT ins.id FROM MobilitySharp\model\Institution ins where ins.id='.$institution->getInstitution()->getId().')');
+        $result = $query->getSingleScalarResult();
+        if($result==1){
+            $message="mobility";
+        }
+        else {
+            $message="mobilities";
+        }
+        echo "<div class='col col-7 col-lg-5 col-xl-3 border border-dark mb-3'>";
+        echo "<div class='row bg-secondary'><div class='col p-2'><h3>".$institution->getInstitution()->getName()."<h3></div></div>"
+            . "<div class='row p-2'><div class='col'><b>".$result." $message</b></div></div>";
+        echo "</div>";
+    }
+    echo "</div></div>";
+}
+
+function listTopEnterprises(){
+    $entityM=load("registered");
+    $queryEnterprise = $entityM->createQueryBuilder();
+    $queryEnterprise->addSelect('e')
+            ->from("MobilitySharp\model\EnterpriseMobility", 'e')
+            ->groupBy("e.enterprise")
+            ->orderBy("COUNT(e.enterprise)","DESC")
+            ->setMaxResults(3);
+    $enterprises = $queryEnterprise->getQuery()->getResult();
+    
+ 
+    
+    echo "<div class='container text-center mt-3'><h1>Top enterprises</h1><div class='row text-center my-2 my-lg-5 justify-content-center'>";
+    foreach ($enterprises as $enterprise){
+        $query = $entityM->createQuery('SELECT COUNT(e.enterprise) FROM MobilitySharp\model\EnterpriseMobility e WHERE e.enterprise=(SELECT en.id FROM MobilitySharp\model\Enterprise en where en.id='.$enterprise->getEnterprise()->getId().')');
+        $result = $query->getSingleScalarResult();
+        if($result==1){
+            $message="mobility";
+        }
+        else {
+            $message="mobilities";
+        }
+        echo "<div class='col col-7 col-lg-5 col-xl-3 border border-dark mb-3'>";
+        echo "<div class='row bg-secondary'><div class='col p-2'><h3>".$enterprise->getEnterprise()->getName()."<h3></div></div>"
+            . "<div class='row p-2'><div class='col'><b>".$result." $message</b></div></div>";
+        echo "</div>";
+    }
+    echo "</div></div>";
+}
+
+
+function listPartnerInstitution(){
+    $entityM = load("registered");
+    $partner=$entityM->find("MobilitySharp\model\Partner",$_SESSION["user"]["id"]);
+    $institution=$entityM->getRepository("MobilitySharp\model\Institution")->findOneBy(["partner"=>$partner]);
+    
+    echo "<div class='container text-center mt-3'><div class='row text-center my-2 my-lg-5 justify-content-center '>"
+    . "<div class='col col-12 col-lg-8 col-xl-6 border border-dark mb-3'>"
+    . "<div class='row bg-secondary p-3'><div class='col'><h3>".$institution->getName()."</h3></div></div>"
+    . "<div class='row p-2'><div class='col'><h4>".$institution->getEmail()."</h4></div></div>"
+    . "<div class='row p-2'><div class='col'><h6>".$institution->getLocation().", ".$institution->getPostal_code()."</h6></div></div>"
+    . "<div class='row p-2'><div class='col'><b>".$institution->getTelephone()."</b></div></div>"
+    . "<div class='row p-2'><div class='col'>".$institution->getWeb()."</div></div>"
     . "</div></div></div>";
 }
