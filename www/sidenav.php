@@ -67,17 +67,27 @@
                     <li><a href="myMobilities.php">My Mobilities</a></li>
                 </ul>
             </li>
-            <?php
-             if($_SESSION["user"]["role"]==='ADMIN'){
-            ?>
+           
             <li>
                 <a href="#specialtiesSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Specialties</a>
                 <ul class="collapse list-unstyled my-0 ml-3" id="specialtiesSubmenu">
                     <li>
-                        <a href="registerSpecialty.php">New specialty</a>
+                        <a href="registerStudentSpecialty.php">New student Specialty</a>
                     </li>
                     <li>
-                        <a href="allSpecialties.php">All specialties</a>
+                        <a href="registerInstitutionSpecialty.php">New Institution Specialty</a>
+                    </li>
+                    <li>
+                        <a href="registerEnterpriseSpecialty.php">New Enterprise Specialty</a>
+                    </li>
+                     <?php
+                    if($_SESSION["user"]["role"]==='ADMIN'){
+                    ?>
+                    <li>
+                        <a href="registerSpecialty.php">New Specialty</a>
+                    </li>
+                    <li>
+                        <a href="allSpecialties.php">All Specialties</a>
                     </li>
                 </ul>
             </li>

@@ -170,7 +170,12 @@ class Enterprise  {
     function getType() {
         return $this->type;
     }
+    
+    function getSpecialties() {
+        return $this->specialties;
+    }
 
+    
     function setCeo_Post($ceo_post) {
         $this->ceo_post = $ceo_post;
     }
@@ -234,6 +239,11 @@ class Enterprise  {
     function setType($type) {
         $this->type = $type;
     }
+
+    function setSpecialties($specialties) {
+        $this->specialties = $specialties;
+    }
+
 
 
 

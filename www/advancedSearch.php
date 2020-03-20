@@ -8,12 +8,13 @@
 include "controller\db.php";
 include "header.php";
 ?>
-            <div class="wrapper">
-    <?php
-    include "sidenav.php";?>
+           
 
 <?php if((isset($_GET['enterpriseName']) or !empty($_GET["enterpriseName"]))) {
     ?>
+             <div class="wrapper">
+    <?php
+    include "sidenav.php";?>
         <?php
     
     \MobilitySharp\controller\searchInstitutionsAdvanced();

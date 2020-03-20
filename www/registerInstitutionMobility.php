@@ -11,13 +11,14 @@ use MobilitySharp\controller;
         
         ?>
             <script src="js/register.js"></script>
-            <div class="wrapper">
-    <?php
-    include "sidenav.php";?>
+            
                 <?php
         
         if(!isset($_POST) or empty($_POST)) {
         ?>
+            <div class="wrapper">
+    <?php
+    include "sidenav.php";?>
         
         <div class="container-fluid mt-3 mt-lg-5 mx-3 mx-lg-5 mb-3 mb-lg-5">
             <?php
