@@ -1,5 +1,6 @@
 <?php
-if((isset($_GET['enterpriseName']) or !empty($_GET["enterpriseName"]))) {
+
+if((isset($_GET['enterpriseName']))) {
     include_once "controller\db.php";
 ?>
 <html>
@@ -7,11 +8,22 @@ if((isset($_GET['enterpriseName']) or !empty($_GET["enterpriseName"]))) {
     include "head.html";
     ?>
     <body>
+        
     <?php
         include "header.php";
+        ?>
+            <div class="wrapper">
+    <?php
+    include "sidenav.php";?>
+            <?php
+        
         \MobilitySharp\controller\searchInstitutionsBasic();
+        ?>
+            </div>
+            <?php
         include "footer.html";
         ?>
+        
     </body>
 </html>
 <?php 
@@ -31,8 +43,10 @@ if((isset($_GET['enterpriseName']) or !empty($_GET["enterpriseName"]))) {
         <div class="text-center">
             <button type="submit" class="btn btn-secondary w-50">Search</button>
         </div>
+        
     </form>
 </div>
+
 <?php
 } else {
     header('Location: /');

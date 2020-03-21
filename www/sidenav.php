@@ -65,6 +65,16 @@
                         <a href="registerInstitutionMobility.php">New Institution Mobility</a>
                     </li>
                     <li><a href="myMobilities.php">My Mobilities</a></li>
+                    
+                    <?php
+                     if($_SESSION["user"]["role"]==='ADMIN'){
+                    ?>
+                    <li>
+                        <a href="findMobilities.php">Find mobilities</a>
+                    </li>
+                    <?php
+                     }
+                     ?>
                 </ul>
             </li>
            
