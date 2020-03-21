@@ -6,6 +6,10 @@ $("document").ready(function () {
         var institution = $('#registerTab a[href="#institution"]');
         institution.removeClass("disabled");
         institution.tab('show');
+        
+        var ceo = $('#ceoTab');
+        ceo.removeClass("disabled");
+        ceo.tab('show');
     });
 
 });
@@ -48,7 +52,7 @@ function createFormRegisterInstitution(){
 }
 
 
-function createFormInsertEnterprise(){
+function createFormRegisterEnterprise(){
     var form = $("#enterprise");
     var arrayColumns = [
         {type: "text", placeholder: "Name", name: "eName", id: "ename", required: true},
@@ -60,7 +64,6 @@ function createFormInsertEnterprise(){
         {type: "text", placeholder: "Web", name: "web", id: "web"},
         {type: "text", placeholder: "Description", name: "description", id: "description"},
         {type: "text", placeholder: "Ceo post", name: "ceoPost", id: "ceoPost"},
-        {type: "select", placeholder: "Select ceo...", name: "ceo", url: baseurl + '/controller/json.php?ceos'},
         {type: "select", placeholder: "Select enterprise type...", name: "enterpriseType", url: baseurl + '/controller/json.php?enterpriseTypes'},
         {type: "select", placeholder: "Select country...", name: "country", url: baseurl + '/controller/json.php?countries'}
     ];
@@ -68,8 +71,17 @@ function createFormInsertEnterprise(){
     createFormStruct(form, arrayColumns);
 }
 
+function createFormRegisterCEO(){
+    var form = $("#ceo");
+    var arrayColumns = [
+        
+    ];
+    
+    createFormStruct(form, arrayColumns);
+}
 
-function createFormInsertInstitutionType(){
+
+/*function createFormRegisterInstitutionType(){
     var form = $("#institutionType");
     var arrayColumns = [
         {type: "text", placeholder: "Type", name: "type", id: "type", required: true},
@@ -79,7 +91,7 @@ function createFormInsertInstitutionType(){
      createFormStruct(form, arrayColumns);
 }
 
-function createFormInsertEnterpriseType(){
+function createFormRegisterEnterpriseType(){
     var form = $("#enterpriseType");
     var arrayColumns = [
         {type: "text", placeholder: "Type", name: "type", id: "type", required: true},
@@ -88,7 +100,7 @@ function createFormInsertEnterpriseType(){
      
      createFormStruct(form, arrayColumns);
 }
-/*
+
 function createFormInsertStudent(){
     
     var form = $("#student");
