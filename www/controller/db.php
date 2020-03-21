@@ -538,19 +538,22 @@ function listPartnerStudents() {
 function getCeos() {
     $entityM = load("registered");
     $ceos = $entityM->getRepository("MobilitySharp\model\CEO")->findAll();
+    $json = [];
 
     foreach ($ceos as $ceo) {
-        echo '<option value=' . $ceo->getId() . '>' . $ceo->getFull_name() . '</option>';
+        array_push($json, ["value" => $ceo->getId(), "text" => $ceo->getFull_name()]);
     }
 }
 
-function getEnterpriseType() {
+function getEnterpriseTypes() {
     $entityM = load("registered");
     $enterprises = $entityM->getRepository("MobilitySharp\model\EnterpriseType")->findAll();
+    $json = [];
 
     foreach ($enterprises as $enterprise) {
-        echo '<option value=' . $enterprise->getId() . '>' . $enterprise->getType() . '</option>';
+        array_push($json, ["value" => $enterprise->getId(), "text" => $enterprise->getType()]);
     }
+    echo json_encode($json);
 }
 
 function getPartnerStudents() {

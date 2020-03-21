@@ -1,4 +1,4 @@
-var baseurl = '/www/';
+var baseurl = '/www';
 
 $("document").ready(function () {
 
@@ -29,7 +29,6 @@ function createFormRegisterPartner() {
 }
 
 
-
 function createFormRegisterInstitution(){
     var form = $("#institution");
     var arrayColumns = [
@@ -41,22 +40,15 @@ function createFormRegisterInstitution(){
         {type: "text", placeholder: "Location", name: "location", id: "location", required: true},
         {type: "text", placeholder: "Web", name: "web", id: "web"},
         {type: "text", placeholder: "Description", name: "description", id: "description"},
-        {type: "select", placeholder: "Select country...", name: "country"},
-        {type: "select", placeholder: "Select institution type...", name: "institutionType"}
+        {type: "select", placeholder: "Select country...", name: "country", url: baseurl + '/controller/json.php?countries'},
+        {type: "select", placeholder: "Select institution type...", name: "institutionType", url: baseurl + '/controller/json.php?institutionTypes'}
     ];
-
-    var urls = [baseurl + 'controller/json.php?countries', baseurl + 'controller/json.php?institutionTypes'];
     
-    
-    createFormStruct(form, arrayColumns, urls);
-    
-    
+    createFormStruct(form, arrayColumns);
 }
 
 
-
 function createFormInsertEnterprise(){
-    
     var form = $("#enterprise");
     var arrayColumns = [
         {type: "text", placeholder: "Name", name: "eName", id: "ename", required: true},
@@ -67,15 +59,36 @@ function createFormInsertEnterprise(){
         {type: "text", placeholder: "Location", name: "location", id: "location", required: true},
         {type: "text", placeholder: "Web", name: "web", id: "web"},
         {type: "text", placeholder: "Description", name: "description", id: "description"},
-        {type: "text", placeholder: "Ceo post", name: "ceoPost", id: "ceoPost"}
-        
-        
+        {type: "text", placeholder: "Ceo post", name: "ceoPost", id: "ceoPost"},
+        {type: "select", placeholder: "Select ceo...", name: "ceo", url: baseurl + '/controller/json.php?ceos'},
+        {type: "select", placeholder: "Select enterprise type...", name: "enterpriseType", url: baseurl + '/controller/json.php?enterpriseTypes'},
+        {type: "select", placeholder: "Select country...", name: "country", url: baseurl + '/controller/json.php?countries'}
     ];
     
-    
-    createFormStruct(form,arrayColumns,2);
-
+    createFormStruct(form, arrayColumns);
 }
+
+
+function createFormInsertInstitutionType(){
+    var form = $("#institutionType");
+    var arrayColumns = [
+        {type: "text", placeholder: "Type", name: "type", id: "type", required: true},
+        {type: "text", placeholder: "Description", name: "description", id: "description"}
+     ];
+     
+     createFormStruct(form, arrayColumns);
+}
+
+function createFormInsertEnterpriseType(){
+    var form = $("#enterpriseType");
+    var arrayColumns = [
+        {type: "text", placeholder: "Type", name: "type", id: "type", required: true},
+        {type: "text", placeholder: "Description", name: "description", id: "description"}
+     ];
+     
+     createFormStruct(form, arrayColumns);
+}
+/*
 function createFormInsertStudent(){
     
     var form = $("#student");
@@ -108,25 +121,4 @@ function createFormInsertSpecialty(){
      ];
      
      createFormStruct(form,arrayColumns,2);
-}
-
-
-function createFormInsertInstitutionType(){
-    var form = $("#institutionType");
-    var arrayColumns = [
-        {type: "text", placeholder: "Type", name: "type", id: "type", required: true},
-        {type: "text", placeholder: "Description", name: "description", id: "description"}
-     ];
-     
-     createFormStruct(form,arrayColumns,2);
-}
-
-function createFormInsertEnterpriseType(){
-    var form = $("#enterpriseType");
-    var arrayColumns = [
-        {type: "text", placeholder: "Type", name: "type", id: "type", required: true},
-        {type: "text", placeholder: "Description", name: "description", id: "description"}
-     ];
-     
-     createFormStruct(form,arrayColumns,2);
-}
+}*/

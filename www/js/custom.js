@@ -57,9 +57,7 @@ function createFormStructV1(form, data, columns) {
     }
 }
 
-function createFormStruct(form, data, urls) {
-    var selectCount = 0;    //Counts the next select options array to fill.
-
+function createFormStruct(form, data) {
     var row = $("<div>");
     row.addClass('form-row justify-content-center');
     
@@ -77,25 +75,18 @@ function createFormStruct(form, data, urls) {
             placeholder.attr('selected', '');
             element.append(placeholder);        //Adds the select placeholder (some kind of description).
 
-
-            let url = urls[selectCount];
-
-            if(url){
-                fetch(url).then(response => response.json()).then(options => {
+            fetch(col["url"]).then(response => response.json()).then(options => {
+                if(options){
                     //Adds the options to the select.
                     for(let data of options) {
                         let option = $('<option>');
                         option.val(data['value']);
                         option.text(data['text']);
-    
+
                         element.append(option);
                     }
-                });
-            } else if(debug) {
-                console.error('There are missing urls, you passed ' + urls.length + ' urls to the function but there are ' + (selectCount+1) + ' selects.');
-            }
-
-            selectCount++;
+                }
+            });
         } else {                            //If it's not a select we will treat the data like an input element.
             element = $('<input>');
             element.attr("type", col["type"]);

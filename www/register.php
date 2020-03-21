@@ -7,21 +7,16 @@ session_destroy();
 
 include_once 'controller/db.php';
 use MobilitySharp\controller;
+
+if(!isset($_POST) or empty($_POST)) {
 ?>
 <html>
     <?php
     include "head.html";
     ?>
     <body>
-       
-        
-        <?php include "header.php";
-        
-        ?> <script src="js/register.js"></script><?php
-        if(!isset($_POST) or empty($_POST)) {
-            
-        ?>
-        
+        <script src="js/register.js"></script>
+        <?php include "header.php"; ?>
         <div class="container-fluid">
             <div class="container border mt-3">
                 <ul class="nav nav-tabs mt-2" id="registerTab" role="tablist">
@@ -55,11 +50,11 @@ use MobilitySharp\controller;
                 </form>
             </div>
         </div>
-        <?php 
-        } else {
-            controller\registerPartnerInstitution();
-        }
-        ?>
         <?php include 'footer.html' ?>
     </body>
 </html>
+<?php 
+} else {
+    controller\registerPartnerInstitution();
+}
+?>
