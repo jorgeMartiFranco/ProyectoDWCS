@@ -40,8 +40,10 @@ if((isset($_GET['enterpriseName']))) {
                 <small class="form-text"><a  href="advancedSearch.php">Advanced search</a></small>
             <?php } ?>
         </div>
-        <div class="text-center">
-            <button type="submit" class="btn btn-secondary w-50">Search</button>
+        <div class="row">
+            <div class="col col-md-6 col-lg-4 text-center">
+                <button type="submit" class="btn btn-secondary btn-block">Search</button>
+            </div>
         </div>
         
     </form>

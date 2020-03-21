@@ -18,7 +18,7 @@ if(!isset($_POST) or empty($_POST)) {
         <script src="js/register.js"></script>
         <?php include "header.php"; ?>
         <div class="container-fluid">
-            <div class="container border mt-3">
+            <div class="container border my-3">
                 <ul class="nav nav-tabs mt-2" id="registerTab" role="tablist">
                     <li class="nav-item ">
                         <a class="nav-link active" href="#partner" id="partnerTab" data-toggle="tab" role="tab" aria-controls="partner" aria-selected="true">Partner</a>
