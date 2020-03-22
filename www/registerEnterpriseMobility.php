@@ -22,8 +22,8 @@ use MobilitySharp\controller;
             <?php
             if(controller\listAllEnterprises() and controller\partnerStudents()){
             ?>
-            <div class='row justify-content-center'><div class='col'><h2>Register new enterprise mobility</h2></div></div>
-            <div class="container border-top border-dark pt-3 pb-3">
+            <div class='row justify-content-center border-bottom border-dark'><div class='col'><h2>Register new enterprise mobility</h2></div></div>
+            <div class="container border-bottom border-dark mb-3 mb-lg-5 ">
                 
                 <form method="POST" id="enterpriseMobility" action="registerEnterpriseMobility.php">
                    

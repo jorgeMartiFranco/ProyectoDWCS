@@ -20,9 +20,9 @@ use MobilitySharp\controller;
     <?php
     include "sidenav.php";?>
             <div class="container-fluid mt-3 mt-lg-5 mx-3 mx-lg-5">
-                <div class="row"><div class="col"><h2>Insert new student</h2></div></div>
+                <div class="row border-bottom border-dark"><div class="col"><h2>Insert new student</h2></div></div>
                 
-                <div class="container border-top border-dark pt-3">
+                <div class="container border-bottom border-dark pt-3 mb-3 mb-lg-5">
 
                     <form method="POST" id="student" action="registerStudent.php">
 

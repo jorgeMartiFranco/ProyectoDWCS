@@ -16,7 +16,7 @@ use MobilitySharp\controller;
         <div class="wrapper">
     <?php
     include "sidenav.php";?>
-        <div class="container-fluid mt-3 mt-lg-5 mx-3 mx-lg-5">
+        <div class="container-fluid mt-3 mt-lg-5 mx-3 mx-lg-5 border-bottom border-dark mb-3 mb-lg-5">
             <div class="row"><div class="col"><h2>Your enterprises</h2></div></div>
             
        

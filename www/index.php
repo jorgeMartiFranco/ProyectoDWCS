@@ -1,8 +1,10 @@
 ﻿<!DOCTYPE html>
+
 <html>
 	
 	<body>
-		<?php include 'header.php'; ?>
+		<?php include 'header.php';
+                ?>
 		<div class="wrapper">
                     <?php include 'head.html' ?>
 		<?php include 'sidenav.php'; ?>
@@ -46,7 +48,9 @@
 					<?php 
                                         include 'score.php';
                                         include 'search.php';
-                                        include 'topInstitutions.php'?>
+                                        include 'topInstitutions.php';
+                                        
+                                        ?>
 				</section>
 				<?php } ?>
 			</div>
