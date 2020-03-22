@@ -4,21 +4,19 @@ $user = $_SESSION['user'] ?? NULL;
 $breakpoint = $user ? 'md' : 'sm'; 
 ?>
 <header class="navbar navbar-expand-<?=$breakpoint?> navbar-custom bg-secondary">
-    <a class="navbar-brand mt-2" href="">
-        <img class="logo" src="img/logoNuevo.png" alt="Movility&sharp;">
+    
+    <a class="navbar-brand mt-2 mx-auto" href="">
+        <img class="logo" src="img/logoNuevo.png" alt="Mobility&sharp;">
     </a>
+  
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse text-right mt-<?=$breakpoint?>-auto" id="navbarText">
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link active" href="">Home</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="">Contact</a>
-            </li>
-        </ul>
+    
+    
+    
+    <div class="collapse navbar-collapse mt-<?=$breakpoint?>-auto" id="navbarText">
+        
         <?php
         if(is_null($user)) {?>
         <div class="btn-group ml-auto my-1 my-<?=$breakpoint?>-0" role="group">
@@ -31,7 +29,7 @@ $breakpoint = $user ? 'md' : 'sm';
         <div class="ml-<?=$breakpoint?>-auto my-1 my-<?=$breakpoint?>-0">
             <span class="align-middle">Welcome, <?=$user['usuario'];?></span>
             <div class="btn-group" role="group">
-                <a role="button" class="btn btn-secondary" href="/profile">Profile</a>
+                <a role="button" class="btn btn-secondary" href="myProfile.php">Profile</a>
                 <a role="button" class="btn btn-secondary" href="logout.php">Logout</a>
             </div>
         </div>

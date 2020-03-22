@@ -31,6 +31,14 @@ if(!isset($_POST) or empty($_POST)) {
                     <div class="tab-content">
                         <div class="tab-pane fade show active" id="partner" role="tabpanel" aria-labelledby="partner-tab">
                             <script>createFormRegisterPartner();</script>
+                            <div class="form-row justify-content-center mb-3">
+                                <div class="col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3 mx-md-3 my-2 my-md-3 text-center ">
+                                    <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="lodgingProvider" name="lodgingProvider">
+                                    <label class="custom-control-label" for="lodgingProvider"><b>Lodging provider</b></label>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="form-row justify-content-center">
                                 <div class="col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3 mx-md-3 my-2 my-md-3"> 
                                     <button type="button" class="btn btn-secondary rounded btn-block" id="next">Next</button>

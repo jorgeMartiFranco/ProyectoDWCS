@@ -28,6 +28,7 @@ function createFormRegisterPartner() {
         {type: "text", placeholder: "VAT", name: "vat", id: "vat"},
         {type: "text", placeholder: "Department", name: "department", id: "department", required: true},
         {type: "text", placeholder: "Post", name: "post", id: "post", required: true}
+       
     ];
     createFormStruct(form, arrayColumns);
 }
