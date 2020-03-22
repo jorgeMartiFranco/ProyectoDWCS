@@ -265,8 +265,9 @@ function insertEnterprise() {
     $entityM = load("registered");
 
     $enterprise = $entityM->getRepository("MobilitySharp\model\Enterprise")->findOneBy(["email" => filter_input(INPUT_POST, "eEmail")]);
-
+    $ceo = $entityM->getRepository("MobilitySharp\model\CEO")->findOneBy(["email"=> filter_input(INPUT_POST, "email")]);
     if (is_null($enterprise)) {
+        $entityM->getConnection()->beginTransaction();
         $ceo_post = filter_input(INPUT_POST, "ceoPost");
         $name = filter_input(INPUT_POST, "eName");
         $email = filter_input(INPUT_POST, "eEmail");
@@ -275,11 +276,21 @@ function insertEnterprise() {
         $location = filter_input(INPUT_POST, "location");
         $country = $entityM->find("MobilitySharp\model\Country", filter_input(INPUT_POST, "country"));
         $partner = $entityM->find("MobilitySharp\model\Partner", $_SESSION["user"]["id"]);
-        $ceo = $entityM->find("MobilitySharp\model\CEO", filter_input(INPUT_POST, "ceo"));
         $type = $entityM->find("MobilitySharp\model\EnterpriseType", filter_input(INPUT_POST, "enterpriseType"));
         $registration_date = new \DateTime(date("Y-m-d"));
+        $ceoEmail= filter_input(INPUT_POST, "email");
+        $full_name= filter_input(INPUT_POST, "fName")." ".filter_input(INPUT_POST,"lName");
+         if(!$ceo){
+            $ceo=new \MobilitySharp\model\CEO($ceoEmail, $full_name);
+            }
+            
+        if($ceoPhone= filter_input(INPUT_POST, "phone")){
+            $ceo->setTelephone($ceoPhone);
+        }
+        $entityM->persist($ceo);
+        $entityM->flush();
         $enterprise = new \MobilitySharp\model\Enterprise($ceo_post, $name, $email, $telephone, $postal_code, $location, $country, $partner, $ceo, $type, $registration_date);
-
+       
         if ($vat = filter_input(INPUT_POST, "eVat")) {
             $enterprise->setVat($vat);
         }
@@ -291,6 +302,7 @@ function insertEnterprise() {
         }
         $entityM->persist($enterprise);
         $entityM->flush();
+        $entityM->getConnection()->commit();
     } else {
         return FALSE;
     }
@@ -505,7 +517,7 @@ function listPartnerStudents() {
     $partner = $entityM->find("MobilitySharp\model\Partner", $_SESSION["user"]["id"]);
     $students = $entityM->getRepository("MobilitySharp\model\Student")->findBy(["partner" => $partner]);
 
-    echo "<div class='row text-center border-top border-dark justify-content-around'>";
+    echo "<div class='row text-center border-bottom mb-3 mb-lg-5 border-dark justify-content-around'>";
     foreach ($students as $student) {
         if ($student->getGender() == "M") {
             $gender = "Male";
@@ -516,9 +528,9 @@ function listPartnerStudents() {
         echo "<div class='col-12 col-md-7 col-lg-5 border border-dark rounded my-2 my-lg-5'>"
         . "<div class='row bg-secondary'><div class='col border-bottom border-dark p-1 p-lg-2'><h2>" . $student->getFull_Name() . "</h2></div></div>"
         . "<div class='row'><div class='col border-bottom border-dark p-1 p-lg-2'><h5 class='text-secondary'>" . $gender . "</h5>"
-        . "<h4>" . $date . "</h4></div></div>"
-        . "<div class='row bg-secondary'>"
-        . "<div class='col border-bottom border-dark p-1 p-lg-2'><h3>Specialties</h3></div></div>";
+        . "<h4>" . $date . "</h4></div></div>";
+        
+            echo "<div class='row bg-secondary'><div class='col border-bottom border-dark p-1 p-lg-2'><h3>Specialties</h3></div></div>";
 
         foreach ($student->getSpecialties() as $specialty) {
             echo "<div class='row border-bottom'>"
@@ -527,6 +539,8 @@ function listPartnerStudents() {
             . "<div class='row'><div class='col'>"
             . "<p>" . $specialty->getDescription() . "</p></div></div>";
         }
+        
+        
 
 
         echo "</div>"
@@ -625,7 +639,7 @@ function listPartnerMobilities() {
 
 
 
-    echo "<div class='row text-center my-2 my-lg-5 border justify-content-around'>";
+    echo "<div class='row text-center border-bottom border-dark mb-3 mb-lg-5 justify-content-around'>";
     foreach ($mobilities as $mobility) {
 
         $startDate = date_format($mobility->getStart_date(), 'Y-m-d');
@@ -667,7 +681,7 @@ function listAllSpecialties() {
     $entityM = load("admin");
     $specialties = $entityM->getRepository("MobilitySharp\model\SpecialtyType")->findAll();
 
-    echo "<div class='row text-center border-top border-dark justify-content-around'>";
+    echo "<div class='row text-center border-bottom mb-3 mb-lg-5 border-dark justify-content-around'>";
     foreach ($specialties as $specialty) {
         echo "<div class='col-12 col-md-7 col-lg-5 border border-dark rounded my-2 my-lg-5'>"
         . "<div class='row '><div class='col border-right border-bottom border-dark bg-secondary'><h1>" . $specialty->getType() . "</h1></div></div>"
@@ -769,7 +783,7 @@ function listPartnerInstitution() {
     $partner = $entityM->find("MobilitySharp\model\Partner", $_SESSION["user"]["id"]);
     $institution = $entityM->getRepository("MobilitySharp\model\Institution")->findOneBy(["partner" => $partner]);
 
-    echo "<div class='container text-center border-top border-dark'><div class='row text-center my-2 my-lg-5 justify-content-center '>"
+    echo "<div class='container text-center border-bottom border-dark mb-3 mb-lg-5'><div class='row text-center my-2 my-lg-5 justify-content-center '>"
     . "<div class='col col-12 col-lg-8 col-xl-6 border border-dark mb-3'>"
     . "<div class='row bg-secondary p-3'><div class='col'><h3>" . $institution->getName() . "</h3></div></div>"
     . "<div class='row p-2'><div class='col'><h4>" . $institution->getEmail() . "</h4></div></div>"
