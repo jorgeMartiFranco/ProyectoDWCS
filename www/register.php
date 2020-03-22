@@ -3,17 +3,15 @@ session_start();
 if(isset($_SESSION['user'])) {
     header('Location: /');
 }
-session_destroy();
 
 include_once 'controller/db.php';
 use MobilitySharp\controller;
 
 if(!isset($_POST) or empty($_POST)) {
 ?>
+<!DOCTYPE html>
 <html>
-    <?php
-    include "head.html";
-    ?>
+    <?php include "head.html"; ?>
     <body>
         <script src="js/register.js"></script>
         <?php include "header.php"; ?>

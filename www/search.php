@@ -1,29 +1,19 @@
 <?php
-
 if((isset($_GET['enterpriseName']))) {
     include_once "controller\db.php";
 ?>
+<!DOCTYPE html>
 <html>
-    <?php
-    include "head.html";
-    ?>
+    <?php include "head.html"; ?>
     <body>
-        
-    <?php
-        include "header.php";
-        ?>
-            <div class="wrapper">
-    <?php
-    include "sidenav.php";?>
-            <?php
-        
-        \MobilitySharp\controller\searchInstitutionsBasic();
-        ?>
-            </div>
-            <?php
-        include "footer.html";
-        ?>
-        
+        <?php include "header.php"; ?>
+        <div class="wrapper">
+            <?php include "sidenav.php"; ?>
+            <?php        
+            \MobilitySharp\controller\searchInstitutionsBasic();
+            ?>
+        </div>
+        <?php include "footer.html"; ?>
     </body>
 </html>
 <?php 
@@ -41,11 +31,10 @@ if((isset($_GET['enterpriseName']))) {
             <?php } ?>
         </div>
         <div class="row">
-            <div class="col col-md-6 col-lg-4 text-center">
+            <div class="col col-md-6 col-lg-4 mx-auto">
                 <button type="submit" class="btn btn-secondary btn-block">Search</button>
             </div>
         </div>
-        
     </form>
 </div>
 

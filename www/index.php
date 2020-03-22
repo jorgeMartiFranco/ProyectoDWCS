@@ -1,13 +1,10 @@
 ﻿<!DOCTYPE html>
-
 <html>
-	
+	<?php include 'head.html' ?>
 	<body>
-		<?php include 'header.php';
-                ?>
+		<?php include 'header.php'; ?>
 		<div class="wrapper">
-                    <?php include 'head.html' ?>
-		<?php include 'sidenav.php'; ?>
+			<?php include 'sidenav.php'; ?>
 			<div class="container-fluid">
 				<?php if(is_null($user)) { ?>
 				<section class="container my-2 my-lg-5">
@@ -46,11 +43,10 @@
 				</section>
 				<section class="container">
 					<?php 
-                                        include 'score.php';
-                                        include 'search.php';
-                                        include 'topInstitutions.php';
-                                        
-                                        ?>
+					include 'score.php';
+					include 'search.php';
+					include 'topInstitutions.php';
+					?>
 				</section>
 				<?php } ?>
 			</div>

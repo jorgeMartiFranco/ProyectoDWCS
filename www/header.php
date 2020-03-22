@@ -1,5 +1,8 @@
 <?php
-session_start();
+//Checks if session was started before
+if(!isset($_SESSION)) {
+    session_start();
+}
 $user = $_SESSION['user'] ?? NULL;
 $breakpoint = $user ? 'md' : 'sm'; 
 ?>

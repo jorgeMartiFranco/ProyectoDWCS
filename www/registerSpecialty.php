@@ -2,14 +2,16 @@
 include_once 'controller/db.php';
 use MobilitySharp\controller;
 ?>
+<!DOCTYPE html>
 <html>
     <?php
     include "head.html";
     ?>
     <body>
+    <script src="js/register.js"></script>
         <?php include "header.php";
         ?>
-        <script src="js/register.js"></script>
+        
         
         <?php
         if(!isset($_POST) or empty($_POST)) {

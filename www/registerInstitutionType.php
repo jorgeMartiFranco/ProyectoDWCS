@@ -2,6 +2,7 @@
 include_once 'controller/db.php';
 use MobilitySharp\controller;
 ?>
+<!DOCTYPE html>
 <html>
    <?php
    include "head.html";
