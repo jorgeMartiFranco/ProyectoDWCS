@@ -74,23 +74,29 @@ function createFormRegisterEnterprise(){
 function createFormRegisterCEO(){
     var form = $("#ceo");
     var arrayColumns = [
-        
+        {type: "email", placeholder: "Email", name: "email", id: "email", required: true},
+        {type: "text", placeholder: "First name", name: "fName", id: "fName", required: true},
+        {type: "text", placeholder: "Last name", name: "lName", id: "lName", required: true},
+        {type: "text", placeholder: "Phone", name: "phone", id: "phone"}
     ];
     
     createFormStruct(form, arrayColumns);
 }
 
-
-/*function createFormRegisterInstitutionType(){
-    var form = $("#institutionType");
+function createFormInsertStudent(){
+    
+    var form = $("#student");
     var arrayColumns = [
-        {type: "text", placeholder: "Type", name: "type", id: "type", required: true},
-        {type: "text", placeholder: "Description", name: "description", id: "description"}
+        {type: "text", placeholder: "First name", name: "fName", id: "fname", required: true},
+        {type: "text", placeholder: "Last name", name: "lName", id: "lName", required: true},
+        {type: "date", placeholder: "Birth date", name: "birthDate", id: "birthDate", required: true},
+        {type: "text", placeholder: "VAT", name: "sVat", id: "sVat"}
      ];
-     
-     createFormStruct(form, arrayColumns);
-}
-
+    
+    
+    createFormStruct(form,arrayColumns);
+    }
+    
 function createFormRegisterEnterpriseType(){
     var form = $("#enterpriseType");
     var arrayColumns = [
@@ -101,18 +107,31 @@ function createFormRegisterEnterpriseType(){
      createFormStruct(form, arrayColumns);
 }
 
-function createFormInsertStudent(){
-    
-    var form = $("#student");
+function createFormRegisterInstitutionType(){
+    var form = $("#institutionType");
     var arrayColumns = [
-        {type: "text", placeholder: "First name", name: "fName", id: "fname", required: true},
-        {type: "text", placeholder: "Last name", name: "lName", id: "lName", required: true},
-        {type: "date", placeholder: "", name: "birthDate", id: "birthDate", required: true},
-        {type: "text", placeholder: "VAT", name: "sVat", id: "sVat"}
+        {type: "text", placeholder: "Type", name: "type", id: "type", required: true},
+        {type: "text", placeholder: "Description", name: "description", id: "description"}
      ];
-    
-    
-    createFormStruct(form,arrayColumns,2);
+     
+     createFormStruct(form, arrayColumns);
+}
+
+function createFormInsertSpecialty(){
+    var form = $("#specialty");
+    var arrayColumns = [
+        {type: "text", placeholder: "Name", name: "type", id: "type", required: true},
+        {type: "text", placeholder: "Description", name: "description", id: "description"}
+     ];
+     
+     createFormStruct(form,arrayColumns,2);
+}
+
+/*
+
+
+
+
 }
 
 function createFormInsertEnterpriseMobility(){
@@ -125,12 +144,4 @@ function createFormInsertEnterpriseMobility(){
      createFormStruct(form,arrayColumns,2);
 }
 
-function createFormInsertSpecialty(){
-    var form = $("#specialty");
-    var arrayColumns = [
-        {type: "text", placeholder: "Name", name: "type", id: "type", required: true},
-        {type: "text", placeholder: "Description", name: "description", id: "description"}
-     ];
-     
-     createFormStruct(form,arrayColumns,2);
-}*/
+*/
