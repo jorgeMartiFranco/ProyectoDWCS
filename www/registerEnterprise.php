@@ -1,7 +1,6 @@
 <?php
 include_once 'controller/db.php';
 use MobilitySharp\controller;
-
 if(!isset($_POST) or empty($_POST)) {
 ?>
 <!DOCTYPE html>
@@ -18,7 +17,7 @@ if(!isset($_POST) or empty($_POST)) {
                         <h2>Insert new enterprise</h2>
                     </div>
                 </div>
-                <div class="container border my-3">
+                <div class="container border-bottom border-dark mb-3 mb-lg-5">
                     <ul class="nav nav-tabs mt-2" id="registerTab" role="tablist">
                         <li class="nav-item ">
                             <a class="nav-link active" href="#enterprise" id="enterpriseTab" data-toggle="tab" role="tab" aria-controls="enterprise" aria-selected="true">Enterprise</a>
@@ -27,7 +26,7 @@ if(!isset($_POST) or empty($_POST)) {
                             <a class="nav-link disabled" href="#ceo" id="ceoTab" data-toggle="tab" role="tab" aria-controls="ceo" aria-selected="false">CEO</a>
                         </li>
                     </ul>
-                    <form method="POST">
+                    <form method="POST" action="registerEnterprise.php">
                         <div class="tab-content">
                             <div class="tab-pane fade show active" id="enterprise" role="tabpanel" aria-labelledby="enterprise-tab">
                                 <script>createFormRegisterEnterprise();</script>
@@ -66,6 +65,7 @@ if(!isset($_POST) or empty($_POST)) {
 </html>
 <?php 
 } else {
+    session_start();
     controller\insertEnterprise();
 }
 ?>
