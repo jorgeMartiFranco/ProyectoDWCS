@@ -18,7 +18,7 @@ use MobilitySharp\controller;
         <div class="wrapper">
     <?php
     include "sidenav.php";?>
-        <div class="container-fluid my-3 my-lg-5 mx-3 mx-lg-5">
+        <div class="container-fluid my-3 my-lg-5 mx-3 mx-lg-5 border-bottom border-dark">
             <div class="row border-bottom border-dark">
                 <div class="col"><h2>Insert new enterprise type</h2></div></div>
             
@@ -30,7 +30,7 @@ use MobilitySharp\controller;
                             
                                  <script>createFormRegisterEnterpriseType();</script>
                                  
-                             <div class="form-row justify-content-center border-bottom border-dark mt-3">
+                             <div class="form-row justify-content-center mt-3">
                                 <div class="col col-sm-6 col-md-5 col-lg-4 btn-group my-2 my-md-3" role="group"> 
                                     <button type="submit" class="btn btn-secondary rounded ml-2 ml-md-3 ml-md-4" id="submitRegister">Insert</button>
                                 </div>

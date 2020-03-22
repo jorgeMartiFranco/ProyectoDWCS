@@ -21,13 +21,13 @@ use MobilitySharp\controller;
     <?php
     include "sidenav.php";?>
         
-        <div class="container-fluid mt-3 mt-lg-5 mx-3 mx-lg-5 mb-3 mb-lg-5">
+        <div class="container-fluid my-3 my-lg-5 mx-3 mx-lg-5 border-bottom border-dark">
             <?php
             if(controller\partnerStudents()){
             ?>
             <div class="row border-bottom border-dark"><div class="col"><h2>Register new institution mobility</h2></div></div>
             
-            <div class="container border-bottom border-dark pt-3 mb-3 mb-lg-5">
+            <div class="container pt-3 mb-3 mb-lg-5">
                 
                 <form method="POST" id="institutionMobility" action="registerInstitutionMobility.php">
                    

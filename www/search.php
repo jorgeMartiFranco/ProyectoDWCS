@@ -19,10 +19,11 @@ if((isset($_GET['enterpriseName']))) {
 <?php 
 } else if(isset($_SESSION)){
 ?>
-<div class="row">
-    <form class="col col-md-12 col-lg-10 col-xl-8 mx-auto my-5 border p-5" method="GET" action="search.php">
+<div class="container mt-3 mt-lg-5">
+    <div class='row border-bottom border-dark mb-3 mx-3 mx-lg-5'><div class='col col-12 col-lg-10 col-xl-8'><h3>Search institutions</h3></div></div>
+    <form class="col col-md-11 col-lg-9 col-xl-7 mx-auto my-5 border p-5" method="GET" action="search.php">
         <div class="form-group">
-            <h6 for="dbSearch">Search institutions</h6>
+            
             <input class="form-control" type="text" id="dbSearch" placeholder="Institution name" name="enterpriseName">
             <?php if(is_null($user)) { ?>
                 <small id="dbSearchHelp" class="form-text text-muted">To perform more specific queries, registration is required</small>
@@ -36,6 +37,7 @@ if((isset($_GET['enterpriseName']))) {
             </div>
         </div>
     </form>
+
 </div>
 
 <?php

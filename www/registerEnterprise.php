@@ -11,13 +11,13 @@ if(!isset($_POST) or empty($_POST)) {
         <?php include "header.php"; ?>
         <div class="wrapper">
             <?php include "sidenav.php"; ?>
-            <div class="container-fluid mt-3 mt-lg-5 mx-3 mx-lg-5">
+            <div class="container-fluid my-3 my-lg-5 mx-3 mx-lg-5 border-bottom border-dark">
                 <div class="row border-bottom border-dark">
                     <div class="col">
                         <h2>Insert new enterprise</h2>
                     </div>
                 </div>
-                <div class="container border-bottom border-dark mb-3 mb-lg-5">
+                <div class="container mb-3 mb-lg-5">
                     <ul class="nav nav-tabs mt-2" id="registerTab" role="tablist">
                         <li class="nav-item ">
                             <a class="nav-link active" href="#enterprise" id="enterpriseTab" data-toggle="tab" role="tab" aria-controls="enterprise" aria-selected="true">Enterprise</a>
