@@ -1,7 +1,7 @@
 <?php
 
 namespace MobilitySharp\controller;
-
+require 'sendMail.php';
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use \Doctrine\ORM\Tools\Setup;
@@ -964,5 +964,38 @@ function partnerProfile(){
     . "<div class='col col-sm-6 col-md-4 col-lg-3 btn-group my-2 my-md-3'><button class='btn btn-secondary rounded ml-2 ml-md-3 ml-md-4' type='button' href='#'>Modify profile</button</div></div>"
     . "<div class='col col-sm-6 col-md-4 col-lg-3 btn-group my-2 my-md-3'><button class='btn btn-dark rounded ml-2 ml-md-3 ml-md-4' type='button' href='#'>Deactivate profile</button</div></div>"
     . "</div></div></div>";
+    
+}
+
+function sendPetition(){
+    $entityM= load("registered");
+    $senderPartner=$entityM->find("MobilitySharp\model\Partner",$_SESSION["user"]["id"]);
+    $date=new \DateTime(date("Y-m-d H:i:s"));
+    $role=$entityM->getRepository("MobilitySharp\model\Role")->findOneBy(["type"=>"ADMIN"]);
+    
+    $subject= filter_input(INPUT_POST, "subject");
+    $status=$entityM->getRepository("MobilitySharp\model\Status")->findOneBy(["status"=>"REQUESTED"]);
+    
+    $queryPetition = $entityM->createQueryBuilder();
+    $queryPetition->addSelect('p')
+            ->from("MobilitySharp\model\PetitionHistory", 'p')
+            ->join("MobilitySharp\model\Partner",'pa')
+            ->where("pa.id=p.receiver_partner")
+            ->andWhere("pa.role=".$role->getId()."")
+            ->groupBy("p.receiver_partner")
+            ->orderBy("COUNT(p.receiver_partner)")
+            ->setMaxResults(1);
+    $petition = $queryPetition->getQuery()->getSingleResult();
+    $receiverPartner=$petition->getReceiver_partner();
+    $newPetition = new \MobilitySharp\model\PetitionHistory($subject, $date, $status, $senderPartner, $receiverPartner);
+    if($description= filter_input(INPUT_POST, "description")){
+        $newPetition->setDescription($description);
+    }
+    
+    if(sendMail($newPetition)){
+        $entityM->persist($newPetition);
+        $entityM->flush();
+    
+    }
     
 }
