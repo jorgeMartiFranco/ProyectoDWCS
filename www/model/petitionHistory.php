@@ -33,13 +33,13 @@ class PetitionHistory   {
     
     /**
      * @ORM\ManyToOne(targetEntity="Partner")
-     * @ORM\JoinColumn(name="SOCIO",referencedColumnName="ID_SOCIO")
+     * @ORM\JoinColumn(name="SOCIO_EMISOR",referencedColumnName="ID_SOCIO")
      */
     private $sender_partner;
     
     /**
      * @ORM\ManyToOne(targetEntity="Partner")
-     * @ORM\JoinColumn(name="SOCIO",referencedColumnName="ID_SOCIO")
+     * @ORM\JoinColumn(name="SOCIO_RECEPTOR",referencedColumnName="ID_SOCIO")
      */
     private $receiver_partner;
     

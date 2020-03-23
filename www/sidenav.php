@@ -101,6 +101,12 @@
                     </li>
                 </ul>
             </li>
+            
+            
+            
+            <li>
+                        <a href="contact.php">Contact</a>
+                    </li>
             <?php
             }
             ?>

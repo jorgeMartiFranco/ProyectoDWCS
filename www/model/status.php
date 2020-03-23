@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Status  {
     /**
-     * @ORM\Id @ORM\Column(type="integer", name="ID_PETICION") @ORM\GeneratedValue
+     * @ORM\Id @ORM\Column(type="integer", name="ID_ESTADO") @ORM\GeneratedValue
      */
     private $id;
     /**
