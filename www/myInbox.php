@@ -125,93 +125,83 @@
                                 <?php
                                 if($_SESSION["user"]["role"]=="REGISTERED"){
                                 ?>
-                                <ul class="messages-list mb-3 mb-lg-5" id="requested">
+                                
                                         <?php 
                                                 MobilitySharp\controller\listPartnerMessages("REQUESTED");
                                         ?>
 					
 					
 
-				</ul>
+				
                                 
-                                <ul class="messages-list mb-3 mb-lg-5" id="inProccess" hidden>
+                                
                                         <?php 
                                                 MobilitySharp\controller\listPartnerMessages("IN PROCCESS");
                                         ?>
 					
 					
 
-				</ul>
+				
                                 
-                                <ul class="messages-list mb-3 mb-lg-5" id="solved" hidden>
+                                
                                         <?php 
                                                 MobilitySharp\controller\listPartnerMessages("SOLVED");
                                         ?>
 					
 					
 
-				</ul>
-                                
-                                <ul class="messages-list mb-3 mb-lg-5" id="cancelled" hidden>
+				
                                         <?php 
                                                 MobilitySharp\controller\listPartnerMessages("CANCELLED");
                                         ?>
 					
 					
 
-				</ul>
-                                <ul class="messages-list mb-3 mb-lg-5" id="declined" hidden>
+				
                                         <?php 
                                                 MobilitySharp\controller\listPartnerMessages("DECLINED");
                                         ?>
 					
-					</ul>
+					
                                     <?php
                                 }
                                 else if($_SESSION["user"]["role"]=="ADMIN"){
                                     
                                     ?>
-                                        <ul class="messages-list mb-3 mb-lg-5" id="requested">
+                                        
                                         <?php 
                                                 MobilitySharp\controller\listPartnerMessagesAdmin("REQUESTED");
                                         ?>
 					
 					
 
-				</ul>
-                                
-                                <ul class="messages-list mb-3 mb-lg-5" id="inProccess" hidden>
+				
                                         <?php 
                                                 MobilitySharp\controller\listPartnerMessagesAdmin("IN PROCCESS");
                                         ?>
 					
 					
 
-				</ul>
-                                
-                                <ul class="messages-list mb-3 mb-lg-5" id="solved" hidden>
+				
                                         <?php 
                                                 MobilitySharp\controller\listPartnerMessagesAdmin("SOLVED");
                                         ?>
 					
 					
 
-				</ul>
-                                
-                                <ul class="messages-list mb-3 mb-lg-5" id="cancelled" hidden>
+				
                                         <?php 
                                                 MobilitySharp\controller\listPartnerMessagesAdmin("CANCELLED");
                                         ?>
 					
 					
 
-				</ul>
-                                <ul class="messages-list mb-3 mb-lg-5" id="declined" hidden>
+				
                                         <?php 
                                                 MobilitySharp\controller\listPartnerMessagesAdmin("DECLINED");
                                         ?>
 					
-					</ul>
+					
                                         
                                         <?php
                                 }

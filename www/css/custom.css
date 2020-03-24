@@ -135,8 +135,9 @@
     text-decoration: none
 }
 
-.inbox ul.messages-list li.unread .header,
-.inbox ul.messages-list li.unread .title {
+.inbox ul.messages-list li.unread .from,
+.inbox ul.messages-list li.unread .title,
+.inbox ul.messages-list li.unread .date{
     font-weight: 700
 }
 
@@ -154,14 +155,14 @@
     margin: 0 0 5px 0
 }
 
-.inbox ul.messages-list li .header .from {
+.inbox ul.messages-list li .from {
     width: 49.9%;
     white-space: nowrap;
     overflow: hidden!important;
     text-overflow: ellipsis
 }
 
-.inbox ul.messages-list li .header .date {
+.inbox ul.messages-list li .date {
     width: 50%;
     text-align: right;
     float: right
@@ -214,7 +215,7 @@
     font-size: 14px
 }
 
-.inbox .message .header {
+.inbox .message  {
     margin: 20px 0 30px 0;
     padding: 10px 0 10px 0;
     border-top: 1px solid #d1d4d7;
@@ -231,11 +232,11 @@
     margin-right: 10px
 }
 
-.inbox .message .header i {
+.inbox .message  i {
     margin-top: 1px
 }
 
-.inbox .message .header .from {
+.inbox .message  .from {
     display: inline-block;
     width: 50%;
     font-size: 12px;
@@ -243,14 +244,14 @@
     color: #d1d4d7
 }
 
-.inbox .message .header .from span {
+.inbox .message  .from span {
     display: block;
     font-size: 14px;
     font-weight: 700;
     color: #3d3f42
 }
 
-.inbox .message .header .date {
+.inbox .message  .date {
     display: inline-block;
     width: 29%;
     text-align: right;
@@ -318,4 +319,16 @@
 
 .inbox .contacts ul li:hover {
     background: #e4e5e6
+}
+
+
+.centerCol {
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+   
+}
+
+i.fas.fa-inbox{
+    line-height: inherit;
 }

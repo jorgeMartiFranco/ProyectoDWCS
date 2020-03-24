@@ -8,7 +8,8 @@ sessions\startSession();
 sessions\checkLogin();
 
 if (isset($_POST) && isset($_POST['id']) && !empty($_POST['id'])) {     //Se ha recibido una petición para procesar la modificación del estudiante
-    controller\modifyEnterprise(filter_input($_POST, "id", FILTER_VALIDATE_INT));
+    controller\modifyEnterprise(filter_input(INPUT_POST, "id", FILTER_VALIDATE_INT));
+    header("Location:myEnterprises.php");
 } else if (isset($_POST) && !empty($_POST)) {   //Se ha recibido una petición para insertar un nuevo estudiante
     controller\insertEnterprise();
 } else if (isset($_GET) && isset($_GET['id']) && !empty($_GET['id'])) {     //Se ha recibido una petición para modificar el usuario y mostraremos el formulario con sus datos
