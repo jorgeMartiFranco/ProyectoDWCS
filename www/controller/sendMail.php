@@ -15,9 +15,9 @@ function sendMail($petition){
     $mail->Username="phptestiesteis@gmail.com"; 
     $mail->Password="duhfjyzcmfvxdnnt"; 
     $mail->setFrom($petition->getSender_partner()->getEmail(),$petition->getSender_partner()->getFull_name());
-    $mail->Subject=$petition->getSubject();
+    $mail->Subject=ucfirst($petition->getSubject());
     if($description=$petition->getDescription()){
-        $mail->msgHTML($description);
+        $mail->msgHTML(ucfirst($description));
     }
     $mail->addAddress($petition->getReceiver_partner()->getEmail(),$petition->getReceiver_partner()->getFull_name());
     if($mail->send()){
