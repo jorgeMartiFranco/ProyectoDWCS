@@ -125,7 +125,44 @@ function createFormInsertSpecialty(){
         {type: "text", placeholder: "Description", name: "description", id: "description"}
      ];
      
-     createFormStruct(form,arrayColumns,2);
+     createFormStruct(form,arrayColumns);
+}
+
+async function createFormEditEnterprise(id){
+    var form = $("#enterprise");
+
+    var enterprise = await getEnterpriseData();
+
+    var arrayColumns = [
+        {type: "text", placeholder: "Name", name: "eName", id: "ename", required: true},
+        {type: "email", placeholder: "Email", name: "eEmail", id: "eEmail", required: true},
+        {type: "phone", placeholder: "Phone", name: "ePhone", id: "ePhone", required: true},
+        {type: "text", placeholder: "VAT", name: "eVat", id: "eVat"},
+        {type: "text", placeholder: "Postal Code", name: "postalCode", id: "postalCode", required: true},
+        {type: "text", placeholder: "Location", name: "location", id: "location", required: true},
+        {type: "text", placeholder: "Web", name: "web", id: "web"},
+        {type: "text", placeholder: "Description", name: "description", id: "description"},
+        {type: "text", placeholder: "Ceo post", name: "ceoPost", id: "ceoPost"},
+        {type: "select", name: "enterpriseType", url: baseurl + '/controller/json.php?enterpriseTypes'},
+        {type: "select", name: "country", url: baseurl + '/controller/json.php?countries'}
+    ];
+
+    for(col of arrayColumns) {
+        for(property in enterprise){
+            if(col.name === property) {
+                col.value = enterprise[property];
+            }
+        }
+    }
+
+    
+    createFormStruct(form, arrayColumns);
+    
+    
+    async function getEnterpriseData(){
+        request = await fetch(baseurl + '/controller/json.php?enterprise&id='+ id);
+        return await request.json();
+    }
 }
 
 /*

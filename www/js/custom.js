@@ -12,52 +12,6 @@ $(document).ready(function() {
     });
 });
 
-
-
-function createFormStructV1(form, data, columns) {
-    var i = 0;
-    var pair;
-    var count=0;
-    var entries=data.length;
-    if(entries%columns==0){
-        pair=true;
-    }
-    else {
-        pair=false;
-    }
-    
-    while (i < entries) {
-        let row = $("<div>");
-        row.addClass('form-row justify-content-center');
-        
-        for (var j = 0; j < columns; j++) {
-            if(count==entries&&pair==false){
-                break;
-            }
-            let column = $("<div>");
-            column.addClass('col-12 col-sm col-md-5 col-lg-4 mx-md-3 my-2 my-md-3');
-            let input = $('<input>');
-            input.addClass('form-control');
-            input.attr("type", data[i]["type"]);
-            input.attr("placeholder", data[i]["placeholder"]);
-            input.attr("name", data[i]["name"]);
-            input.attr("id", data[i]["id"]);
-            if (data[i]["required"]) {
-                input.attr("required", "");
-            }
-            column.append(input);
-            row.append(column);
-            
-            
-            i++;
-            count++;
-
-        }
-        
-        form.append(row);
-    }
-}
-
 function createFormStruct(form, data) {
     var row = $("<div>");
     row.addClass('form-row justify-content-center');
@@ -68,14 +22,19 @@ function createFormStruct(form, data) {
         column.addClass('col-12 col-sm-10 col-md-5 col-lg-4 mx-md-3 my-2 my-md-3');
 
         let element;
-        if(col["type"] === "select") {          //Checks if the next element is a select and treats it like a select element.
+        if (col["type"] === "select") {          //Checks if the next element is a select and treats it like a select element.
             element = $('<select>');
-            placeholder = $('<option>');
-            placeholder.text(col["placeholder"]);
-            placeholder.attr('disabled', '');
-            placeholder.attr('selected', '');
-            element.append(placeholder);        //Adds the select placeholder (some kind of description).
 
+            //Checks if a placeholder exists and adds it if so.
+            if(typeof col["placeholder"] !== "undefined") {
+                placeholder = $('<option>');
+                placeholder.text(col["placeholder"]);
+                placeholder.attr('disabled', '');
+                placeholder.attr('selected', '');
+                element.append(placeholder);        //Adds the select placeholder (some kind of description).
+            }
+            
+            //Gets json data form the url asynchronously.
             fetch(col["url"]).then(response => response.json()).then(options => {
                 if(options){
                     //Adds the options to the select.
@@ -83,6 +42,10 @@ function createFormStruct(form, data) {
                         let option = $('<option>');
                         option.val(data['value']);
                         option.text(data['text']);
+
+                        if(typeof col["value"] !== "undefined" && col["value"] === data["value"]) {
+                            option.attr('selected', '');
+                        }
 
                         element.append(option);
                     }
@@ -96,6 +59,10 @@ function createFormStruct(form, data) {
             if (col["required"]) {
                 element.attr("required", "");
             }
+
+            if (typeof col["value"] !== "undefined") {
+                element.val(col["value"]);
+            }
         }
         //Those are common attributes
         element.attr("name", col["name"]);
@@ -106,5 +73,5 @@ function createFormStruct(form, data) {
         row.append(column);
     }
     
-    form.append(row);
+    form.prepend(row);
 }

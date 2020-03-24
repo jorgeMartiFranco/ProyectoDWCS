@@ -29,7 +29,13 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
                 break;
             case "institutionTypes":
                 getInstitutionTypes();
+                break;
+            case "enterprise":
+                getEnterprise($_GET['id']);
+                break;
         }
+
+        
         
     }
 }
@@ -46,3 +52,23 @@ function is_logged_in() : bool {
 
     return $is_logged;
 }
+
+function getEnterprise($id) {
+            $enterprise = findEntity("Enterprise", filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT));
+            
+            if($enterprise){
+                echo json_encode([
+                    'eName' => $enterprise->getName(),
+                    'eEmail' => $enterprise->getEmail(),
+                    'ePhone' => $enterprise->getTelephone(),
+                    'eVat' => $enterprise->getVat() ?? '',
+                    'postalCode' => $enterprise->getPostal_code(),
+                    'location' => $enterprise->getLocation(),
+                    'web' => $enterprise->getWeb() ?? '',
+                    'description' => $enterprise->getDescription() ?? '',
+                    'ceoPost' => $enterprise->getCeo_Post(),
+                    'enterpriseType' => $enterprise->getType()->getId(),
+                    'country' => $enterprise->getCountry()->getId()
+                ]);
+            }
+        }

@@ -12,7 +12,8 @@ if (isset($_POST) && isset($_POST['id']) && !empty($_POST['id'])) {     //Se ha 
 } else if (isset($_POST) && !empty($_POST)) {   //Se ha recibido una petición para insertar un nuevo estudiante
     controller\insertEnterprise();
 } else if (isset($_GET) && isset($_GET['id']) && !empty($_GET['id'])) {     //Se ha recibido una petición para modificar el usuario y mostraremos el formulario con sus datos
-    $enterprise = findEntity("Enterprise", filter_input($_GET, "id", FILTER_VALIDATE_INT));
+    $id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+    $enterprise = controller\findEntity("Enterprise", $id);
 ?>
 <!DOCTYPE html>
 <html>
@@ -33,7 +34,7 @@ if (isset($_POST) && isset($_POST['id']) && !empty($_POST['id'])) {     //Se ha 
                     if($enterprise){
                     ?>
                     <form method="POST" id="enterprise" action="registerEnterprise.php">
-                        <script>createFormEditEnterprise(<?=filter_input($_GET, "id", FILTER_VALIDATE_INT)?>);</script>
+                        <script>createFormEditEnterprise(<?=$enterprise->getId()?>);</script>
                         <div class="form-row justify-content-center">
                             <div class="col col-sm-6 col-md-5 col-lg-4 btn-group my-2 my-md-3" role="group"> 
                                 <button type="submit" class="btn btn-secondary rounded ml-2 ml-md-3 ml-md-4" id="submitRegister">Insert</button>
@@ -42,7 +43,7 @@ if (isset($_POST) && isset($_POST['id']) && !empty($_POST['id'])) {     //Se ha 
                     </form>
                     <?php } else { ?>
                         <div>
-                            <!-- Mensaje de error -->
+                            <p class="text-danger">Enterprise with ID <?=$id?> doesn't exist</p>
                         </div>
                     <?php } ?>
                 </div>
