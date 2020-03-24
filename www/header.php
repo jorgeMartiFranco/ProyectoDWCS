@@ -1,25 +1,18 @@
 <?php
-//Checks if session was started before
-if(!isset($_SESSION)) {
-    session_start();
-}
+require_once 'controller/sessions.php';
+\MobilitySharp\controller\sessions\startSession();
+
 $user = $_SESSION['user'] ?? NULL;
 $breakpoint = $user ? 'md' : 'sm'; 
 ?>
 <header class="navbar navbar-expand-<?=$breakpoint?> navbar-custom bg-secondary">
-    
     <a class="navbar-brand mt-2 mx-auto" href="">
         <img class="logo" src="img/logoNuevo.png" alt="Mobility&sharp;">
     </a>
-  
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    
-    
-    
     <div class="collapse navbar-collapse mt-<?=$breakpoint?>-auto" id="navbarText">
-        
         <?php
         if(is_null($user)) {?>
         <div class="btn-group ml-auto my-1 my-<?=$breakpoint?>-0" role="group">
@@ -35,7 +28,6 @@ $breakpoint = $user ? 'md' : 'sm';
                 <a role="button" class="btn btn-secondary" href="myInbox.php"><i class='fas fa-inbox'></i></a>
                 <a role="button" class="btn btn-secondary" href="myProfile.php">Profile</a>
                 <a role="button" class="btn btn-secondary" href="logout.php">Logout</a>
-                
             </div>
         </div>
         <?php

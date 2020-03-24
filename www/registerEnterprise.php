@@ -1,7 +1,18 @@
 <?php
+require_once 'controller/sessions.php';
 include_once 'controller/db.php';
 use MobilitySharp\controller;
-if(!isset($_POST) or empty($_POST)) {
+use MobilitySharp\controller\sessions;
+
+sessions\startSession();
+sessions\checkLogin();
+
+if (isset($_POST) && isset($_POST['id']) && !empty($_POST['id'])) {     //Se ha recibido una petición para procesar la modificación del estudiante
+    controller\modifyEnterprise(filter_input($_POST, "id", FILTER_VALIDATE_INT));
+} else if (isset($_POST) && !empty($_POST)) {   //Se ha recibido una petición para insertar un nuevo estudiante
+    controller\insertEnterprise();
+} else if (isset($_GET) && isset($_GET['id']) && !empty($_GET['id'])) {     //Se ha recibido una petición para modificar el usuario y mostraremos el formulario con sus datos
+    $enterprise = findEntity("Enterprise", filter_input($_GET, "id", FILTER_VALIDATE_INT));
 ?>
 <!DOCTYPE html>
 <html>
@@ -11,13 +22,53 @@ if(!isset($_POST) or empty($_POST)) {
         <?php include "header.php"; ?>
         <div class="wrapper">
             <?php include "sidenav.php"; ?>
-            <div class="container-fluid my-3 my-lg-5 mx-3 mx-lg-5 border-bottom border-dark">
+            <section class="container-fluid my-3 my-lg-5 mx-3 mx-lg-5 border-bottom border-dark">
+                <div class="row border-bottom border-dark">
+                    <div class="col">
+                        <h2>Edit enterprise</h2>
+                    </div>
+                </div>
+                <div class="container">
+                    <?php
+                    if($enterprise){
+                    ?>
+                    <form method="POST" id="enterprise" action="registerEnterprise.php">
+                        <script>createFormEditEnterprise(<?=filter_input($_GET, "id", FILTER_VALIDATE_INT)?>);</script>
+                        <div class="form-row justify-content-center">
+                            <div class="col col-sm-6 col-md-5 col-lg-4 btn-group my-2 my-md-3" role="group"> 
+                                <button type="submit" class="btn btn-secondary rounded ml-2 ml-md-3 ml-md-4" id="submitRegister">Insert</button>
+                            </div>
+                        </div>
+                    </form>
+                    <?php } else { ?>
+                        <div>
+                            <!-- Mensaje de error -->
+                        </div>
+                    <?php } ?>
+                </div>
+            </section>
+        </div>
+        <?php include 'footer.html' ?>
+    </body>
+</html>
+<?php
+} else {
+?>
+<!DOCTYPE html>
+<html>
+    <?php include "head.html"; ?>
+    <body>
+        <script src="js/register.js"></script>
+        <?php include "header.php"; ?>
+        <div class="wrapper">
+            <?php include "sidenav.php"; ?>
+            <section class="container-fluid my-3 my-lg-5 mx-3 mx-lg-5 border-bottom border-dark">
                 <div class="row border-bottom border-dark">
                     <div class="col">
                         <h2>Insert new enterprise</h2>
                     </div>
                 </div>
-                <section class="container mb-3 mb-lg-5">
+                <div class="container mb-3 mb-lg-5">
                     <ul class="nav nav-tabs mt-2" id="registerTab" role="tablist">
                         <li class="nav-item ">
                             <a class="nav-link active" href="#enterprise" id="enterpriseTab" data-toggle="tab" role="tab" aria-controls="enterprise" aria-selected="true">Enterprise</a>
@@ -47,16 +98,12 @@ if(!isset($_POST) or empty($_POST)) {
                             </div>
                         </div>
                     </form>
-                </section>
-               
-            </div>
+                </div>
+            </section>
         </div>
         <?php include 'footer.html' ?>
     </body>
 </html>
 <?php 
-} else {
-    session_start();
-    controller\insertEnterprise();
 }
 ?>

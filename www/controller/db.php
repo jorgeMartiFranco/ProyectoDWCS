@@ -1012,17 +1012,17 @@ function sendPetition(){
     
 }
 
-
-function findEntity($class,$id){
-    
+/**
+ * Finds the requested Doctrine entity.
+ * 
+ * @param string $class The class name of the requested entity.
+ * @param mixed $id The ID of the entity to find.
+ * 
+ * @return object|null The entity instance or NULL if the entity cannot be found.
+ */
+function findEntity($class, $id){
     $entityM=load("registered");
-    $object=$entityM->find("MobilitySharp\\model\\".$class."",$id);
+    $entity=$entityM->find("MobilitySharp\\model\\".$class, $id);
     
-    if($object){
-        
-    }
-    else {
-        
-    }
-    
+    return $entity;
 }

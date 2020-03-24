@@ -1,5 +1,8 @@
 <?php
-session_start();
+require_once 'controller/sessions.php';
+\MobilitySharp\controller\sessions\startSession();
+
+//Redirects to Document Root if the user was already logged in.
 if(isset($_SESSION['user'])) {
     header('Location: /');
 }
