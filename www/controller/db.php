@@ -227,12 +227,12 @@ function searchInstitutionsBasic() {
     . "<div class='row border-bottom border-dark'><div class='col'><h2>Search results</h2></div></div><div class='row text-center justify-content-around'>";
     foreach ($list as $element) {
 
-        echo "<div class='col-14 col-md-9 col-lg-5 py-3 py-lg-5 '>"
-        . "<div class='row border border-dark '><div class='col border-right border-dark bg-secondary p-1'><h3>" . $element->getName() . "</h3></div>"
-        . "<div class='col border'><h4 class='text-secondary'>" . $element->getType()->getType() . "</h4>"
-        . "<h5>" . $element->getCountry()->getName() . "</h5></div></div>";
+        echo "<div class='col-14 col-md-9 col-lg-5 my-3 my-lg-5 '>"
+        . "<div class='row border border-dark '><div class='col centerCol border-right border-dark bg-secondary p-1'><h3>" . $element->getName() . "</h3></div>"
+        . "<div class='col border centerCol'><div class='row'><div class='col'><h4 class='text-secondary'>" . $element->getType()->getType() . "</h4></div></div>"
+        . "<div class='row'><div class='col'><h5>" . $element->getCountry()->getName() . "</h5></div></div></div></div>";
         if ($element->getDescription()) {
-            echo "<div class='row border border-dark'><div class='col p-3'><p>" . $element->getDescription() . "</p></div></div>";
+            echo "<div class='row border border-dark '><div class='col centerCol'><p>" . $element->getDescription() . "</p></div></div>";
         }
         echo "</div>";
     }
@@ -265,18 +265,18 @@ function searchInstitutionsAdvanced() {
     . "<div class='row border-bottom border-dark'><div class='col'><h2>Search results</h2></div></div><div class='row text-center border-bottom border-dark mb-3 mb-lg-5 justify-content-around'>";
     foreach ($list as $element) {
         echo "<div class='col-12 col-md-7 col-lg-5 my-2 my-lg-5'>"
-        . "<div class='row border-bottom border-dark'><div class='col border border-dark bg-secondary p-3'><h1>" . $element->getName() . "</h1></div>"
-        . "<div class='col border border-dark'><div class='row'><div class='col'><h4 class='text-secondary'>" . $element->getType()->getType() . "</h4></div></div>"
-        . "<div class='row'><div class='col'><h5>" . $element->getCountry()->getName() . "</h5></div></div></div></div>"
-        . "<div class='row border border-dark'>"
-        . "<div class='col'><p>" . $element->getEmail() . "</p></div></div>"
-        . "<div class='row border border-dark pt-2'><div class='col'><p>" . $element->getTelephone() . "</p></div></div>"
-        . "<div class='row border border-dark'><div class='col'><p>" . $element->getLocation() . ", " . $element->getPostal_code() . "</p></div></div>";
+        . "<div class='row border-bottom border-dark'><div class='col border border-dark bg-secondary p-3 centerCol'><h2>" . $element->getName() . "</h2></div>"
+        . "<div class='col border border-dark centerCol'><div class='row'><div class='col'><h4 class='text-secondary'>" . $element->getType()->getType() . "</h4></div></div>"
+        . "<div class='row'><div class='col '><h5>" . $element->getCountry()->getName() . "</h5></div></div></div></div>"
+        . "<div class='row border border-dark'><div class='col col-3 centerCol bg-secondary p-2'><h5>Email</h5></div>"
+        . "<div class='col col-9 centerCol p-2'><h6>" . $element->getEmail() . "</h6></div></div>"
+        . "<div class='row border border-dark'><div class='col col-3 centerCol bg-secondary p-2'><h5>Phone</h5></div><div class='col centerCol p-2'><h6>" . $element->getTelephone() . "</h6></div></div>"
+        . "<div class='row border border-dark'><div class='col col-3 centerCol bg-secondary p-2'><h5>Location</h5></div><div class='col centerCol p-2'><h6>" . $element->getLocation() . ", " . $element->getPostal_code() . "</h6></div></div>";
         if ($element->getWeb()) {
-            echo "<div class='row pt-2 border border-dark'><div class='col'><h6><a href='https://" . $element->getWeb() . "'>" . $element->getWeb() . "</a></h6></div></div>";
+            echo "<div class='row border border-dark'><div class='col col-3 centerCol bg-secondary p-2'><h5>Web</h5></div><div class='col p-2 centerCol'><h6><a href='https://" . $element->getWeb() . "'>" . $element->getWeb() . "</a></h6></div></div>";
         }
         if ($element->getDescription()) {
-            echo "<div class='row'><div class='col border border-dark'><p>" . $element->getDescription() . "</p></div></div>";
+            echo "<div class='row'><div class='col col-3 centerCol bg-secondary'><h6>Description</h6></div><div class='col border-right border-dark centerCol p-2'><h6>" . $element->getDescription() . "</h6></div></div>";
         }
         echo "<div class='row border border-dark bg-secondary'><div class='col border-top border-dark p-2'><p><b>Contact:</b> " . $element->getPartner()->getFull_name() . "</p></div></div>"
         . "<div class='row border border-dark bg-secondary'><div class='col'><p> <b>Email:</b> " . $element->getPartner()->getEmail() . "</p></div></div></div>";
@@ -330,6 +330,35 @@ function insertEnterprise() {
         return FALSE;
     }
     header("Location:index.php");
+}
+
+
+
+function modifyEnterprise($id){
+    $entityM=load("registered");
+    $enterprise=$entityM->find("MobilitySharp\model\Enterprise", $id);
+    $date=new \DateTime(date("Y-m-d H:i:s"));
+    $enterprise->setName(filter_input(INPUT_POST, "eName"));
+    $enterprise->setEmail(filter_input(INPUT_POST, "eEmail"));
+    $enterprise->setTelephone(filter_input(INPUT_POST, "ePhone"));
+    $enterprise->setVat(filter_input(INPUT_POST, "eVat")??NULL);
+    $enterprise->setPostal_code(filter_input(INPUT_POST, "postalCode"));
+    $enterprise->setLocation(filter_input(INPUT_POST, "location"));
+    $enterprise->setWeb(filter_input(INPUT_POST, "web")??NULL);
+    $enterprise->setCeo_post(filter_input(INPUT_POST, "ceoPost")??NULL);
+    $enterprise->setCountry($entityM->find("MobilitySharp\model\Country", filter_input(INPUT_POST, "country")));
+    $enterprise->setType($entityM->find("MobilitySharp\model\EnterpriseType", filter_input(INPUT_POST, "enterpriseType")));
+    $enterprise->setModification_date($date);
+    $entityM->flush();
+    
+   
+    
+    
+    
+    
+    
+    
+    
 }
 
 function insertStudent() {
@@ -521,29 +550,32 @@ function listPartnerEnterprises() {
    
     echo "<div class='row text-center justify-content-around'>";
     foreach ($enterprises as $enterprise) {
-        echo "<div class='col-12 col-md-7 col-lg-5 rounded my-2 my-lg-5'>"
-        ."<div class='row justify-content-end'>
+        
+        
+        echo "<div class='col-12 col-md-7 col-lg-5 my-2 my-lg-5'>
+        <div class='row justify-content-end'>
             <div class='dropleft'>
                 <button class='btn btn-primary' type='button' id='dropdownMenuButton' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
                     <i class='fa fa-ellipsis-v' aria-hidden='true'></i>
                 </button>
                 <div class='dropdown-menu' aria-labelledby='dropdownMenuButton'>
-                    <a class='dropdown-item' href='#'>Edit</a>
+                    <a class='dropdown-item' href='registerEnterprise.php?id=".$enterprise->getId()."'>Edit</a>
                     <a class='dropdown-item' href='#'>Delete</a>
                 </div>
             </div>
-        </div>"
-        . "<div class='row border-bottom border border-dark'><div class='col border-right'><h1>" . $enterprise->getName() . "</h1></div>"
-        . "<div class='col'><div class='row'><div class='col'><h4 class='text-secondary'>" . $enterprise->getType()->getType() . "</h4></div></div>"
-        . "<div class='row'><div class='col border-right'><h5>" . $enterprise->getCountry()->getName() . "</h5></div></div></div></div>"
-        . "<div class='row bg-secondary p-2 border-right border-left border-dark'><div class='col border-right border-dark'><h3>Email</h3></div><div class='col'><h3>Phone</h3></div></div>"
-        . "<div class='row border-bottom border border-dark'>"
-        . "<div class='col border-right p-2'><h6>" . $enterprise->getEmail() . "</h6></div><div class='col p-2'><h6>" . $enterprise->getTelephone() . "</h6></div></div>"
-        . "<div class='row border-right border-left border-dark bg-secondary p-2'><div class='col border-right border-dark'><h3>Location</h3></div><div class='col'><h3>Web</h3></div></div>"
-        . "<div class='row border border-dark'><div class='col border-right p-2'><h6>" . $enterprise->getLocation() . ", " . $enterprise->getPostal_code() . "</h6></div><div class='col border-right p-2'><h6><a href='https://" . $enterprise->getWeb() . "'>" . $enterprise->getWeb() . "</a></h6></div></div>"
-        . "<div class='row bg-secondary p-2 border-right border-left border-dark'><div class='col'><h3>Description</h3></div></div>"
-        . "<div class='row p-2 border border-dark'><div class='col'><h6>" . $enterprise->getDescription() . "</h6></div></div>"
-        . "</div>";
+        </div>
+        <div class='row border-top border-right border-left border-dark'><div class='col border-right centerCol'><h2>".$enterprise->getName()."</h2></div>
+        <div class='col centerCol'><div class='row'><div class='col'><h4 class='text-secondary'>".$enterprise->getType()->getType()."</h4></div></div>
+        <div class='row '><div class='col border-right'><h5>".$enterprise->getCountry()->getName()."</h5></div></div></div></div>
+        <div class='row bg-secondary p-2 border-right border-left border-top border-dark'><div class='col border-right border-dark'><h3>Email</h3></div><div class='col '><h3>Phone</h3></div></div>
+        <div class='row border-right border-left border-top border-dark '>
+        <div class='col border-right p-2 centerCol'><h6>".$enterprise->getEmail()."</h6></div><div class='col p-2 centerCol'><h6>".$enterprise->getTelephone()."</h6></div></div>
+        <div class='row border-right border-left border-top border-dark bg-secondary p-2 '><div class='col border-right border-dark centerCol'><h3>Location</h3></div><div class='col centerCol'><h3>Web</h3></div></div>
+        <div class='row border-right border-left border-top border-dark'><div class='col border-right p-2 centerCol'><h6>".$enterprise->getLocation().", ".$enterprise->getPostal_code()."</h6></div><div class='col border-right p-2 centerCol'><h6><a href='https://{$enterprise->getWeb()}'>{$enterprise->getWeb()}</a></h6></div></div>
+        <div class='row bg-secondary p-2 border-right border-left border-top border-dark'><div class='col centerCol'><h3>Description</h3></div></div>
+        <div class='row p-2 border border-dark'><div class='col centerCol'><h6>".$enterprise->getDescription()."</h6></div></div>
+        </div>";
+        
     }
     echo "</div>";
 }
@@ -691,23 +723,23 @@ function listPartnerMobilities() {
             $name = $mobility->getInstitution()->getName();
             $country = $mobility->getInstitution()->getCountry()->getName();
         }
-        echo "<div class='col-12 col-md-7 col-lg-5 border border-dark rounded my-2 my-lg-5'>" .
-        "<div class='row bg-secondary'>"
+        echo "<div class='col-12 col-md-7 col-lg-5 my-2 my-lg-5'>" .
+        "<div class='row bg-secondary border-top border-right border-left border-dark'>"
         . "<div class='col border-bottom border-right border-dark'><h3>Student</h3></div>"
         . "<div class='col border-bottom border-dark'><h3>$institution</h3></div>"
         . "</div>"
-        . "<div class='row'><div class='col mt-3'><h5>" . $mobility->getStudent()->getFull_name() . "</h5></div>"
-        . "<div class='col border-left'><h4 class='text-secondary'>" . $name . "</h4>"
+        . "<div class='row border-bottom border-right border-left border-dark'><div class='col centerCol'><h5>" . $mobility->getStudent()->getFull_name() . "</h5></div>"
+        . "<div class='col border-left centerCol'><h4 class='text-secondary'>" . $name . "</h4>"
         . "<h5>" . $country . "</h5></div></div>"
-        . "<div class='row bg-secondary'>"
-        . "<div class='col border-top border-right border-dark pt-2'>"
+        . "<div class='row bg-secondary border-bottom border-right border-left border-dark'>"
+        . "<div class='col pt-2 border-right border-dark'>"
         . "<h5>Start date</h5></div>"
-        . "<div class='col border-top border-dark pt-2'>"
+        . "<div class='col pt-2'>"
         . "<h5>Estimated end date</h5></div></div>"
-        . "<div class='row'>"
-        . "<div class='col p-2 border-top border-right border-dark'>"
+        . "<div class='row border-bottom border-right border-left border-dark'>"
+        . "<div class='col p-2 border-right'>"
         . "<h5>" . $startDate . "</h5></div>"
-        . "<div class='col p-2 border-top border-dark'>"
+        . "<div class='col p-2 border-dark'>"
         . "<h5>" . $estimatedEndDate . "</h5></div></div></div>"
         ;
     }
@@ -923,9 +955,9 @@ function findMobilitiesBetweenDates() {
         . "<div class='col border-bottom border-right border-dark'><h4>Student</h4></div>"
         . "<div class='col border-bottom border-dark'><h4>$institution</h4></div>"
         . "</div>"
-        . "<div class='row'><div class='col p-2 border-right'><h5>" . $mobility->getStudent()->getFull_name() . "</h5></div>"
-        . "<div class='col p-2'><div class='row'><div class='col'><h4 class='text-secondary'>" . $name . "</h4></col>"
-        . "<div class='col'><h5>" . $country . "</h5></div></div></div></div></div>"
+        . "<div class='row'><div class='col centerCol p-2 border-right'><h5>" . $mobility->getStudent()->getFull_name() . "</h5></div>"
+        . "<div class='col p-2'><div class='row'><div class='col centerCol'><h4 class='text-secondary'>" . $name . "</h4></col>"
+        . "<div class='col centerCol'><h5>" . $country . "</h5></div></div></div></div></div>"
         . "<div class='row bg-secondary border-bottom border-dark'>"
         . "<div class='col border-top border-right border-dark pt-2'>"
         . "<h5>Start date</h5></div>"
@@ -964,13 +996,13 @@ function partnerProfile(){
     . "<div class='container text-center border-bottom border-dark mb-3 mb-lg-5'><div class='row text-center mt-2 mt-lg-5 justify-content-center '>"
     . "<div class='col col-12 col-lg-10 col-xl-8 border border-dark mb-3'>"
     . "<div class='row bg-secondary p-2 border-bottom border-dark'><div class='col border-right border-dark'><h4>Email</h4></div><div class='col'><h4>Username</h4></div></div>"
-    . "<div class='row border-bottom border-dark p-2'><div class='col'><h6>" . $partner->getEmail() . "</h6></div><div class='col'><h6>" . $partner->getUsername() . "</h6></div></div>"
+    . "<div class='row border-bottom border-dark p-2'><div class='col centerCol'><h6>" . $partner->getEmail() . "</h6></div><div class='col centerCol'><h6>" . $partner->getUsername() . "</h6></div></div>"
     . "<div class='row bg-secondary border-bottom border-dark p-2'><div class='col border-right border-dark'><h4>Phone</h4></div><div class='col'><h4>VAT</h4></div></div>"
-    . "<div class='row border-bottom border-dark p-2'><div class='col'><h6>" . $partner->getTelephone() . "</h6></div><div class='col'><h6>" . $partner->getVat() . "</h6></div></div>"
+    . "<div class='row border-bottom border-dark p-2'><div class='col centerCol'><h6>" . $partner->getTelephone() . "</h6></div><div class='col centerCol'><h6>" . $partner->getVat() . "</h6></div></div>"
     . "<div class='row bg-secondary border-bottom border-dark p-2'><div class='col border-right border-dark'><h4>Department</h4></div><div class='col'><h4>Post</h4></div></div>"
-    . "<div class='row border-bottom border-dark p-2'><div class='col'><h6>" . $partner->getDepartment() . "</h6></div><div class='col'><h6>" . $partner->getPost() . "</h6></div></div>"
+    . "<div class='row border-bottom border-dark p-2'><div class='col centerCol'><h6>" . $partner->getDepartment() . "</h6></div><div class='col centerCol'><h6>" . $partner->getPost() . "</h6></div></div>"
     . "<div class='row bg-secondary border-bottom border-dark p-2'><div class='col border-right border-dark'><h4>Institution</h4></div><div class='col'><h4>Country</h4></div></div>"
-    . "<div class='row p-2'><div class='col'><h6>" . $partner->getInstitution()->getName() . "</h6></div><div class='col'><h6>" . $partner->getCountry()->getName() . "</h6></div></div>"
+    . "<div class='row p-2'><div class='col centerCol'><h6>" . $partner->getInstitution()->getName() . "</h6></div><div class='col centerCol'><h6>" . $partner->getCountry()->getName() . "</h6></div></div>"
     . "</div></div>"
     . "<div class='row mb-3 mb-lg-5 justify-content-center '>"
     . "<div class='col col-sm-6 col-md-4 col-lg-3 btn-group my-2 my-md-3'><button class='btn btn-secondary rounded ml-2 ml-md-3 ml-md-4' type='button' href='#'>Modify profile</button</div></div>"
@@ -1042,11 +1074,12 @@ function listPartnerMessages($type){
     
     foreach ($petitions as $petition){
         
-        echo "<li class='unread'><a href='#'>
-		<div class='header'>
+        echo "<ul class='messages-list mb-3 mb-lg-5' id='".$petition->getStatus()->getStatus()."'>
+            <li class='unread'>
+		
 		
 		<span class='date'><span class='fa fa-paper-clip'></span>".date_format($petition->getDate(),"m-d h:i")."</span>
-		</div>
+		
 		<div class='title'>
 		<input type='checkbox' class='form-check-input' id='checkMessage'>
 		".$petition->getSubject()."
@@ -1054,8 +1087,9 @@ function listPartnerMessages($type){
 		<div class='description'>
                 ".$petition->getDescription()."
                 </div>
-		</a>		
-		</li>";
+			
+		</li>
+                </ul>";
     }
 }
 
@@ -1115,12 +1149,13 @@ function listPartnerMessagesAdmin($type){
     if($petitions>0){
     foreach ($petitions as $petition){
         
-        echo "<li class='unread'><a href='#'>
-		<div class='header'>
-                <input type='checkbox' class='form-check-input' id='checkMessage'>
+        echo "<ul class='messages-list mb-3 mb-lg-5' id='".$petition->getStatus()->getStatus()."'>"
+        . "<li class='unread' id='".$petition->getId()."'>
+		
+                <input type='checkbox' class='form-check-input'>
 		<span class='from'>".$petition->getSender_partner()->getFull_name()."</span>
 		<span class='date'><span class='fa fa-paper-clip'></span>".date_format($petition->getDate(),"m-d H:i")."</span><small> &#60".$petition->getSender_partner()->getEmail()."&#62</small>
-		</div>
+		
 		<div class='title'>
 		
 		".$petition->getSubject()."
@@ -1128,8 +1163,9 @@ function listPartnerMessagesAdmin($type){
 		<div class='description'>
                 ".$petition->getDescription()."
                 </div>
-		</a>		
-		</li>";
+		
+		</li>
+                </ul>";
     }
 }
 
@@ -1145,5 +1181,49 @@ function changePetitionStatus($newStatus,$petitionId){
     $entityM=load("admin");
     $petition=$entityM->find("MobilitySharp\model\PetitionHistory",$petitionId);
     $petition->setStatus($newStatus);
+    $entityM->flush();
+}
+
+
+function modifyStudent($id){
+    
+    $entityM=load("registered");
+    $student=$entityM->find("MobilitySharp\model\Student", $id);
+    $date=new \DateTime(date("Y-m-d H:i:s"));
+    $student->setFull_name(filter_input(INPUT_POST, "fName")." ". filter_input(INPUT_POST, "lName"));
+    $student->setBirth_date(filter_input(INPUT_POST, "birthDate"));
+    $student->setVat(filter_input(INPUT_POST, "sVat")??NULL);
+    $student->setModification_date($date);
+    if(filter_input(INPUT_POST, "gender")=="Male"){
+        $student->setGender('M');
+    }
+    else {
+        $student->setGender('F');
+    }
+    $entityM->flush();
+}
+
+
+function modifyMobility($id,$mobilityType){
+    
+    $entityM=load("registered");
+    
+    if($mobilityType instanceof \MobilitySharp\model\EnterpriseMobility){
+        $enterpriseId= filter_input(INPUT_POST, "enterprise");
+        $mobility=$entityM->find("MobilitySharp\model\EnterpriseMobility", $id);
+        $mobility->setEnterprise($entityM->find("MobilitySharp\model\Enterprise"),$enterpriseId);
+    }
+    else {
+        $institutionId= filter_input(INPUT_POST, "institution");
+        $mobility=$entityM->find("MobilitySharp\model\InstitutionMobility", $id);
+        $mobility->setInstitution($entityM->find("MobilitySharp\model\Institution"),$institutionId);
+    }
+    
+    $date=new \DateTime(date("Y-m-d H:i:s"));
+    $mobility->setStart_date(filter_input(INPUT_POST, "startDate"));
+    $mobility->setEstimated_end_date(filter_input(INPUT_POST, "estimatedEndDate"));
+    $mobility->setStudent(filter_input(INPUT_POST, ""));
+    $mobility->setModification_date($date);
+    
     $entityM->flush();
 }
