@@ -24,7 +24,7 @@ use MobilitySharp\controller;
             if(controller\getPartnerEnterprises()){
             ?>
             <div class='row justify-content-center border-bottom border-dark'><div class='col'><h2>Register new enterprise specialty</h2></div></div>
-            <div class="container mb-3 mb-lg-5">
+            <section class="container mb-3 mb-lg-5">
                 
                 <form method="POST" id="studentSpecialty" action="registerEnterpriseSpecialty.php">
                    
@@ -67,17 +67,17 @@ use MobilitySharp\controller;
                                 
                             </div>
             </form>
-                        </div>
+                        </section>
             <?php
             }
             else {
                 ?>
-            <div class="container mt-3 pt-3">
+            <section class="container mt-3 pt-3">
                 <div class="row border-bottom border-dark"><div class="col"><h4>You have to register at least one enterprise.</h4></div></div>
                 <ul>
                     <li><div class="row text-left m-3 "><div class="col"><h5><a href="registerEnterprise.php">Register enterprise</a></h5></div></div></li>
                 </ul>
-                </div>
+                </section>
             <?php
             }
             ?>

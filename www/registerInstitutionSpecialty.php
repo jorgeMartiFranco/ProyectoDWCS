@@ -24,7 +24,7 @@ use MobilitySharp\controller;
            
             ?>
             <div class='row justify-content-center border-bottom border-dark'><div class='col'><h2>Register new institution specialty</h2></div></div>
-            <div class="container mb-3 mb-lg-5">
+            <section class="container mb-3 mb-lg-5">
                 
                 <form method="POST" id="institutionSpecialty" action="registerInstitutionSpecialty.php">
                    
@@ -56,7 +56,7 @@ use MobilitySharp\controller;
                                 
                             </div>
             </form>
-                        </div>
+                        </section>
         
         </div>
         </div>

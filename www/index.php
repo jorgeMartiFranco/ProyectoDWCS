@@ -37,12 +37,9 @@
 						</div>
 					</div>
 				</section>
-				<?php } else { ?>
-				<section class="container">
-					<!-- Aquí van los elementos del panel de control -->
-				</section>
-				<section class="container">
-					<?php 
+				<?php } else { 
+			
+					
 					include 'score.php';
 					include 'search.php';
 					include 'topInstitutions.php';

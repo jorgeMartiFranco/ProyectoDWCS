@@ -21,7 +21,7 @@ use MobilitySharp\controller;
         <div class="container-fluid my-3 my-lg-5 mx-3 mx-lg-5 border-bottom border-dark">
             <div class="row border-bottom border-dark"><div class="col"><h2>Insert new institution type</h2></div></div>
             
-            <div class="container mb-3 mb-lg-5">
+            <section class="container mb-3 mb-lg-5">
                 
                 <form method="POST" id="institutionType" action="registerInstitutionType.php">
                    
@@ -36,7 +36,7 @@ use MobilitySharp\controller;
                                 
                             </div>
             </form>
-                        </div>
+                        </section>
         </div>
         </div>
         

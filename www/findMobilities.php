@@ -29,25 +29,30 @@ include "header.php";
 } else if(isset($_SESSION)){
 ?>
                 <div class="container-fluid my-3 my-lg-5 mx-3 mx-lg-5 border-bottom border-dark">
-                    <div class="row ">
+                   <div class='row justify-content-center border-bottom border-dark'><div class='col'><h2>Search mobilities</h2></div></div>
+                   <section class="container mb-3 mb-lg-5 ">
                     <form class="col mb-3 mb-lg-5 " method="GET" action="findMobilities.php">
-                        <div class="form-group ">
-                            <div class="row border-bottom border-dark">
-                              <div class="col "><h2 for="dbSearch">Search mobilities</h2></div></div>
-                                <div class="row justify-content-center mt-3"><div class="col col-12 col-lg-5 col-xl-3"><h4>Start date</h4></div><div class="col col-12 col-lg-5 col-xl-3"><h4>Estimated end date</h4></div></div>
-                                <div class="row justify-content-center mt-3"><div class="col col-12 col-lg-5 col-xl-3">
-                        <input class="form-control" type="date" id="date1" name="date1"></div>
-                        <div class="col col-12 col-lg-5 col-xl-3"><input class="form-control" type="date" id="date2" name="date2"></div>    
-                </div>
+                        
+                        <div class="form-row justify-content-center">
+                        <div class="col-12 col-sm col-md-5 col-lg-4 mx-md-3 my-2 my-md-3">
+                            <h4>Start date</h4>
+                            <input class="form-control mt-3" type="date" name="date1" id="date1" required>
+                            
+                        </div>
+                        <div class="col-12 col-sm col-md-5 col-lg-4 mx-md-3 my-2 my-md-3">
+                            <h4>Estimated end date</h4>
+                            <input class="form-control mt-3" type="date" name="date2" id="date2" required>
+                        </div>
+                            </div>
+               
             
-        </div>
+        </section>
         <div class="text-center">
-            <button type="submit" class="btn btn-secondary w-25">Search</button>
+            <button type="submit" class="btn btn-secondary w-25 mb-3 mb-lg-5">Search</button>
         </div>
     </form>
 </div>
-                </div>
-            </div>
+        </div>                
         
 <?php
 

@@ -27,7 +27,7 @@ use MobilitySharp\controller;
             ?>
             <div class="row border-bottom border-dark"><div class="col"><h2>Register new institution mobility</h2></div></div>
             
-            <div class="container pt-3 mb-3 mb-lg-5">
+            <section class="container pt-3 mb-3 mb-lg-5">
                 
                 <form method="POST" id="institutionMobility" action="registerInstitutionMobility.php">
                    
@@ -70,18 +70,18 @@ use MobilitySharp\controller;
                                 
                             </div>
             </form>
-                        </div>
+                        </section>
             <?php
             }
             else {
                 ?>
-            <div class="container border mt-3 pt-3">
+            <section class="container border mt-3 pt-3">
                 <div class="row"><div class="col"><h4>You have to register at least one student</h4></div></div>
                 <ul>
                     <li><div class="row text-left m-3"><div class="col"><h5><a href="registerStudent.php">Register student</a></h5></div></div></li>
                     
                 </ul>
-                </div>
+                </section>
             <?php
             }
             ?>

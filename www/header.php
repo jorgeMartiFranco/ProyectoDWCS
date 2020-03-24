@@ -32,8 +32,10 @@ $breakpoint = $user ? 'md' : 'sm';
         <div class="ml-<?=$breakpoint?>-auto my-1 my-<?=$breakpoint?>-0">
             <span class="align-middle">Welcome, <?=$user['usuario'];?></span>
             <div class="btn-group" role="group">
+                <a role="button" class="btn btn-secondary" href="myInbox.php"><i class='fas fa-inbox'></i></a>
                 <a role="button" class="btn btn-secondary" href="myProfile.php">Profile</a>
                 <a role="button" class="btn btn-secondary" href="logout.php">Logout</a>
+                
             </div>
         </div>
         <?php

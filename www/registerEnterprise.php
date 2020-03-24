@@ -17,7 +17,7 @@ if(!isset($_POST) or empty($_POST)) {
                         <h2>Insert new enterprise</h2>
                     </div>
                 </div>
-                <div class="container mb-3 mb-lg-5">
+                <section class="container mb-3 mb-lg-5">
                     <ul class="nav nav-tabs mt-2" id="registerTab" role="tablist">
                         <li class="nav-item ">
                             <a class="nav-link active" href="#enterprise" id="enterpriseTab" data-toggle="tab" role="tab" aria-controls="enterprise" aria-selected="true">Enterprise</a>
@@ -47,17 +47,8 @@ if(!isset($_POST) or empty($_POST)) {
                             </div>
                         </div>
                     </form>
-                </div>
-                <!--<div class="container">
-                    <form method="POST" id="enterprise" action="registerEnterprise.php">
-                        <script>createFormInsertEnterprise();</script>
-                        <div class="form-row justify-content-center">
-                            <div class="col col-sm-6 col-md-5 col-lg-4 btn-group my-2 my-md-3" role="group"> 
-                                <button type="submit" class="btn btn-secondary rounded ml-2 ml-md-3 ml-md-4" id="submitRegister">Insert</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>-->
+                </section>
+               
             </div>
         </div>
         <?php include 'footer.html' ?>

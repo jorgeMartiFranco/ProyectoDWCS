@@ -19,11 +19,12 @@ use MobilitySharp\controller;
     <?php
     include "sidenav.php";?>
         <div class="container-fluid my-3 my-lg-5 mx-3 mx-lg-5 border-bottom border-dark">
+            
             <div class="row border-bottom border-dark">
                 <div class="col"><h2>Insert new enterprise type</h2></div></div>
             
             
-                
+                <section class="container">
                 <form class="col mb-3 mb-lg-5" method="POST" id="enterpriseType" action="registerEnterpriseType.php">
                    
                            
@@ -37,7 +38,7 @@ use MobilitySharp\controller;
                                 
                             </div>
             </form>
-                       
+                </section>    
         </div>
         </div>
                     

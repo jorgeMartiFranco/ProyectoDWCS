@@ -32,12 +32,12 @@ use MobilitySharp\controller;
             }
             else {
         ?>
-            <div class="container mt-3 pt-3 mb-3 mb-lg-5">
+            <section class="container mt-3 pt-3 mb-3 mb-lg-5">
                 <div class="row"><div class="col"><h4>You have to register at least one student.</h4></div></div>
                 <ul>
                     <li><div class="row text-left m-3"><div class="col"><h5><a href="registerStudent.php">Register student</a></h5></div></div></li>
                 </ul>
-                </div>
+                </section>
             <?php
             }
             ?>
