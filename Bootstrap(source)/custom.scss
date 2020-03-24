@@ -17,7 +17,7 @@ $body-color: $font;
 //Links
 $link-color: $secondary;
 
-//Navbar (cambiar)
+//Navbar
 $navbar-custom-color: rgba($primary, .6);
 $navbar-custom-hover-color: rgba($primary, .8);
 $navbar-custom-active-color: $primary;
@@ -27,6 +27,11 @@ $navbar-custom-toggler-border-color: rgba($primary, .2);
 
 $navbar-custom-brand-color: $navbar-custom-active-color;
 $navbar-custom-brand-hover-color: $navbar-custom-active-color;
+
+//Components
+$component-active-color: $primary;
+$component-active-bg: $secondary;
+
 
 //YIQ
 $yiq-text-dark: $font;
