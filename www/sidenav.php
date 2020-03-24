@@ -104,9 +104,7 @@
             
             
             
-            <li>
-                        <a href="contact.php">Contact</a>
-                    </li>
+            
             <?php
             }
             ?>

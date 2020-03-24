@@ -1,10 +1,11 @@
 <html>
     
     <?php
+    include_once 'controller/db.php';
     include "head.html";
     ?>
     <body>
-        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+        
         <?php
         include "header.php";
         
@@ -19,38 +20,69 @@
 	<div class="col-md-3">
 	    <div class="panel panel-default">
 			<div class="panel-body inbox-menu">
-				<a href="page-inbox-compose.html" class="btn btn-danger btn-block">New Email</a>
+                            <a href="contact.php" class="btn btn-danger btn-block">New Petition</a>
 				<ul>
+                                    <?php
+                                    if($_SESSION["user"]["role"]=="REGISTERED"){
+                                    ?>
 					<li>
-						<a href="#"><i class="fa fa-inbox"></i> Inbox <span class="label label-danger">4</span></a>
-					</li>
-					<li>
-						<a href="#"><i class="fa fa-star"></i> Stared</a>
-					</li>
-					<li>
-						<a href="#"><i class="fa fa-rocket"></i> Sent</a>
-					</li>
-					<li>
-						<a href="#"><i class="fa fa-trash-o"></i> Trash</a>
+						<a href="#requested"><i class="fa fa-inbox"></i>Requested <span class="label"><?php 
+                                                                \MobilitySharp\controller\countMessages("REQUESTED");
+                                                ?></span></a>
 					</li>
 					<li>
-						<a href="#"><i class="fa fa-bookmark"></i> Important<span class="label label-info">5</span></a>
-					</li>
-					<li class="title">
-						Labels
-					</li>
-					<li>
-						<a href="#">Home <span class="label label-danger"></span></a>
+						<a href="#inProccess"><i class="fa fa-star"></i>In Proccess<span class="label"><?php 
+                                                                \MobilitySharp\controller\countMessages("IN PROCCESS");
+                                                ?></span></a>
 					</li>
 					<li>
-						<a href="#">Job <span class="label label-info"></span></a>
+						<a href="#solved"><i class="fa fa-rocket"></i>Solved
+                                                <span class="label"><?php 
+                                                                \MobilitySharp\controller\countMessages("SOLVED");
+                                                ?></span>
+                                                </a>
 					</li>
 					<li>
-						<a href="#">Clients <span class="label label-success"></span></a>
+						<a href="#cancelled"><i class="fa fa-trash"></i>Cancelled
+                                                <span class="label"><?php 
+                                                                \MobilitySharp\controller\countMessages("CANCELLED");
+                                                ?></span></a>
 					</li>
 					<li>
-						<a href="#">News <span class="label label-warning"></span></a>
+						<a href="#declined"><i class="fas fa-times-circle"></i>Declined<span class="label"><?php 
+                                                                \MobilitySharp\controller\countMessages("DECLINED");
+                                                ?></span></a>
 					</li>
+					<?php
+                                    }
+                                    else if($_SESSION["user"]["role"]=="ADMIN"){
+                                        ?>
+                                        <li>
+						<a href="#requested"><i class="fa fa-inbox"></i>Requested<span class="label"><?php 
+                                                                \MobilitySharp\controller\countMessagesAdmin("REQUESTED");
+                                                ?></span></a>
+					</li>
+					<li>
+						<a href="#inProccess"><i class="fas fa-lightbulb"></i>In Proccess<span class="label"><?php 
+                                                                \MobilitySharp\controller\countMessagesAdmin("IN PROCCESS");
+                                                ?></span></a>
+					</li>
+					<li>
+						<a href="#solved"><i class="fas fa-check-circle"></i>Solved<span class="label"><?php 
+                                                                \MobilitySharp\controller\countMessagesAdmin("SOLVED");
+                                                ?></span>
+                                                </a>
+					</li>
+					
+					<li>
+						<a href="#declined"><i class="fas fa-times-circle"></i>Declined<span class="label"><?php 
+                                                                \MobilitySharp\controller\countMessagesAdmin("DECLINED");
+                                                ?></span></a>
+					</li>
+                                        
+                                        <?php
+                                    }
+                                        ?>
 				</ul>
 				
 			</div>	
@@ -65,19 +97,24 @@
 		<div class="panel panel-default">
 			<div class="panel-body">
 				<span class="btn-group">
-				  	<button class="btn btn-default"><span class="fa fa-envelope"></span></button>
-				  	<button class="btn btn-default"><span class="fa fa-star"></span></button>
-				  	<button class="btn btn-default"><span class="fa fa-star-o"></span></button>
-					<button class="btn btn-default"><span class="fa fa-bookmark-o"></span></button>
+                                    <?php
+                                    if($_SESSION["user"]["role"]=="ADMIN"){
+                                    ?>
+				  	<button class="btn btn-primary" data-toggle="tooltip" title="Set petition requested"><span class="fa fa-inbox"></span></button>
+				  	<button class="btn btn-primary" data-toggle="tooltip" title="Set petition in proccess"><span class="fas fa-lightbulb"></span></button>
+				  	<button class="btn btn-primary" data-toggle="tooltip" title="Set petition solved"><span class="fas fa-check-circle"></span></button>
+					<button class="btn btn-primary" data-toggle="tooltip" title="Set petition declined"><span class="fas fa-times-circle"></span></button>
+                                    <?php
+                                    }
+                                    else if($_SESSION["user"]["role"]=="REGISTERED"){
+                                        ?>
+                                            
+                                            <?php
+                                    }
+                                    ?>
 				</span>
 
-				<span class="btn-group">
-				  	<button class="btn btn-default"><span class="fa fa-mail-reply"></span></button>
-				  	<button class="btn btn-default"><span class="fa fa-mail-reply-all"></span></button>
-				  	<button class="btn btn-default"><span class="fa fa-mail-forward"></span></button>
-				</span>
-
-				<button class="btn btn-default"><span class="fa fa-trash-o"></span></button>
+				
 
 				
 
@@ -85,164 +122,103 @@
 				  	<button class="btn btn-default"><span class="fa fa-chevron-left"></span></button>
 				  	<button class="btn btn-default"><span class="fa fa-chevron-right"></span></button>
 				</span>
-
-				<ul class="messages-list">
-
-					<li class="unread">
-						<a href="page-inbox-message.html">
-							<div class="header">
-								<span class="action"><i class="fa fa-square-o"></i><i class="fa fa-square"></i></span> 
-								<span class="from">Lukasz Holeczek</span>
-								<span class="date"><span class="fa fa-paper-clip"></span> Today, 3:47 PM</span>
-							</div>
-							<div class="title">
-								<span class="action"><i class="fa fa-star-o"></i><i class="fa fa-star bg"></i></span>
-								Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-							</div>	
-							<div class="description">
-								Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-							</div>
-						</a>		
-					</li>
-
-					<li>
-						<a href="page-inbox-message.html">
-							<div class="header">
-								<span class="action"><i class="fa fa-square-o"></i><i class="fa fa-square"></i></span> 
-								<span class="from">Lukasz Holeczek</span>
-								<span class="date"><span class="fa fa-paper-clip"></span> Today, 3:47 PM</span>
-							</div>
-							<div class="title">
-								<span class="action"><i class="fa fa-star-o"></i><i class="fa fa-star bg"></i></span>
-								Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-							</div>	
-							<div class="description">
-								Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-							</div>
-						</a>		
-					</li>
-
-					<li>
-						<a href="page-inbox-message.html">
-							<div class="header">
-								<span class="action"><i class="fa fa-square-o"></i><i class="fa fa-square"></i></span> 
-								<span class="from">Lukasz Holeczek</span>
-								<span class="date">Today, 3:47 PM</span>
-							</div>
-							<div class="title">
-								<span class="action"><i class="fa fa-star-o"></i><i class="fa fa-star bg"></i></span>
-								Lorem ipsum dolor sit amet.
-							</div>	
-							<div class="description">
-								Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-							</div>
-						</a>	
-					</li>
-
-					<li class="unread">
-						<a href="page-inbox-message.html">
-							<div class="header">
-								<span class="action"><i class="fa fa-square-o"></i><i class="fa fa-square"></i></span> 
-								<span class="from">Lukasz Holeczek</span>
-								<span class="date">Today, 3:47 PM</span>
-							</div>
-							<div class="title">
-								<span class="action"><i class="fa fa-star-o"></i><i class="fa fa-star bg"></i></span>
-								Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-							</div>	
-							<div class="description">
-								Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-							</div>
-						</a>
-					</li>
-
-					<li class="unread">
-						<a href="page-inbox-message.html">
-							<div class="header">
-								<span class="action"><i class="fa fa-square-o"></i><i class="fa fa-square"></i></span> 
-								<span class="from">Lukasz Holeczek</span>
-								<span class="date">Today, 3:47 PM</span>
-							</div>
-							<div class="title">
-								<span class="action"><i class="fa fa-star-o"></i><i class="fa fa-star bg"></i></span>
-								Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-							</div>	
-							<div class="description">
-								Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-							</div>		
-							
-						</a>
-					</li>
-
-					<li>
-						<a href="page-inbox-message.html">
-							<div class="header">
-								<span class="action"><i class="fa fa-square-o"></i><i class="fa fa-square"></i></span> 
-								<span class="from">Lukasz Holeczek</span>
-								<span class="date">Today, 3:47 PM</span>
-							</div>
-							<div class="title">
-								<span class="action"><i class="fa fa-star-o"></i><i class="fa fa-star bg"></i></span>
-								Lorem ipsum dolor sit amet.
-							</div>	
-							<div class="description">
-								Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-							</div>
-						</a>		
-					</li>
-
-					<li class="unread">
-						<a href="page-inbox-message.html">
-							<div class="header">
-								<span class="action"><i class="fa fa-square-o"></i><i class="fa fa-square"></i></span> 
-								<span class="from">Lukasz Holeczek</span>
-								<span class="date">Today, 3:47 PM</span>
-							</div>
-							<div class="title">
-								<span class="action"><i class="fa fa-star-o"></i><i class="fa fa-star bg"></i></span>
-								Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-							</div>	
-							<div class="description">
-								Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-							</div>
-						</a>											
-					</li>
-
-					<li>
-						<a href="page-inbox-message.html">
-							<div class="header">
-								<span class="action"><i class="fa fa-square-o"></i><i class="fa fa-square"></i></span> 
-								<span class="from">Lukasz Holeczek</span>
-								<span class="date">Today, 3:47 PM</span>
-							</div>
-							<div class="title">
-								<span class="action"><i class="fa fa-star-o"></i><i class="fa fa-star bg"></i></span>
-								Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-							</div>	
-							<div class="description">
-								Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-							</div>
-						</a>		
-					</li>
-
-					<li>
-						<a href="page-inbox-message.html">
-							<div class="header">
-								<span class="action"><i class="fa fa-square-o"></i><i class="fa fa-square"></i></span> 
-								<span class="from">Lukasz Holeczek</span>
-								<span class="date">Today, 3:47 PM</span>
-							</div>
-							<div class="title">
-								<span class="action"><i class="fa fa-star-o"></i><i class="fa fa-star bg"></i></span>
-								Lorem ipsum dolor sit amet.
-							</div>	
-							<div class="description">
-								Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-							</div>
-						</a>
-					</li>
+                                <?php
+                                if($_SESSION["user"]["role"]=="REGISTERED"){
+                                ?>
+                                <ul class="messages-list mb-3 mb-lg-5" id="requested">
+                                        <?php 
+                                                MobilitySharp\controller\listPartnerMessages("REQUESTED");
+                                        ?>
+					
+					
 
 				</ul>
+                                
+                                <ul class="messages-list mb-3 mb-lg-5" id="inProccess" hidden>
+                                        <?php 
+                                                MobilitySharp\controller\listPartnerMessages("IN PROCCESS");
+                                        ?>
+					
+					
+
+				</ul>
+                                
+                                <ul class="messages-list mb-3 mb-lg-5" id="solved" hidden>
+                                        <?php 
+                                                MobilitySharp\controller\listPartnerMessages("SOLVED");
+                                        ?>
+					
+					
+
+				</ul>
+                                
+                                <ul class="messages-list mb-3 mb-lg-5" id="cancelled" hidden>
+                                        <?php 
+                                                MobilitySharp\controller\listPartnerMessages("CANCELLED");
+                                        ?>
+					
+					
+
+				</ul>
+                                <ul class="messages-list mb-3 mb-lg-5" id="declined" hidden>
+                                        <?php 
+                                                MobilitySharp\controller\listPartnerMessages("DECLINED");
+                                        ?>
+					
+					</ul>
+                                    <?php
+                                }
+                                else if($_SESSION["user"]["role"]=="ADMIN"){
+                                    
+                                    ?>
+                                        <ul class="messages-list mb-3 mb-lg-5" id="requested">
+                                        <?php 
+                                                MobilitySharp\controller\listPartnerMessagesAdmin("REQUESTED");
+                                        ?>
+					
+					
+
+				</ul>
+                                
+                                <ul class="messages-list mb-3 mb-lg-5" id="inProccess" hidden>
+                                        <?php 
+                                                MobilitySharp\controller\listPartnerMessagesAdmin("IN PROCCESS");
+                                        ?>
+					
+					
+
+				</ul>
+                                
+                                <ul class="messages-list mb-3 mb-lg-5" id="solved" hidden>
+                                        <?php 
+                                                MobilitySharp\controller\listPartnerMessagesAdmin("SOLVED");
+                                        ?>
+					
+					
+
+				</ul>
+                                
+                                <ul class="messages-list mb-3 mb-lg-5" id="cancelled" hidden>
+                                        <?php 
+                                                MobilitySharp\controller\listPartnerMessagesAdmin("CANCELLED");
+                                        ?>
+					
+					
+
+				</ul>
+                                <ul class="messages-list mb-3 mb-lg-5" id="declined" hidden>
+                                        <?php 
+                                                MobilitySharp\controller\listPartnerMessagesAdmin("DECLINED");
+                                        ?>
+					
+					</ul>
+                                        
+                                        <?php
+                                }
+                                    ?>
+				
+                                
+                                
 				
 			</div>	
 			
@@ -253,4 +229,7 @@
 </div>
 </div>
         </div>
+        <?php
+        include "footer.html";
+        ?>
 </html>

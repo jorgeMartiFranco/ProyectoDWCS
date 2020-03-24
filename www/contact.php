@@ -62,7 +62,7 @@ use MobilitySharp\controller;
             <?php
         } else {
             controller\sendPetition();
-            header("Location:index.php");
+            header("Location:myInbox.php");
         }
         ?>
 <?php include 'footer.html' ?>

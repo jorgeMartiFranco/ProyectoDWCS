@@ -999,9 +999,9 @@ function sendPetition(){
             ->setMaxResults(1);
     $petition = $queryPetition->getQuery()->getSingleResult();
     $receiverPartner=$petition->getReceiver_partner();
-    $newPetition = new \MobilitySharp\model\PetitionHistory($subject, $date, $status, $senderPartner, $receiverPartner);
+    $newPetition = new \MobilitySharp\model\PetitionHistory(ucfirst($subject), $date, $status, $senderPartner, $receiverPartner);
     if($description= filter_input(INPUT_POST, "description")){
-        $newPetition->setDescription($description);
+        $newPetition->setDescription(ucfirst($description));
     }
     require_once 'sendMail.php';
     if(sendMail($newPetition)){
@@ -1025,4 +1025,125 @@ function findEntity($class, $id){
     $entity=$entityM->find("MobilitySharp\\model\\".$class, $id);
     
     return $entity;
+}
+
+function listPartnerMessages($type){
+    $entityM=load("registered");
+    $partner=$entityM->find("MobilitySharp\model\Partner",$_SESSION["user"]["id"]);
+    
+    
+    $queryPetition = $entityM->createQueryBuilder();
+    $queryPetition->addSelect('p')
+            ->from("MobilitySharp\model\PetitionHistory", 'p')
+            ->where("p.sender_partner=".$partner->getId())
+            ->andWhere("p.status=(SELECT s FROM MobilitySharp\model\Status s WHERE s.status='$type')")
+            ->orderBy("p.date","DESC");
+    $petitions = $queryPetition->getQuery()->getResult();
+    
+    foreach ($petitions as $petition){
+        
+        echo "<li class='unread'><a href='#'>
+		<div class='header'>
+		
+		<span class='date'><span class='fa fa-paper-clip'></span>".date_format($petition->getDate(),"m-d h:i")."</span>
+		</div>
+		<div class='title'>
+		<input type='checkbox' class='form-check-input' id='checkMessage'>
+		".$petition->getSubject()."
+		</div>	
+		<div class='description'>
+                ".$petition->getDescription()."
+                </div>
+		</a>		
+		</li>";
+    }
+}
+
+function countMessages($type){
+    $entityM=load("registered");
+    $partner=$entityM->find("MobilitySharp\model\Partner",$_SESSION["user"]["id"]);
+    
+    
+    $queryPetition = $entityM->createQueryBuilder();
+    $queryPetition->addSelect('COUNT(p)')
+            ->from("MobilitySharp\model\PetitionHistory", 'p')
+            ->where("p.sender_partner=".$partner->getId())
+            ->andWhere("p.status=(SELECT s FROM MobilitySharp\model\Status s WHERE s.status='$type')");
+    $petitions = $queryPetition->getQuery()->getSingleScalarResult();
+    
+    if($petitions!=0){
+        echo $petitions;
+    }
+    else {
+        return;
+    }
+}
+
+
+function countMessagesAdmin($type){
+    $entityM=load("admin");
+    $partner=$entityM->find("MobilitySharp\model\Partner",$_SESSION["user"]["id"]);
+    
+    
+    $queryPetition = $entityM->createQueryBuilder();
+    $queryPetition->addSelect('COUNT(p)')
+            ->from("MobilitySharp\model\PetitionHistory", 'p')
+            ->where("p.receiver_partner=".$partner->getId())
+            ->andWhere("p.status=(SELECT s FROM MobilitySharp\model\Status s WHERE s.status='$type')");
+    $petitions = $queryPetition->getQuery()->getSingleScalarResult();
+    
+    if($petitions!=0){
+        echo $petitions;
+    }
+    else {
+        return;
+    }
+}
+
+function listPartnerMessagesAdmin($type){
+    $entityM=load("registered");
+    $partner=$entityM->find("MobilitySharp\model\Partner",$_SESSION["user"]["id"]);
+    
+    
+    $queryPetition = $entityM->createQueryBuilder();
+    $queryPetition->addSelect('p')
+            ->from("MobilitySharp\model\PetitionHistory", 'p')
+            ->where("p.receiver_partner=".$partner->getId())
+            ->andWhere("p.status=(SELECT s FROM MobilitySharp\model\Status s WHERE s.status='$type')")
+            ->orderBy("p.date","DESC");
+    $petitions = $queryPetition->getQuery()->getResult();
+    if($petitions>0){
+    foreach ($petitions as $petition){
+        
+        echo "<li class='unread'><a href='#'>
+		<div class='header'>
+                <input type='checkbox' class='form-check-input' id='checkMessage'>
+		<span class='from'>".$petition->getSender_partner()->getFull_name()."</span>
+		<span class='date'><span class='fa fa-paper-clip'></span>".date_format($petition->getDate(),"m-d H:i")."</span><small> &#60".$petition->getSender_partner()->getEmail()."&#62</small>
+		</div>
+		<div class='title'>
+		
+		".$petition->getSubject()."
+		</div>	
+		<div class='description'>
+                ".$petition->getDescription()."
+                </div>
+		</a>		
+		</li>";
+    }
+}
+
+else {
+    echo "<div class='container-fluid'><section class='container text-center'>"
+    . "<div class='row '><div class='col'><h4>Not messages yet</h4></div></div></div></div>";
+}
+}
+
+
+
+function changePetitionStatus($newStatus,$petitionId){
+    $entityM=load("admin");
+    $petition=$entityM->find("MobilitySharp\model\PetitionHistory",$petitionId);
+    $petition->setStatus($newStatus);
+    $entityM->flush();
 }
