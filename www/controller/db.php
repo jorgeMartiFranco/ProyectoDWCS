@@ -625,10 +625,10 @@ try{
 /**
  * Set enterprise as deleted but persisting in the DB. Gets all data to delete from a form with POST method.
  */
-function deleteEnterprise() {
+function deleteEnterprise($id) {
 
     $entityM = load("registered");
-    $enterprise = $entityM->find("MobilitySharp\model\Enterprise", filter_input(INPUT_POST, "enterprise"));
+    $enterprise = $entityM->find("MobilitySharp\model\Enterprise", $id);
     $enterprise->setTerminationDate(new \DateTime(date("Y-m-d")));
     $entityM->persist($enterprise);
     $entityM->flush();
@@ -637,9 +637,9 @@ function deleteEnterprise() {
 /**
  * Set student as deleted but persisting in the DB. Gets all data to delete from a form with POST method.
  */
-function deleteStudent() {
+function deleteStudent($id) {
     $entityM = load("registered");
-    $student = $entityM->find("MobilitySharp\model\Student", filter_input(INPUT_POST, "student"));
+    $student = $entityM->find("MobilitySharp\model\Student", $id);
     $student->setTerminationDate(new \DateTime(date("Y-m-d")));
     $entityM->persist($student);
     $entityM->flush();
@@ -648,9 +648,9 @@ function deleteStudent() {
 /**
  * Set institution as deleted but persisting in the DB. Gets all data to delete from a form with POST method.
  */
-function deleteInstitution() {
+function deleteInstitution($id) {
     $entityM = load("registered");
-    $institution = $entityM->find("MobilitySharp\model\Institution", filter_input(INPUT_POST, "institution"));
+    $institution = $entityM->find("MobilitySharp\model\Institution", $id);
     $institution->setTerminationDate(new \DateTime(date("Y-m-d")));
     $entityM->persist($institution);
     $entityM->flush();
