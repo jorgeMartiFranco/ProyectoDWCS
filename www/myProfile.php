@@ -6,6 +6,12 @@ use MobilitySharp\controller\sessions;
 
 sessions\startSession();
 sessions\checkLogin();
+
+//Deactivates the account if the user wants to
+if(isset($_GET) && isset($_GET['account_deactivate'])) {
+    controller\deleteUser();
+}
+
 ?>
 <!DOCTYPE html>
 <html>

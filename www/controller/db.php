@@ -1250,7 +1250,6 @@ function partnerProfile(){
     echo "<section class='container'><div class='row border-bottom border-dark'><div class='col'><h2>" . $partner->getFull_name() . "</h2></div></div>"
     . "<div class='container text-center border-bottom border-dark mb-3 mb-lg-5'><div class='row text-center mt-2 mt-lg-5 justify-content-center '>"
     . "<div class='col col-12 col-lg-10 col-xl-8 border border-dark mb-3'>"
-    . "<form method='POST' id='user' action='deleteUser.php'>"
     . "<div class='row bg-secondary p-2 border-bottom border-dark'><div class='col border-right border-dark'><h4>Email</h4></div><div class='col'><h4>Username</h4></div></div>"
     . "<div class='row border-bottom border-dark p-2'><div class='col centerCol'><h6 name='email'>" . $partner->getEmail() . "</h6></div><div class='col centerCol'><h6>" . $partner->getUsername() . "</h6></div></div>"
     . "<div class='row bg-secondary border-bottom border-dark p-2'><div class='col border-right border-dark'><h4>Phone</h4></div><div class='col'><h4>VAT</h4></div></div>"
@@ -1262,8 +1261,8 @@ function partnerProfile(){
     . "</div></div>"
     . "<div class='row mb-3 mb-lg-5 justify-content-center '>"
     . "<div class='col col-sm-6 col-md-4 col-lg-3 btn-group my-2 my-md-3'><button class='btn btn-secondary rounded ml-2 ml-md-3 ml-md-4' type='button' href='#'>Modify profile</button</div></div>"
-    . "<div class='col col-sm-6 col-md-4 col-lg-3 btn-group my-2 my-md-3'><button class='btn btn-dark rounded ml-2 ml-md-3 ml-md-4' type='submit' href='#'>Deactivate profile</button</div></div>"
-    . "</div></form></div></div></section>";
+    . "<div class='col col-sm-6 col-md-4 col-lg-3 btn-group my-2 my-md-3'><a class='btn btn-danger rounded ml-2 ml-md-3 ml-md-4' href='" . $_SERVER['PHP_SELF'] . "?account_deactivate'>Deactivate account</a></div></div>"
+    . "</div></div></div></section>";
     
 }
 
@@ -1506,8 +1505,7 @@ function deleteUser(){
     $user->setTermination_date(new \DateTime(date("Y-m-d")));
     $entityM->flush();
     
-    require_once 'logout.php';
-    header("Location:index.php");
+    header("Location: logout.php");
 }
 
 function errorMessage($type){
