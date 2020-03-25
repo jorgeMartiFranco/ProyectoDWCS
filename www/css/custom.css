@@ -34,17 +34,6 @@
     color: #fff;
 }
 
-/*Controls sidenav animation*/
-.wrapper > .container-fluid{
-    transition: all 0.5s;
-}
-
-/*Fades in when sidenav slides in and fades out when collapsing*/
-.faded {
-    background-color: rgba(0,0,0, 0.3);
-    filter: brightness(50%);
-}
-
 @media (min-width: 992px) {
     #sidenav {
         position: initial;

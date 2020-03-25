@@ -4,11 +4,6 @@ $(document).ready(function() {
     $("#sidenavCollapse").click(function(){
         var sidenav = $('#sidenav');
         sidenav.toggleClass("collapsed");
-        if(!sidenav.hasClass("collapsed")) {
-            $(".wrapper > div.container-fluid").addClass("faded"); //check
-        } else {
-            $(".wrapper > div.container-fluid").removeClass("faded");
-        }
     });
 });
 
