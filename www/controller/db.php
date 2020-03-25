@@ -69,7 +69,7 @@ function checkUser($username, $password) {
                 ->orWhere("p.email = :username")
                 ->setParameter("username", $username);
         $user = $queryUser->getQuery()->getSingleResult();
-
+        if($user->getTermination_date()==null){
         if ($user !== null) {
             if (password_verify($password, $user->getPassword())) {
 
@@ -83,6 +83,11 @@ function checkUser($username, $password) {
             }
         }
         return FALSE;
+        }
+        else {
+           
+           errorMessage("Termination date");
+        }
     } catch (\Exception $ex) {
         echo $ex->getMessage();
     }
@@ -156,14 +161,16 @@ function registerPartnerInstitution() {
         $phone = filter_input(INPUT_POST, "phone");
         $username = filter_input(INPUT_POST, "username");
         $password = filter_input(INPUT_POST, "password");
+        $confirmPassword= filter_input(INPUT_POST, "password2");
         $vat = (filter_input(INPUT_POST, "vat")) ? filter_input(INPUT_POST, "vat") : NULL;
         $post = filter_input(INPUT_POST, "post");
         $department = filter_input(INPUT_POST, "department");
         $l_provider = filter_input(INPUT_POST, "lodgingProvider");
         $role = $entityM->getRepository("MobilitySharp\model\Role")->findOneBy(["type" => 'REGISTERED']); // registered user
         $country = $entityM->find("MobilitySharp\model\Country", filter_input(INPUT_POST, "country"));
-
-
+        $repeatedEmailPartner=$entityM->getRepository("MobilitySharp\model\Partner")->findOneBy(["email"=>$email]);
+        $repeatedUser=$entityM->getRepository("MobilitySharp\model\Partner")->findOneBy(["username"=>$username]);
+        $repeatedPartnerVat=$entityM->getRepository("MobilitySharp\model\Partner")->findOneBy(["vat"=>$vat]);
         $iName = filter_input(INPUT_POST, "iName");
         $iEmail = filter_input(INPUT_POST, "iEmail");
         $iPhone = filter_input(INPUT_POST, "iPhone");
@@ -174,9 +181,9 @@ function registerPartnerInstitution() {
         $description = filter_input(INPUT_POST, "description");
         $institutionType = $entityM->find("MobilitySharp\model\InstitutionType", filter_input(INPUT_POST, "institutionType"));
 
-        $institution = $entityM->getRepository("MobilitySharp\model\Institution")->findOneBy(["name" => $iName]);
+        $institution = $entityM->getRepository("MobilitySharp\model\Institution")->findOneBy(["email" => $iEmail]);
 
-
+        if($password==$confirmPassword or $repeatedEmailPartner==null or $repeatedPartnerVat==null or $repeatedUser==null){
         if (is_null($institution)) {
             $entityM->getConnection()->beginTransaction();
             $partner = new \MobilitySharp\model\Partner(password_hash($password, PASSWORD_DEFAULT), $username, $name, $email, $phone, $post, $department, $role, $country, $date);
@@ -231,10 +238,12 @@ function registerPartnerInstitution() {
             if ($l_provider) {
                 $partner->setLodging_provider($l_provider);
             }
+            
             $entityM->persist($partner);
             $entityM->flush();
             sessionStoreUser($partnerParams);
             $location = "Location:index.php?registered";
+        }
         }
         header($location);
     } catch (\Exception $e) {
@@ -380,6 +389,16 @@ function insertEnterprise() {
 
     $enterprise = $entityM->getRepository("MobilitySharp\model\Enterprise")->findOneBy(["email" => filter_input(INPUT_POST, "eEmail")]);
     $ceo = $entityM->getRepository("MobilitySharp\model\CEO")->findOneBy(["email" => filter_input(INPUT_POST, "email")]);
+    
+    if($vat = filter_input(INPUT_POST, "eVat")){
+        $repeatedVat=$entityM->getRepository("MobilitySharp\model\Enterprise")->findOneBy(["vat"=>$vat]);
+    }
+    else {
+        $vat=null;
+        $repeatedVat=null;
+    }
+    
+    if($repeatedVat==null){
     if (is_null($enterprise)) {
         $entityM->getConnection()->beginTransaction();
         $ceo_post = filter_input(INPUT_POST, "ceoPost");
@@ -405,9 +424,9 @@ function insertEnterprise() {
         $entityM->flush();
         $enterprise = new \MobilitySharp\model\Enterprise($ceo_post, $name, $email, $telephone, $postal_code, $location, $country, $partner, $ceo, $type, $registration_date);
 
-        if ($vat = filter_input(INPUT_POST, "eVat")) {
-            $enterprise->setVat($vat);
-        }
+        
+        $enterprise->setVat($vat);
+        
         if ($web = filter_input(INPUT_POST, "web")) {
             $enterprise->setWeb($web);
         }
@@ -418,6 +437,7 @@ function insertEnterprise() {
         $entityM->flush();
         $entityM->getConnection()->commit();
     } 
+    }
     header("Location:index.php");
 }
 
@@ -437,7 +457,15 @@ function modifyEnterprise($id){
     $enterprise->setName(filter_input(INPUT_POST, "eName"));
     $enterprise->setEmail(filter_input(INPUT_POST, "eEmail"));
     $enterprise->setTelephone(filter_input(INPUT_POST, "ePhone"));
-    $enterprise->setVat(filter_input(INPUT_POST, "eVat")??NULL);
+    if($vat=filter_input(INPUT_POST, "eVat")){
+        $repeatedVat=$entityM->getRepository("MobilitySharp\model\Enterprise")->findOneBy(["vat"=>$vat]);
+    }
+    else {
+        $repeatedVat=null;
+        $vat=null;
+    }
+    if($repeatedVat==null){
+    $enterprise->setVat($vat);
     $enterprise->setPostal_code(filter_input(INPUT_POST, "postalCode"));
     $enterprise->setLocation(filter_input(INPUT_POST, "location"));
     $enterprise->setWeb(filter_input(INPUT_POST, "web")??NULL);
@@ -446,6 +474,8 @@ function modifyEnterprise($id){
     $enterprise->setType($entityM->find("MobilitySharp\model\EnterpriseType", filter_input(INPUT_POST, "enterpriseType")));
     $enterprise->setModification_date($date);
     $entityM->flush();
+    }
+    
 }
 
 /**
@@ -462,19 +492,30 @@ function insertStudent() {
     $birth_date = filter_input(INPUT_POST, "birthDate");
     $partner = $entityM->find("MobilitySharp\model\Partner", $_SESSION["user"]["id"]);
     $registration_date = new \DateTime(date("Y-m-d"));
+    
+    if ($vat = filter_input(INPUT_POST, "sVat")){
+        $repeatedVat=$entityM->getRepository("MobilitySharp\model\Student")->findOneBy(["vat"=>$vat]);
+    }
+    else {
+        $repeatedVat=null;
+        $vat=null;
+    }
+    
     if ($gender == "Male") {
         $gender = 'M';
     } else {
         $gender = 'F';
     }
+    if($repeatedVat==null){
     $student = new \MobilitySharp\model\Student($full_name, $gender, new \DateTime($birth_date), $partner, $registration_date);
 
-    if ($vat = filter_input(INPUT_POST, "sVat")) {
-        $student->setVat($vat);
-    }
+    
+    $student->setVat($vat);
+    
 
     $entityM->persist($student);
     $entityM->flush();
+    }
     header("Location:index.php");
 }
 
@@ -634,7 +675,8 @@ function listPartnerEnterprises() {
         
         
         echo "<div class='col-12 col-md-7 col-lg-5 my-2 my-lg-5'>
-        <div class='row justify-content-end'>
+        
+        <div class='row'><div class='col col-10 bg-secondary border-right border-top border-left border-dark'><h2>Enterprise</h2></div><div class='col border border-top border-right'>
             <div class='dropleft'>
                 <button class='btn btn-primary' type='button' id='dropdownMenuButton' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
                     <i class='fa fa-ellipsis-v' aria-hidden='true'></i>
@@ -644,8 +686,8 @@ function listPartnerEnterprises() {
                     <a class='dropdown-item' href='#'>Delete</a>
                 </div>
             </div>
-        </div>
-        <div class='row border-top border-right border-left border-dark'><div class='col border-right centerCol'><h2>".$enterprise->getName()."</h2></div>
+        </div></div>
+        <div class='row border-top border-right border-left border-dark'><div class='col border-right centerCol'><h3>".$enterprise->getName()."</h3></div>
         <div class='col centerCol'><div class='row'><div class='col'><h4 class='text-secondary'>".$enterprise->getType()->getType()."</h4></div></div>
         <div class='row '><div class='col border-right'><h5>".$enterprise->getCountry()->getName()."</h5></div></div></div></div>
         <div class='row bg-secondary p-2 border-right border-left border-top border-dark'><div class='col border-right border-dark'><h3>Email</h3></div><div class='col '><h3>Phone</h3></div></div>
@@ -1143,8 +1185,9 @@ function partnerProfile(){
     echo "<section class='container'><div class='row border-bottom border-dark'><div class='col'><h2>" . $partner->getFull_name() . "</h2></div></div>"
     . "<div class='container text-center border-bottom border-dark mb-3 mb-lg-5'><div class='row text-center mt-2 mt-lg-5 justify-content-center '>"
     . "<div class='col col-12 col-lg-10 col-xl-8 border border-dark mb-3'>"
+    . "<form method='POST' id='user' action='deleteUser.php'>"
     . "<div class='row bg-secondary p-2 border-bottom border-dark'><div class='col border-right border-dark'><h4>Email</h4></div><div class='col'><h4>Username</h4></div></div>"
-    . "<div class='row border-bottom border-dark p-2'><div class='col centerCol'><h6>" . $partner->getEmail() . "</h6></div><div class='col centerCol'><h6>" . $partner->getUsername() . "</h6></div></div>"
+    . "<div class='row border-bottom border-dark p-2'><div class='col centerCol'><h6 name='email'>" . $partner->getEmail() . "</h6></div><div class='col centerCol'><h6>" . $partner->getUsername() . "</h6></div></div>"
     . "<div class='row bg-secondary border-bottom border-dark p-2'><div class='col border-right border-dark'><h4>Phone</h4></div><div class='col'><h4>VAT</h4></div></div>"
     . "<div class='row border-bottom border-dark p-2'><div class='col centerCol'><h6>" . $partner->getTelephone() . "</h6></div><div class='col centerCol'><h6>" . $partner->getVat() . "</h6></div></div>"
     . "<div class='row bg-secondary border-bottom border-dark p-2'><div class='col border-right border-dark'><h4>Department</h4></div><div class='col'><h4>Post</h4></div></div>"
@@ -1154,8 +1197,8 @@ function partnerProfile(){
     . "</div></div>"
     . "<div class='row mb-3 mb-lg-5 justify-content-center '>"
     . "<div class='col col-sm-6 col-md-4 col-lg-3 btn-group my-2 my-md-3'><button class='btn btn-secondary rounded ml-2 ml-md-3 ml-md-4' type='button' href='#'>Modify profile</button</div></div>"
-    . "<div class='col col-sm-6 col-md-4 col-lg-3 btn-group my-2 my-md-3'><button class='btn btn-dark rounded ml-2 ml-md-3 ml-md-4' type='button' href='#'>Deactivate profile</button</div></div>"
-    . "</div></div></div></section>";
+    . "<div class='col col-sm-6 col-md-4 col-lg-3 btn-group my-2 my-md-3'><button class='btn btn-dark rounded ml-2 ml-md-3 ml-md-4' type='submit' href='#'>Deactivate profile</button</div></div>"
+    . "</div></form></div></div></section>";
     
 }
 
@@ -1389,4 +1432,23 @@ function modifyMobility($id,$mobilityType){
     $mobility->setModification_date($date);
     
     $entityM->flush();
+}
+
+
+function deleteUser(){
+    $entityM= load("registered");
+    $user=$entityM->find("MobilitySharp\model\Partner",$_SESSION["user"]["id"]);
+    $user->setTermination_date(new \DateTime(date("Y-m-d")));
+    $entityM->flush();
+    
+    require_once 'logout.php';
+    header("Location:index.php");
+}
+
+function errorMessage($type){
+    
+    
+        if($type=="Termination date"){
+            
+        }
 }
