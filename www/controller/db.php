@@ -629,7 +629,7 @@ function deleteEnterprise($id) {
 
     $entityM = load("registered");
     $enterprise = $entityM->find("MobilitySharp\model\Enterprise", $id);
-    $enterprise->setTerminationDate(new \DateTime(date("Y-m-d")));
+    $enterprise->setTermination_date(new \DateTime(date("Y-m-d")));
     $entityM->persist($enterprise);
     $entityM->flush();
 }
@@ -640,7 +640,7 @@ function deleteEnterprise($id) {
 function deleteStudent($id) {
     $entityM = load("registered");
     $student = $entityM->find("MobilitySharp\model\Student", $id);
-    $student->setTerminationDate(new \DateTime(date("Y-m-d")));
+    $student->setTermination_date(new \DateTime(date("Y-m-d")));
     $entityM->persist($student);
     $entityM->flush();
 }
@@ -651,7 +651,7 @@ function deleteStudent($id) {
 function deleteInstitution($id) {
     $entityM = load("registered");
     $institution = $entityM->find("MobilitySharp\model\Institution", $id);
-    $institution->setTerminationDate(new \DateTime(date("Y-m-d")));
+    $institution->setTermination_date(new \DateTime(date("Y-m-d")));
     $entityM->persist($institution);
     $entityM->flush();
 }
@@ -678,7 +678,7 @@ function listPartnerEnterprises() {
     echo "<div class='row text-center justify-content-around'>";
     foreach ($enterprises as $enterprise) {
         
-        
+        if($enterprise->getTermination_date()==null){
         echo "<div class='col-12 col-md-7 col-lg-5 my-2 my-lg-5'>
         
         <div class='row'><div class='col col-10 bg-secondary border-right border-top border-left border-dark'><h2>Enterprise</h2></div><div class='col border border-top border-right'>
@@ -704,6 +704,7 @@ function listPartnerEnterprises() {
         <div class='row p-2 border border-dark'><div class='col centerCol'><h6>".$enterprise->getDescription()."</h6></div></div>
         </div>";
         
+    }
     }
     echo "</div>";
 }
@@ -1099,7 +1100,8 @@ function listPartnerInstitution() {
 function insertEnterpriseType() {
     $entityM = load("admin");
     $type = filter_input(INPUT_POST, "type");
-
+    $repeatedType=$entityM->getRepository("MobilitySharp\model\EnterpriseType")->findOneBy(["type"=>$type]);
+    if($repeatedType==null){
     $enterpriseType = new \MobilitySharp\model\EnterpriseType($type);
 
     if ($description = filter_input(INPUT_POST, "description")) {
@@ -1108,6 +1110,7 @@ function insertEnterpriseType() {
 
     $entityM->persist($enterpriseType);
     $entityM->flush();
+    }
 }
 
 /**
@@ -1166,7 +1169,7 @@ function findMobilitiesBetweenDates() {
     $date1 = filter_input(INPUT_GET, "date1");
 
     $date2 = filter_input(INPUT_GET, "date2");
-
+    if($date1<$date2){
 
     $queryMobilitiesEnterprise = $entityM->createQueryBuilder();
     $queryMobilitiesEnterprise->addSelect('em')
@@ -1186,7 +1189,16 @@ function findMobilitiesBetweenDates() {
 
     $mobilities = array_merge($enterpriseMobilities, $institutionMobilities);
 
-    echo "<div class='container mx-3 mx-lg-5 py-3 py-lg-5'><div class='row'><div class='col'><h3>Mobilities between " . $date1 . " and " . $date2 . "</h3></div></div><div class='row border-top border-dark justify-content-around '>";
+    echo "<div class='container-fluid mx-3 mx-lg-5'>"
+    . "<div class='container py-3 py-lg-5 border-bottom border-dark my-3 my-lg-5'><div class='row border-bottom border-dark mb-3 mb-lg-5'><div class='col'><h3>Mobilities between " . $date1 . " and " . $date2 . "</h3></div></div>"
+            . "
+                <div class='row'><div class='col-12'>
+                <ul>
+                <li><h5><a href='findMobilities.php'>Search more mobilities</a></h5></div></li>
+                </ul>
+                </div>"
+            . "<div class='row justify-content-around '>";
+   
     foreach ($mobilities as $mobility) {
 
         $startDate = date_format($mobility->getStart_date(), 'Y-m-d');
@@ -1220,7 +1232,17 @@ function findMobilitiesBetweenDates() {
         . "<h5>" . $estimatedEndDate . "</h5></div></div></div>"
         ;
     }
-    echo "</div></div>";
+    echo "</div></div></div>";
+}
+else {
+    
+    echo "<section class='container mt-3 pt-3 mb-3 mb-lg-5'>
+                <div class='row'><div class='col'><h4>You have to search valid dates.</h4></div></div>
+                <ul>
+                    <li><div class='row text-left m-3'><div class='col'><h5><a href='findMobilities.php'>Search mobilities</a></h5></div></div></li>
+                </ul>
+                </section>";
+}
 }
 
 /**
@@ -1462,7 +1484,10 @@ function modifyStudent($id){
     $date=new \DateTime(date("Y-m-d H:i:s"));
     $student->setFull_name(filter_input(INPUT_POST, "fName")." ". filter_input(INPUT_POST, "lName"));
     $student->setBirth_date(filter_input(INPUT_POST, "birthDate"));
-    $student->setVat(filter_input(INPUT_POST, "sVat")??NULL);
+    $vat= filter_input(INPUT_POST, "sVat");
+    $repeatedVat=$entityM->getRepository("MobilitySharp\model\Student")->findOneby(["vat"=>$vat]);
+    if($repeatedVat==null){
+    $student->setVat($vat);
     $student->setModification_date($date);
     if(filter_input(INPUT_POST, "gender")=="Male"){
         $student->setGender('M');
@@ -1471,6 +1496,8 @@ function modifyStudent($id){
         $student->setGender('F');
     }
     $entityM->flush();
+    }
+    
 }
 
 
