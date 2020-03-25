@@ -6,7 +6,20 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use \Doctrine\ORM\Tools\Setup;
 use \Doctrine\ORM\EntityManager;
-
+/**
+ * Loads Doctrine configuration from files.
+ * 
+ * <p>Loads the configuration from the config directory.<br>
+ * This configuration is divided in two files:</p>
+ * <ul>
+ *  <li>db-global.ini -> Contains global configuration such as hostname, database name, charset...</li>
+ *  <li>db-{user}.ini -> Contains authentication configuration like username and password, you can have as many files as users you need to connect to the database</li>
+ * </ul>
+ * 
+ * @param string $user The name of the custom authentication configuration file to connect to the database.
+ * 
+ * @return EntityManager
+ */
 function load($user): EntityManager {
     $global = parse_ini_file("config/db-global.ini");
     $account = parse_ini_file("config/db-$user.ini");
@@ -30,6 +43,14 @@ function load($user): EntityManager {
     return EntityManager::create($dbParams, $config);
 }
 
+/**
+ * Checks if the user exists in the DB verifying that the username and password coincide.
+ * 
+ * @param string $username The username which is going to be checked. Can be username or email
+ * @param string $password The password which is going to be checked.
+ * 
+ * @return array|bool user information once is confirmed that exists.
+ */
 function checkUser($username, $password) {
 
     try {
@@ -61,6 +82,11 @@ function checkUser($username, $password) {
         echo $ex->getMessage();
     }
 }
+/**
+ * Gets all countries in the DB and send their Id and Name.
+ * 
+ * @return $json JSON object who contains Id and Name from countries.
+ */
 
 function getCountries() {
 
@@ -75,6 +101,12 @@ function getCountries() {
     echo json_encode($json);
 }
 
+
+/**
+ * Gets all institutions types in the DB and sends a JSON with their Id and Type.
+ *
+ * @return json User information once is confirmed that exists.
+ */
 function getInstitutionTypes() {
 
     $entityM = load("login");
@@ -88,6 +120,13 @@ function getInstitutionTypes() {
     echo json_encode($json);
 }
 
+
+/**
+ * Registers a partner and an institution or only partner if the institution already exists.
+ * Gets all data to register from a form with POST method.
+ * 
+ * @return void
+ */
 function registerPartnerInstitution() {
     $location = "Location: $_SERVER[PHP_SELF]?error"; //Redirects to self and flags an error by default
 
@@ -189,6 +228,13 @@ function registerPartnerInstitution() {
     }
 }
 
+/**
+ * Stores the user information in $_SESSION
+ * 
+ * @param array $userParams User information.
+ * 
+ * @return void
+ */
 function sessionStoreUser($userParams) {
     $user = [
         'id' => $userParams[':id'],
@@ -201,6 +247,11 @@ function sessionStoreUser($userParams) {
     $_SESSION['user'] = $user;
 }
 
+/**
+ * Searches institutions in the DB. Gets the search with a form with POST method.
+ * Sends data to the client HTML code.
+ * @return void
+ */
 function searchInstitutionsBasic() {
 
     $entityM = load("login");
@@ -238,7 +289,11 @@ function searchInstitutionsBasic() {
     }
     echo "</div></div>";
 }
-
+/**
+ * Searches institutions in the DB. Gets the search with a form with POST method.
+ * Sends data to the client with HTML code.
+ * @return void
+ */
 function searchInstitutionsAdvanced() {
 
     $entityM = load("login");
@@ -284,6 +339,11 @@ function searchInstitutionsAdvanced() {
     echo "</div></div></div>";
 }
 
+/**
+ * Inserts an enterprise in the DB if the email does not match with an existing email.
+ * Gets all data to register from a form with POST method.
+ * 
+ */
 function insertEnterprise() {
     $entityM = load("registered");
 
@@ -326,14 +386,15 @@ function insertEnterprise() {
         $entityM->persist($enterprise);
         $entityM->flush();
         $entityM->getConnection()->commit();
-    } else {
-        return FALSE;
-    }
+    } 
     header("Location:index.php");
 }
 
 
-
+/**
+ * Modifies a selected enterprise in the DB. Gets all data to modify from a form with POST method.
+ * @param int $id Enterprise's identificator.
+ */
 function modifyEnterprise($id){
     $entityM=load("registered");
     $enterprise=$entityM->find("MobilitySharp\model\Enterprise", $id);
@@ -360,13 +421,12 @@ function modifyEnterprise($id){
     
     
 }
-
+/**
+ * Inserts a student in the DB. Gets all data to insert from a form with POST method.
+ */
 function insertStudent() {
 
     $entityM = load("registered");
-
-
-
     $full_name = filter_input(INPUT_POST, "fName") . " " . filter_input(INPUT_POST, "lName");
     $gender = filter_input(INPUT_POST, "gender");
     $birth_date = filter_input(INPUT_POST, "birthDate");
@@ -387,7 +447,9 @@ function insertStudent() {
     $entityM->flush();
     header("Location:index.php");
 }
-
+/**
+ * Inserts a new specialty type if the type do not exists in the DB. Gets all data to insert from a form with POST method.
+ */
 function insertSpecialty() {
 
     $entityM = load("admin");
@@ -403,11 +465,11 @@ function insertSpecialty() {
         }
         $entityM->persist($specialtyType);
         $entityM->flush();
-    } else {
-        return FALSE;
-    }
+    } 
 }
-
+/**
+ * Inserts a new institution type if the type do not exists in the DB. Gets all data to insert from a form with POST method.
+ */
 function insertInstitutionType() {
     $entityM = load("admin");
     $institutionType = $entityM->getRepository("MobilitySharp\model\InstitutionType")->findOneBy(["type" => filter_input(INPUT_POST, "type")]);
@@ -422,11 +484,11 @@ function insertInstitutionType() {
 
         $entityM->persist($institutionType);
         $entityM->flush();
-    } else {
-        return FALSE;
-    }
+    } 
 }
-
+/**
+ * Inserts a specialty in an institution. Gets all data to insert from a form with POST method.
+ */
 function insertInstitutionSpecialty() {
     $entityM = load("registered");
     $partner = $entityM->find("MobilitySharp\model\Partner", $_SESSION["user"]["id"]);
@@ -445,7 +507,9 @@ function insertInstitutionSpecialty() {
         $entityM->getConnection()->rollback();
     }
 }
-
+/**
+ * Inserts a specialty in an enterprise. Gets all data to insert from a form with POST method.
+ */
 function insertEnterpriseSpecialty() {
     $entityM = load("registered");
     $enterprise = $entityM->find("\MobilitySharp\model\Enterprise", filter_input(INPUT_POST, "enterprise"));  //get this with a select
@@ -462,7 +526,9 @@ function insertEnterpriseSpecialty() {
         $entityM->getConnection()->rollback();
     }
 }
-
+/**
+ * Inserts a specialty in a student. Gets all data to insert from a form with POST method.
+ */
 function insertStudentSpecialty() {
     $entityM = load("registered");
     $student = $entityM->find("\MobilitySharp\model\Student", filter_input(INPUT_POST, "student")); //get this with a select
@@ -477,34 +543,9 @@ function insertStudentSpecialty() {
     $entityM->getConnection()->commit();
 }
 
-function registerMobility() {
-    $entityM = load("registered");
-    $student = $entityM->find("\MobilitySharp\model\Student", filter_input(INPUT_POST, "student")); // get this with a select
-    $start_date = filter_input(INPUT_POST, "start_date");
-    $estimated_end_date = filter_input(INPUT_POST, "estimated_end_date");
-    $registration_date = new \DateTime(date("Y-m-d"));
-
-    $array = ['entityM' => $entityM, 'student' => $student, 'start_date' => $start_date, 'estimated_end_date' => $estimated_end_date, 'registration_date' => $registration_date];
-    return $array;
-}
-
-function registerEnterpriseMobility() {
-    $array = registerMobility();
-    $enterprise = $array["entityM"]->find("\MobilitySharp\model\Enterprise", filter_input(INPUT_POST, "enterprise")); //get this with a select
-    $mobility = new \MobilitySharp\model\EnterpriseMobility($array["start_date"], $array["estimated_end_date"], $array["registration_date"], $array["student"], $enterprise);
-    $array["entityM"]->persist($mobility);
-    $array["entityM"]->flush();
-}
-
-function registerStudentMobility() {
-
-    $array = registerMobility();
-    $institution = $array["entityM"]->find("\MobilitySharp\model\Institution", filter_input(INPUT_POST, "institution")); //get this with a select
-    $mobility = new \MobilitySharp\model\InstitutionMobility($array["start_date"], $array["estimated_end_date"], $array["registration_date"], $array["student"], $institution);
-    $array["entityM"]->persist($mobility);
-    $array["entityM"]->flush();
-}
-
+/**
+ * Set enterprise as deleted but persisting in the DB. Gets all data to delete from a form with POST method.
+ */
 function deleteEnterprise() {
 
     $entityM = load("registered");
@@ -514,6 +555,9 @@ function deleteEnterprise() {
     $entityM->flush();
 }
 
+/**
+ * Set student as deleted but persisting in the DB. Gets all data to delete from a form with POST method.
+ */
 function deleteStudent() {
     $entityM = load("registered");
     $student = $entityM->find("MobilitySharp\model\Student", filter_input(INPUT_POST, "student"));
@@ -522,6 +566,9 @@ function deleteStudent() {
     $entityM->flush();
 }
 
+/**
+ * Set institution as deleted but persisting in the DB. Gets all data to delete from a form with POST method.
+ */
 function deleteInstitution() {
     $entityM = load("registered");
     $institution = $entityM->find("MobilitySharp\model\Institution", filter_input(INPUT_POST, "institution"));
@@ -530,6 +577,10 @@ function deleteInstitution() {
     $entityM->flush();
 }
 
+/**
+ * Finds all enterprises in the DB.
+ * @return array Enterprises data.
+ */
 function listAllEnterprises() {
 
     $entityM = load("registered");
@@ -537,12 +588,9 @@ function listAllEnterprises() {
     return $enterprises;
 }
 
-function listAllInstitutions() {
-    $entityM = load("registered");
-    $institutions = $entityM->getRepository("MobilitySharp\model\Institution")->findAll();
-    echo $institutions;
-}
-
+/**
+ * List all enterprises who the logged in partner has registered.
+ */
 function listPartnerEnterprises() {
     $entityM = load("registered");
     $partner = $entityM->find("MobilitySharp\model\Partner", $_SESSION["user"]["id"]);
@@ -579,7 +627,9 @@ function listPartnerEnterprises() {
     }
     echo "</div>";
 }
-
+/**
+ * List all students who the logged partner has registered.
+ */
 function listPartnerStudents() {
     $entityM = load("registered");
     $partner = $entityM->find("MobilitySharp\model\Partner", $_SESSION["user"]["id"]);
@@ -618,7 +668,9 @@ function listPartnerStudents() {
     }
     echo "</div></section>";
 }
-
+/**
+ * Sends a JSON of all CEOS which exist in the DB.
+ */
 function getCeos() {
     $entityM = load("registered");
     $ceos = $entityM->getRepository("MobilitySharp\model\CEO")->findAll();
@@ -628,7 +680,9 @@ function getCeos() {
         array_push($json, ["value" => $ceo->getId(), "text" => $ceo->getFull_name()]);
     }
 }
-
+/**
+ * Gets all enterprise types. Sends a JSON with Id and type. 
+ */
 function getEnterpriseTypes() {
     $entityM = load("registered");
     $enterprises = $entityM->getRepository("MobilitySharp\model\EnterpriseType")->findAll();
@@ -639,7 +693,9 @@ function getEnterpriseTypes() {
     }
     echo json_encode($json);
 }
-
+/**
+ * Sends all partner students in option tags.
+ */
 function getPartnerStudents() {
     $entityM = load("registered");
     $partner = $entityM->find("MobilitySharp\model\Partner", $_SESSION["user"]["id"]);
@@ -649,7 +705,9 @@ function getPartnerStudents() {
         echo '<option value=' . $student->getId() . '>' . $student->getFull_name() . '</option>';
     }
 }
-
+/**
+ * Sends all enterprises in option tags.
+ */
 function getAllEnterprises() {
     $entityM = load("registered");
 
@@ -659,7 +717,9 @@ function getAllEnterprises() {
         echo '<option value=' . $enterprise->getId() . '>' . $enterprise->getName() . '</option>';
     }
 }
-
+/**
+ * Inserts an enterprise mobility. Gets all data to insert from a form with POST method.
+ */
 function insertEnterpriseMobility() {
     $entityM = load("registered");
     $startDate = filter_input(INPUT_POST, "startDate");
@@ -672,7 +732,9 @@ function insertEnterpriseMobility() {
     $entityM->persist($mobility);
     $entityM->flush();
 }
-
+/**
+ * Sends all institutions in option tags.
+ */
 function getAllInstitutions() {
     $entityM = load("registered");
 
@@ -682,7 +744,9 @@ function getAllInstitutions() {
         echo '<option value=' . $institution->getId() . '>' . $institution->getName() . '</option>';
     }
 }
-
+/**
+ * Inserts an institution mobility. Gets all data to insert from a form with POST method.
+ */
 function insertInstitutionMobility() {
     $entityM = load("registered");
     $startDate = filter_input(INPUT_POST, "startDate");
@@ -695,7 +759,9 @@ function insertInstitutionMobility() {
     $entityM->persist($mobility);
     $entityM->flush();
 }
-
+/**
+ * List all partner mobilities sending HTML code.
+ */
 function listPartnerMobilities() {
     $entityM = load("registered");
 
@@ -745,7 +811,9 @@ function listPartnerMobilities() {
     }
     echo "</div></section>";
 }
-
+/**
+ * List all specialties sending HTML code.
+ */
 function listAllSpecialties() {
 
     $entityM = load("admin");
@@ -761,7 +829,9 @@ function listAllSpecialties() {
     }
     echo "</div></section>";
 }
-
+/**
+ * List last 5 partner scores sending HTML code.
+ */
 function listLastPartnerScores() {
 
     $entityM = load("registered");
@@ -787,7 +857,9 @@ function listLastPartnerScores() {
     echo "<div class='row border-top border-dark bg-secondary p-2'><div class='col'><h4>Your score: " . $partner->getScore() . "</h4></div></div>"
     . "</div></div></section>";
 }
-
+/**
+ * List Top Institutions ordered by number of mobilities with HTML code.
+ */
 function listTopInstitutions() {
     $entityM = load("registered");
     $queryInstitutions = $entityM->createQueryBuilder();
@@ -817,7 +889,9 @@ function listTopInstitutions() {
     }
     echo "</div></section>";
 }
-
+/**
+ * List Top Enterprises ordered by number of mobilities with HTML code.
+ */
 function listTopEnterprises() {
     $entityM = load("registered");
     $queryEnterprise = $entityM->createQueryBuilder();
@@ -847,7 +921,9 @@ function listTopEnterprises() {
     }
     echo "</div></section>";
 }
-
+/**
+ * List institutions registered by the partner logged in and sends HTML code.
+ */
 function listPartnerInstitution() {
     $entityM = load("registered");
     $partner = $entityM->find("MobilitySharp\model\Partner", $_SESSION["user"]["id"]);
@@ -862,7 +938,9 @@ function listPartnerInstitution() {
     . "<div class='row p-2'><div class='col'>" . $institution->getWeb() . "</div></div>"
     . "</div></div></section>";
 }
-
+/**
+ * Inserts new enterprise type. Gets all data to insert from a form with POST method.
+ */
 function insertEnterpriseType() {
     $entityM = load("admin");
     $type = filter_input(INPUT_POST, "type");
@@ -876,7 +954,10 @@ function insertEnterpriseType() {
     $entityM->persist($enterpriseType);
     $entityM->flush();
 }
-
+/**
+ * Gets all partner students.
+ * @return array Partner Students' data
+ */
 function partnerStudents() {
     $entityM = load("registered");
     $partner = $entityM->find("MobilitySharp\model\Partner", $_SESSION["user"]["id"]);
@@ -884,7 +965,9 @@ function partnerStudents() {
 
     return $students;
 }
-
+/**
+ * Sends all specialties in option tags.
+ */
 function getAllSpecialties() {
     $entityM = load("admin");
     $specialties = $entityM->getRepository("MobilitySharp\model\SpecialtyType")->findAll();
@@ -893,7 +976,9 @@ function getAllSpecialties() {
         echo "<option value=" . $specialty->getId() . ">" . $specialty->getType() . "</option>";
     }
 }
-
+/**
+ * Sends all partner enterprises in option tags.
+ */
 function partnerEnterprises() {
     $entityM = load("registered");
     $partner = $entityM->find("MobilitySharp\model\Partner", $_SESSION['user']['id']);
@@ -902,7 +987,10 @@ function partnerEnterprises() {
         echo "<option value=" . $enterprise->getId() . ">" . $enterprise->getName() . "</option>";
     }
 }
-
+/**
+ * Gets all partner enterprises
+ * @return array Partner Enterprises' data.
+ */
 function getPartnerEnterprises() {
 
     $entityM = load("registered");
@@ -910,7 +998,9 @@ function getPartnerEnterprises() {
     $enterprises = $entityM->getRepository("MobilitySharp\model\Enterprise")->findBy(["partner" => $partner]);
     return $enterprises;
 }
-
+/**
+ * Find mobilities between two dates and sends it in HTML code. Gets all data to find from a form with POST method.
+ */
 function findMobilitiesBetweenDates() {
     $entityM = load("admin");
     $date1 = filter_input(INPUT_GET, "date1");
@@ -974,7 +1064,10 @@ function findMobilitiesBetweenDates() {
 }
 
 
-
+/**
+ * Gets all partner mobilities.
+ * @return array Partner mobilities' data.
+ */
 function partnerMobilities(){
      $entityM = load("registered");
 
@@ -986,7 +1079,9 @@ function partnerMobilities(){
     $mobilities = array_merge($eMobilities, $iMobilities);
     return $mobilities;
 }
-
+/**
+ * Sends partner profile in HTML code.
+ */
 function partnerProfile(){
     $entityM = load("registered");
     $partner = $entityM->find("MobilitySharp\model\Partner", $_SESSION["user"]["id"]);
@@ -1010,7 +1105,9 @@ function partnerProfile(){
     . "</div></div></div></section>";
     
 }
-
+/**
+ * Registers a new petition in the DB. Gets all data to send from a form with POST method.
+ */
 function sendPetition(){
     $entityM= load("registered");
     $senderPartner=$entityM->find("MobilitySharp\model\Partner",$_SESSION["user"]["id"]);
@@ -1058,7 +1155,10 @@ function findEntity($class, $id){
     
     return $entity;
 }
-
+/**
+ * List partner messages of the sender partner depending of the status type.
+ * @param string $type Status type.
+ */
 function listPartnerMessages($type){
     $entityM=load("registered");
     $partner=$entityM->find("MobilitySharp\model\Partner",$_SESSION["user"]["id"]);
@@ -1092,7 +1192,11 @@ function listPartnerMessages($type){
                 </ul>";
     }
 }
+/**
+ * Gets number of messages of the sender partner depending of the status type.
+ * @param string $type Status type.
 
+ */
 function countMessages($type){
     $entityM=load("registered");
     $partner=$entityM->find("MobilitySharp\model\Partner",$_SESSION["user"]["id"]);
@@ -1108,12 +1212,13 @@ function countMessages($type){
     if($petitions!=0){
         echo $petitions;
     }
-    else {
-        return;
-    }
+    
 }
 
-
+/**
+ * Gets number of messages of the receiver partner depending of the status type.
+ * @param string $type Status type.
+*/
 function countMessagesAdmin($type){
     $entityM=load("admin");
     $partner=$entityM->find("MobilitySharp\model\Partner",$_SESSION["user"]["id"]);
@@ -1133,7 +1238,10 @@ function countMessagesAdmin($type){
         return;
     }
 }
-
+/**
+ * List partner messages of the receiver partner depending of the status type.
+ * @param string $type Status type.
+ */
 function listPartnerMessagesAdmin($type){
     $entityM=load("registered");
     $partner=$entityM->find("MobilitySharp\model\Partner",$_SESSION["user"]["id"]);
