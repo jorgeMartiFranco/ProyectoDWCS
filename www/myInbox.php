@@ -9,13 +9,22 @@ include_once 'controller/db.php';
     <?php include "header.php"; ?>
     <div class="wrapper">
         <?php include "sidenav.php"; ?>
-        <div class="container mt-3 mt-lg-5">
+        <div class="container mt-3 mt-lg-5 border-bottom border-dark my-3 my-lg-5 mx-3 mx-lg-5">
+            <div class="row border-bottom border-dark my-3">
+                <div class="col"><h3>Your inbox</h3></div>
+            </div>
             <div class="row inbox">
                 <div class="col-md-3">
                     <div class="panel panel-default">
                         <div class="panel-body inbox-menu">
+                            <?php 
+                            if($_SESSION["user"]["role"]=="REGISTERED"){
+                            ?>
                             <a href="contact.php" class="btn btn-danger btn-block">New Petition</a>
-                            <ul class="list-group" id="inboxList" role="tablist">
+                                    <?php
+                            }
+                                    ?>
+                            <ul class="list-group mb-3 mb-lg-5" id="inboxList" role="tablist">
                                 <?php
                                 if ($_SESSION["user"]["role"] == "REGISTERED") {
                                 ?>
@@ -29,7 +38,7 @@ include_once 'controller/db.php';
                                 </li>
                                 <li>
                                     <a href="#inProcess" id="inProcess-tab" data-toggle="tab" role="tab" aria-controls="inProcess" aria-selected="false">
-                                        <i class="fa fa-star"></i>In Process
+                                        <i class="fas fa-lightbulb"></i>In Process
                                         <span class="label">
                                             <?php \MobilitySharp\controller\countMessages("IN PROCCESS"); ?>
                                         </span>
@@ -37,7 +46,7 @@ include_once 'controller/db.php';
                                 </li>
                                 <li>
                                     <a href="#solved" id="solved-tab" data-toggle="tab" role="tab" aria-controls="solved" aria-selected="false">
-                                        <i class="fa fa-rocket"></i>Solved
+                                        <i class="fas fa-check-circle"></i>Solved
                                         <span class="label">
                                             <?php \MobilitySharp\controller\countMessages("SOLVED"); ?>
                                         </span>
