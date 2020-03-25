@@ -6,6 +6,13 @@ use MobilitySharp\controller\sessions;
 
 sessions\startSession();
 sessions\checkLogin();
+
+if(isset($_GET) && isset($_GET['id'])) {
+    $enterprise = controller\findEntity("Enterprise", filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT));
+    if(!is_null($enterprise)) {
+        controller\deleteEnterprise($enterprise->getId());
+    }
+}
 ?>
 <!DOCTYPE html>
 <html>
