@@ -688,7 +688,7 @@ function listPartnerEnterprises() {
                 </button>
                 <div class='dropdown-menu' aria-labelledby='dropdownMenuButton'>
                     <a class='dropdown-item' href='registerEnterprise.php?id=".$enterprise->getId()."'>Edit</a>
-                    <a class='dropdown-item' href='#'>Delete</a>
+                    <a class='dropdown-item' href='".$_SERVER['PHP_SELF']."?id=".$enterprise->getId()."'>Delete</a>
                 </div>
             </div>
         </div></div>
