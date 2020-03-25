@@ -568,6 +568,7 @@ function insertInstitutionSpecialty() {
     $institution = $entityM->getRepository("\MobilitySharp\model\Institution")->findOneBy(["partner" => $partner]);
 
     $specialty = $entityM->find("\MobilitySharp\model\SpecialtyType", filter_input(INPUT_POST, "specialty"));
+   
     try {
         $entityM->getConnection()->beginTransaction();
         $institution->getSpecialties()->add($specialty);
@@ -579,6 +580,7 @@ function insertInstitutionSpecialty() {
     } catch (\Exception $ex) {
         $entityM->getConnection()->rollback();
     }
+    
 }
 /**
  * Inserts a specialty in an enterprise. Gets all data to insert from a form with POST method.
@@ -607,7 +609,7 @@ function insertStudentSpecialty() {
     $entityM = load("registered");
     $student = $entityM->find("\MobilitySharp\model\Student", filter_input(INPUT_POST, "student")); //get this with a select
     $specialty = $entityM->find("\MobilitySharp\model\SpecialtyType", filter_input(INPUT_POST, "specialty")); //get this with a select
-
+try{
     $entityM->getConnection()->beginTransaction();
     $student->getSpecialties()->add($specialty);
     $specialty->getStudents()->add($student);
@@ -615,6 +617,9 @@ function insertStudentSpecialty() {
     $entityM->persist($specialty);
     $entityM->flush();
     $entityM->getConnection()->commit();
+}catch(\Exception $ex){
+    $entityM->getConnection()->rollback();
+}
 }
 
 /**
@@ -803,15 +808,46 @@ function getAllEnterprises() {
  */
 function insertEnterpriseMobility() {
     $entityM = load("registered");
-    $startDate = filter_input(INPUT_POST, "startDate");
-    $estimatedEndDate = filter_input(INPUT_POST, "estimatedEndDate");
+    $startDate = new \DateTime(filter_input(INPUT_POST, "startDate"));
+    $estimatedEndDate = new \DateTime(filter_input(INPUT_POST, "estimatedEndDate"));
+    $startDate->format("Y-m-d");
+    $estimatedEndDate->format("Y-m-d");
+    if($startDate<$estimatedEndDate){
     $student = $entityM->find("MobilitySharp\model\Student", filter_input(INPUT_POST, "student"));
+    $queryEnterpriseMobilities = $entityM->createQueryBuilder();
+    $queryInstitutionMobilities=$entityM->createQueryBuilder();
+    
+    $queryEnterpriseMobilities->addSelect('em')
+            ->from("MobilitySharp\model\EnterpriseMobility", 'em')
+            ->where("em.student = :student")
+            ->andWhere(":start_date BETWEEN em.start_date AND em.estimated_end_date")
+            ->orWhere(":estimated_end_date BETWEEN em.start_date AND em.estimated_end_date")
+            ->setParameter("student", $student)
+            ->setParameter("start_date",$startDate)
+            ->setParameter("estimated_end_date",$estimatedEndDate);
+    $enterpriseMobilities = $queryEnterpriseMobilities->getQuery()->getResult();
+    
+    $queryInstitutionMobilities->addSelect('im')
+            ->from("MobilitySharp\model\InstitutionMobility", 'im')
+            ->where("im.student = :student")
+            ->andWhere(":start_date BETWEEN im.start_date AND im.estimated_end_date")
+            ->orWhere(":estimated_end_date BETWEEN im.start_date AND im.estimated_end_date")
+            ->setParameter("student", $student)
+            ->setParameter("start_date",$startDate)
+            ->setParameter("estimated_end_date",$estimatedEndDate);
+    
+    $institutionMobilities = $queryInstitutionMobilities->getQuery()->getResult();
+    $mobilities= array_merge($enterpriseMobilities,$institutionMobilities);
     $enterprise = $entityM->find("MobilitySharp\model\Enterprise", filter_input(INPUT_POST, "enterprise"));
     $registrationDate = new \DateTime(date("Y-m-d"));
-    $mobility = new \MobilitySharp\model\EnterpriseMobility(new \DateTime($startDate), new \DateTime($estimatedEndDate), $registrationDate, $student, $enterprise);
+    
+    if($mobilities==null){
+    $mobility = new \MobilitySharp\model\EnterpriseMobility($startDate,$estimatedEndDate, $registrationDate, $student, $enterprise);
 
     $entityM->persist($mobility);
     $entityM->flush();
+    }
+}
 }
 
 /**
@@ -832,17 +868,46 @@ function getAllInstitutions() {
  */
 function insertInstitutionMobility() {
     $entityM = load("registered");
-    $startDate = filter_input(INPUT_POST, "startDate");
-    $estimatedEndDate = filter_input(INPUT_POST, "estimatedEndDate");
+    $startDate = new \DateTime(filter_input(INPUT_POST, "startDate"));
+    $estimatedEndDate = new \DateTime(filter_input(INPUT_POST, "estimatedEndDate"));
+    $startDate->format("Y-m-d");
+    $estimatedEndDate->format("Y-m-d");
+    if($startDate<$estimatedEndDate){
     $student = $entityM->find("MobilitySharp\model\Student", filter_input(INPUT_POST, "student"));
     $institution = $entityM->find("MobilitySharp\model\Institution", filter_input(INPUT_POST, "institution"));
     $registrationDate = new \DateTime(date("Y-m-d"));
+    $queryEnterpriseMobilities = $entityM->createQueryBuilder();
+    $queryInstitutionMobilities=$entityM->createQueryBuilder();
+    
+    $queryEnterpriseMobilities->addSelect('em')
+            ->from("MobilitySharp\model\EnterpriseMobility", 'em')
+            ->where("em.student = :student")
+            ->andWhere(":start_date BETWEEN em.start_date AND em.estimated_end_date")
+            ->orWhere(":estimated_end_date BETWEEN em.start_date AND em.estimated_end_date")
+            ->setParameter("student", $student)
+            ->setParameter("start_date",$startDate)
+            ->setParameter("estimated_end_date",$estimatedEndDate);
+    $enterpriseMobilities = $queryEnterpriseMobilities->getQuery()->getResult();
+    
+    $queryInstitutionMobilities->addSelect('im')
+            ->from("MobilitySharp\model\InstitutionMobility", 'im')
+            ->where("im.student = :student")
+            ->andWhere(":start_date BETWEEN im.start_date AND im.estimated_end_date")
+            ->orWhere(":estimated_end_date BETWEEN im.start_date AND im.estimated_end_date")
+            ->setParameter("student", $student)
+            ->setParameter("start_date",$startDate)
+            ->setParameter("estimated_end_date",$estimatedEndDate);
+    
+    $institutionMobilities = $queryInstitutionMobilities->getQuery()->getResult();
+    $mobilities= array_merge($enterpriseMobilities,$institutionMobilities);
+    if($mobilities==null){
     $mobility = new \MobilitySharp\model\InstitutionMobility(new \DateTime($startDate), new \DateTime($estimatedEndDate), $registrationDate, $student, $institution);
 
     $entityM->persist($mobility);
     $entityM->flush();
+    }
 }
-
+}
 /**
  * List all partner mobilities sending HTML code.
  */
