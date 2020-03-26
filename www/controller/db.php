@@ -1289,7 +1289,7 @@ function partnerProfile() {
 //IMPORTANT! QUERY NEEDS REWORK!!
 function sendPetition() {
     $entityM = load("registered");
-    $senderPartner = $entityM->find("MobilitySharp\model\Partner", $id);
+    $senderPartner = $entityM->find("MobilitySharp\model\Partner", $_SESSION["user"]["id"]);
     $date = new \DateTime(date("Y-m-d H:i:s"));
     $role = $entityM->getRepository("MobilitySharp\model\Role")->findOneBy(["type" => "ADMIN"]);
     $subject = filter_input(INPUT_POST, "subject");
