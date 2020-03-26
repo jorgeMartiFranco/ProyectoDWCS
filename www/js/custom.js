@@ -70,3 +70,37 @@ function createFormStruct(form, data) {
     
     form.prepend(row);
 }
+
+
+function getCheckboxChecked(type){
+    
+    var checkedLis=$("div ul li input[type='checkbox']:checked").parent();
+    var ids=[];
+    
+    for(let checkedLi of checkedLis){
+       
+        ids.push(checkedLi.id);
+    }
+    var object={
+        type:type,
+        ids:ids
+    };
+    
+        
+    $.post('controller/inbox.php', object,function(data) {
+       var bool=JSON.parse(data);
+    if(bool.response==="true"){
+    location.reload();
+    }
+    else {
+        $("body").prepend('<div class="alert alert-warning alert-dismissible fade show text-center" role="alert">'+
+                            '<strong>WARNING!</strong>You have to select at least one message.'+
+                            '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
+                            '<span aria-hidden="true">&times;</span>'+
+                            '</button>'+
+                           '</div>');
+    }
+});
+   
+    
+}

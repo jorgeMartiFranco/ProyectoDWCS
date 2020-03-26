@@ -1291,6 +1291,8 @@ function partnerProfile(){
 /**
  * Registers a new petition in the DB. Gets all data to send from a form with POST method.
  */
+
+//IMPORTANT! QUERY NEEDS REWORK!!
 function sendPetition(){
     $entityM= load("registered");
     $senderPartner=$entityM->find("MobilitySharp\model\Partner",$_SESSION["user"]["id"]);
@@ -1300,6 +1302,7 @@ function sendPetition(){
     $status=$entityM->getRepository("MobilitySharp\model\Status")->findOneBy(["status"=>"REQUESTED"]);
     
     $queryPetition = $entityM->createQueryBuilder();
+    $alternativeQuery= $entityM->createQueryBuilder();
     $queryPetition->addSelect('p')
             ->from("MobilitySharp\model\PetitionHistory", 'p')
             ->join("MobilitySharp\model\Partner",'pa')
@@ -1309,8 +1312,18 @@ function sendPetition(){
             ->groupBy("p.receiver_partner")
             ->orderBy("COUNT(p.receiver_partner)")
             ->setMaxResults(1);
-    $petition = $queryPetition->getQuery()->getSingleResult();
-    $receiverPartner=$petition->getReceiver_partner();
+    $petition = $queryPetition->getQuery()->getOneOrNullResult();
+    if($petition==null){
+    $alternativeQuery->addSelect('pa')
+            ->from("MobilitySharp\model\Partner",'pa')
+            ->where("pa.role=".$role->getId())
+            ->setMaxResults(1);
+    $petition=$alternativeQuery->getQuery()->getOneOrNullResult();
+    $receiverPartner=$petition;
+    }else {
+        $receiverPartner=$petition->getReceiver_partner();
+    }
+    
     $newPetition = new \MobilitySharp\model\PetitionHistory(ucfirst($subject), $date, $status, $senderPartner, $receiverPartner);
     if($description= filter_input(INPUT_POST, "description")){
         $newPetition->setDescription(ucfirst($description));
@@ -1358,14 +1371,14 @@ function listPartnerMessages($type){
     
     foreach ($petitions as $petition){
         
-        echo "<ul class='messages-list mb-3 mb-lg-5' id='".$petition->getStatus()->getStatus()."'>
-            <li class='unread'>
+        echo "
+            <li class='unread' id='".$petition->getId()."'>
 		
-		
+		<input type='checkbox' class='form-check-input'>
 		<span class='date'><span class='fa fa-paper-clip'></span>".date_format($petition->getDate(),"m-d h:i")."</span>
 		
 		<div class='title'>
-		<input type='checkbox' class='form-check-input' id='checkMessage'>
+		
 		".$petition->getSubject()."
 		</div>	
 		<div class='description'>
@@ -1373,7 +1386,9 @@ function listPartnerMessages($type){
                 </div>
 			
 		</li>
-                </ul>";
+                ";
+        
+        
     }
 }
 
@@ -1443,10 +1458,9 @@ function listPartnerMessagesAdmin($type){
     if($petitions>0){
         foreach ($petitions as $petition){
             
-            echo "<ul class='messages-list mb-3 mb-lg-5' id='".$petition->getStatus()->getStatus()."'>"
-            . "<li class='unread' id='".$petition->getId()."'>
+            echo "<li class='unread' id='".$petition->getId()."'>
             
-                    <input type='checkbox' class='form-check-input'>
+            <input type='checkbox' class='form-check-input'>
             <span class='from'>".$petition->getSender_partner()->getFull_name()."</span>
             <span class='date'><span class='fa fa-paper-clip'></span>".date_format($petition->getDate(),"m-d H:i")."</span><small> &#60".$petition->getSender_partner()->getEmail()."&#62</small>
             
@@ -1459,7 +1473,7 @@ function listPartnerMessagesAdmin($type){
                     </div>
             
             </li>
-                    </ul>";
+                    ";
         }
     } else {
         echo "<div class='container-fluid'><section class='container text-center'>"
@@ -1469,11 +1483,17 @@ function listPartnerMessagesAdmin($type){
 
 
 
-function changePetitionStatus($newStatus,$petitionId){
+function changePetitionStatus($ids,$petitionStatus){
     $entityM=load("admin");
-    $petition=$entityM->find("MobilitySharp\model\PetitionHistory",$petitionId);
-    $petition->setStatus($newStatus);
+    $status=$entityM->getRepository("MobilitySharp\model\Status")->findOneBy(["status"=>$petitionStatus]);
+    foreach ($ids as $id){
+        $petition=$entityM->find("MobilitySharp\model\PetitionHistory",$id);
+        $petition->setStatus($status);
+    }
+    
     $entityM->flush();
+    
+    
 }
 
 

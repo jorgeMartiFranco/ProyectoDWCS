@@ -53,10 +53,10 @@ include_once 'controller/db.php';
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#cancelled" id="cancelled-tab" data-toggle="tab" role="tab" aria-controls="cancelled" aria-selected="false">
+                                    <a href="#canceled" id="cancelled-tab" data-toggle="tab" role="tab" aria-controls="canceled" aria-selected="false">
                                         <i class="fa fa-trash"></i>Cancelled
                                         <span class="label">
-                                            <?php \MobilitySharp\controller\countMessages("CANCELLED"); ?>
+                                            <?php \MobilitySharp\controller\countMessages("CANCELED"); ?>
                                         </span>
                                     </a>
                                 </li>
@@ -118,14 +118,14 @@ include_once 'controller/db.php';
                                 <?php
                                 if ($_SESSION["user"]["role"] == "ADMIN") {
                                 ?>
-                                    <button class="btn btn-primary" data-toggle="tooltip" title="Set petition requested"><span class="fa fa-inbox"></span></button>
-                                    <button class="btn btn-primary" data-toggle="tooltip" title="Set petition in Process"><span class="fas fa-lightbulb"></span></button>
-                                    <button class="btn btn-primary" data-toggle="tooltip" title="Set petition solved"><span class="fas fa-check-circle"></span></button>
-                                    <button class="btn btn-primary" data-toggle="tooltip" title="Set petition declined"><span class="fas fa-times-circle"></span></button>
+                                <button class="btn btn-primary" data-toggle="tooltip" title="Set petition requested" onclick="getCheckboxChecked('REQUESTED')"><span class="fa fa-inbox"></span></button>
+                                    <button class="btn btn-primary" data-toggle="tooltip" title="Set petition in Process" onclick="getCheckboxChecked('IN PROCCESS')"><span class="fas fa-lightbulb"></span></button>
+                                    <button class="btn btn-primary" data-toggle="tooltip" title="Set petition solved" onclick="getCheckboxChecked('SOLVED')"><span class="fas fa-check-circle"></span></button>
+                                    <button class="btn btn-primary" data-toggle="tooltip" title="Set petition declined" onclick="getCheckboxChecked('DECLINED')"><span class="fas fa-times-circle"></span></button>
                                 <?php
                                 } else if ($_SESSION["user"]["role"] == "REGISTERED") {
                                 ?>
-                                <!-- Code -->
+                                <button class="btn btn-primary" data-toggle="tooltip" title="Set petition cancelled" onclick="getCheckboxChecked('CANCELED')"><span class="fa fa-trash"></span></button>
                                 <?php
                                 }
                                 ?>
@@ -153,9 +153,9 @@ include_once 'controller/db.php';
                                         <?php MobilitySharp\controller\listPartnerMessages("SOLVED"); ?>
                                     </ul>
                                 </div>
-                                <div class="tab-pane fade" id="cancelled" role="tabpanel" aria-labelledby="cancelled-tab">
-                                    <ul class="messages-list mb-3 mb-lg-5" id="cancelled">
-                                        <?php MobilitySharp\controller\listPartnerMessages("CANCELLED"); ?>
+                                <div class="tab-pane fade" id="canceled" role="tabpanel" aria-labelledby="cancelled-tab">
+                                    <ul class="messages-list mb-3 mb-lg-5">
+                                        <?php MobilitySharp\controller\listPartnerMessages("CANCELED"); ?>
                                     </ul>
                                 </div>
                                 <div class="tab-pane fade" id="declined" role="tabpanel" aria-labelledby="declined-tab">
@@ -181,11 +181,7 @@ include_once 'controller/db.php';
                                         <?php MobilitySharp\controller\listPartnerMessagesAdmin("SOLVED"); ?>
                                     </ul>
                                 </div>
-                                <div class="tab-pane fade" id="cancelled" role="tabpanel" aria-labelledby="cancelled-tab">
-                                    <ul class="messages-list mb-3 mb-lg-5">
-                                        <?php MobilitySharp\controller\listPartnerMessagesAdmin("CANCELLED"); ?>
-                                    </ul>
-                                </div>
+                                
                                 <div class="tab-pane fade" id="declined" role="tabpanel" aria-labelledby="declined-tab">
                                     <ul class="messages-list mb-3 mb-lg-5">
                                         <?php MobilitySharp\controller\listPartnerMessagesAdmin("DECLINED"); ?>
