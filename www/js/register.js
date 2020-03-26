@@ -16,6 +16,7 @@ $("document").ready(function () {
 
 
 //REGISTER FORMS
+
 function createFormRegisterPartner() {
     var form = $("#partner");
     var arrayColumns = [
@@ -96,8 +97,8 @@ function createFormInsertStudent(){
      ];
     
     
-    createFormStruct(form,arrayColumns);
-    }
+    createFormStruct(form, arrayColumns);
+}
     
 function createFormRegisterEnterpriseType(){
     var form = $("#enterpriseType");
@@ -182,9 +183,6 @@ async function createFormEditPartner(id) {
         for(property in partner){
             if(col.name === property) {
                 col.value = partner[property];
-                console.log(col.name);
-                console.log(property);
-                console.log(partner[property]);
             }
         }
     }
@@ -192,7 +190,31 @@ async function createFormEditPartner(id) {
     createFormStruct(form, arrayColumns);
 }
 
+async function createFormEditStudent(id){
+    var form = $("#student");
+
+    var student = await getJsonData(baseurl + 'controller/json.php?student&id=' + id);
+    
+    var arrayColumns = [
+        {type: "text", placeholder: "First name", name: "fName", id: "fname", required: true},
+        {type: "text", placeholder: "Last name", name: "lName", id: "lName", required: true},
+        {type: "date", placeholder: "Birth date", name: "birthDate", id: "birthDate", required: true},
+        {type: "text", placeholder: "VAT", name: "sVat", id: "sVat"}
+    ];
+    
+     for(col of arrayColumns) {
+        for(property in student){
+            if(col.name === property) {
+                col.value = student[property];
+            }
+        }
+    }
+    
+    createFormStruct(form, arrayColumns);
+}
+
 //JSON SUPPORT
+
 async function getJsonData($url){
     request = await fetch($url);
     return await request.json();

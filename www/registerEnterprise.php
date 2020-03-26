@@ -7,14 +7,17 @@ use MobilitySharp\controller\sessions;
 sessions\startSession();
 sessions\checkLogin();
 
-if (isset($_POST) && isset($_POST['id']) && !empty($_POST['id'])) {     //Se ha recibido una petición para procesar la modificación de la empresa
+if (isset($_POST) && isset($_POST['id']) && !empty($_POST['id'])) {
     controller\modifyEnterprise(filter_input(INPUT_POST, "id", FILTER_VALIDATE_INT));
-    header("Location:myEnterprises.php");
-} else if (isset($_POST) && !empty($_POST)) {   //Se ha recibido una petición para insertar una nueva empresa
+    header("Location: myEnterprises.php");
+
+} else if (isset($_POST) && !empty($_POST)) {
     controller\insertEnterprise();
-} else if (isset($_GET) && isset($_GET['id']) && !empty($_GET['id'])) {     //Se ha recibido una petición para modificar la empresa y mostraremos el formulario con sus datos
+
+} else if (isset($_GET) && isset($_GET['id']) && !empty($_GET['id'])) {
     $id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
     $enterprise = controller\findEntity("Enterprise", $id);
+    
 ?>
 <!DOCTYPE html>
 <html>

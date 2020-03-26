@@ -1,5 +1,8 @@
 <?php
-namespace MobilitySharp\controller;
+namespace MobilitySharp\controller\json;
+
+use MobilitySharp\controller;
+
 include_once 'db.php';
 
 if($_SERVER['REQUEST_METHOD'] === 'GET') {
@@ -16,28 +19,29 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
         switch($function_request){
             case "ceos":
                 if(is_logged_in()) {
-                    getCeos();
+                    controller\getCeos();
                 }
                 break;
             case "countries":
-                getCountries();
+                controller\getCountries();
                 break;
             case "enterpriseTypes":
                 if(is_logged_in()) {
-                    getEnterpriseTypes();
+                    controller\getEnterpriseTypes();
                 }
                 break;
             case "institutionTypes":
-                getInstitutionTypes();
+                controller\getInstitutionTypes();
                 break;
             case "enterprise":
                 getEnterprise(filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT));
                 break;
             case "profile":
                 getProfile(filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT));
+                break;
+            case "student":
+                getStudent(filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT));
         }
-
-        
         
     }
 }
@@ -55,6 +59,7 @@ function is_logged_in() : bool {
     return $is_logged;
 }
 
+use function MobilitySharp\controller\findEntity;
 
 function getEnterprise($id) {
     
@@ -99,6 +104,26 @@ function getProfile($id) {
                 'department' => $partner->getDepartment(),
                 'post' => $partner->getPost(),
                 'country' => $partner->getCountry()->getId()
+            ]);
+        }
+    }
+}
+
+function getStudent($id) {
+    
+    if(isset($id)){
+        $student = findEntity("Student", $id);
+
+        if($student) {
+            $fullName = explode(" ", $student->getFull_name());
+            $firstName = $fullName[0];
+            $lastName = (isset($fullName[2])) ? "$fullName[1] $fullName[2]" : "$fullName[1]";
+
+            echo json_encode([
+                'fName' => $firstName,
+                'lName' => $lastName,
+                'birthDate' => $student->getBirth_date(),
+                'sVat' => $student->getVat()
             ]);
         }
     }

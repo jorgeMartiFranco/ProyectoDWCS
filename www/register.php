@@ -2,7 +2,7 @@
 require_once 'controller/sessions.php';
 \MobilitySharp\controller\sessions\startSession();
 
-//Redirects to Document Root if the user was already logged in.
+//Redirects to Document Root if the user was already logged in and is not trying to modify his data.
 if(isset($_SESSION['user']) && !isset($_GET['id'])) {
     header('Location: /');
 }
@@ -13,11 +13,14 @@ use MobilitySharp\controller;
 if (isset($_POST) && isset($_POST['id']) && !empty($_POST['id'])) {
     controller\modifyPartner(filter_input(INPUT_POST, "id", FILTER_VALIDATE_INT));
     header("Location: myProfile.php");
+
 } else if (isset($_POST) && !empty($_POST)) {
     controller\registerPartnerInstitution();
+
 } else if(isset($_GET) && isset($_GET['id']) && !empty($_GET['id'])){
     $id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
     $partner = controller\findEntity("Partner", $id);
+    
 ?>
 <!DOCTYPE html>
 <html>
