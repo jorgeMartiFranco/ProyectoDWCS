@@ -9,7 +9,7 @@ include_once 'controller/db.php';
     <?php include "header.php"; ?>
     <div class="wrapper">
         <?php include "sidenav.php"; ?>
-        <div class="container mt-3 mt-lg-5 border-bottom border-dark my-3 my-lg-5 mx-3 mx-lg-5">
+        <div class="container mt-3 mt-lg-5 border-bottom border-dark my-3 my-lg-5 mx-auto mx-lg-5">
             <div class="row border-bottom border-dark my-3">
                 <div class="col"><h3>Your inbox</h3></div>
             </div>
