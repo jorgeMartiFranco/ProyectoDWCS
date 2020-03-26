@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains all the database functions neccesary to make MobilitySharp work.
  * @author Diego Rodríguez Vicente <diego_pkv@hotmail.com>
@@ -69,24 +70,22 @@ function checkUser($username, $password) {
                 ->orWhere("p.email = :username")
                 ->setParameter("username", $username);
         $user = $queryUser->getQuery()->getSingleResult();
-        if($user->getTermination_date()==null){
-        if ($user !== null) {
-            if (password_verify($password, $user->getPassword())) {
+        if ($user->getTermination_date() == null) {
+            if ($user !== null) {
+                if (password_verify($password, $user->getPassword())) {
 
-                return [
-                    'id' => $user->getId(),
-                    'usuario' => $user->getUsername(),
-                    'email' => $user->getEmail(),
-                    'password' => $user->getPassword(),
-                    'role' => $user->getRole()->getType()
-                ];
+                    return [
+                        'id' => $user->getId(),
+                        'usuario' => $user->getUsername(),
+                        'email' => $user->getEmail(),
+                        'password' => $user->getPassword(),
+                        'role' => $user->getRole()->getType()
+                    ];
+                }
             }
-        }
-        return FALSE;
-        }
-        else {
-           
-           errorMessage("Termination date");
+            return FALSE;
+        } else {
+            
         }
     } catch (\Exception $ex) {
         echo $ex->getMessage();
@@ -101,7 +100,6 @@ function checkUser($username, $password) {
  * @see \MobilitySharp\model\Country
  * @see \json_encode
  */
-
 function getCountries() {
 
     $entityM = load("login");
@@ -114,7 +112,6 @@ function getCountries() {
 
     echo json_encode($json);
 }
-
 
 /**
  * Gets all institutions types from the database.
@@ -136,7 +133,6 @@ function getInstitutionTypes() {
 
     echo json_encode($json);
 }
-
 
 /**
  * Registers a partner and institution.
@@ -161,16 +157,16 @@ function registerPartnerInstitution() {
         $phone = filter_input(INPUT_POST, "phone");
         $username = filter_input(INPUT_POST, "username");
         $password = filter_input(INPUT_POST, "password");
-        $confirmPassword= filter_input(INPUT_POST, "password2");
+        $confirmPassword = filter_input(INPUT_POST, "password2");
         $vat = (filter_input(INPUT_POST, "vat")) ? filter_input(INPUT_POST, "vat") : NULL;
         $post = filter_input(INPUT_POST, "post");
         $department = filter_input(INPUT_POST, "department");
         $l_provider = filter_input(INPUT_POST, "lodgingProvider");
         $role = $entityM->getRepository("MobilitySharp\model\Role")->findOneBy(["type" => 'REGISTERED']); // registered user
         $country = $entityM->find("MobilitySharp\model\Country", filter_input(INPUT_POST, "country"));
-        $repeatedEmailPartner=$entityM->getRepository("MobilitySharp\model\Partner")->findOneBy(["email"=>$email]);
-        $repeatedUser=$entityM->getRepository("MobilitySharp\model\Partner")->findOneBy(["username"=>$username]);
-        $repeatedPartnerVat=$entityM->getRepository("MobilitySharp\model\Partner")->findOneBy(["vat"=>$vat]);
+        $repeatedEmailPartner = $entityM->getRepository("MobilitySharp\model\Partner")->findOneBy(["email" => $email]);
+        $repeatedUser = $entityM->getRepository("MobilitySharp\model\Partner")->findOneBy(["username" => $username]);
+        $repeatedPartnerVat = $entityM->getRepository("MobilitySharp\model\Partner")->findOneBy(["vat" => $vat]);
         $iName = filter_input(INPUT_POST, "iName");
         $iEmail = filter_input(INPUT_POST, "iEmail");
         $iPhone = filter_input(INPUT_POST, "iPhone");
@@ -183,67 +179,67 @@ function registerPartnerInstitution() {
 
         $institution = $entityM->getRepository("MobilitySharp\model\Institution")->findOneBy(["email" => $iEmail]);
 
-        if($password==$confirmPassword or $repeatedEmailPartner==null or $repeatedPartnerVat==null or $repeatedUser==null){
-        if (is_null($institution)) {
-            $entityM->getConnection()->beginTransaction();
-            $partner = new \MobilitySharp\model\Partner(password_hash($password, PASSWORD_DEFAULT), $username, $name, $email, $phone, $post, $department, $role, $country, $date);
-            $score = $entityM->getRepository("MobilitySharp\model\ScoreType")->findOneBy(["type" => 'REGISTER']);
-            $partner->setScore($score->getValue());
-            if ($vat) {
-                $partner->setVat($vat);
-            }
-            if ($l_provider) {
-                $partner->setLodging_provider($l_provider);
-            }
-            $entityM->persist($partner);
-            $entityM->flush();
-            $institution = new \MobilitySharp\model\Institution($iName, $iEmail, $iPhone, $postalCode, $iLocation, $country, $partner, $institutionType, $date);
-            $partner->setInstitution($institution);
+        if ($password == $confirmPassword or $repeatedEmailPartner == null or $repeatedPartnerVat == null or $repeatedUser == null) {
+            if (is_null($institution)) {
+                $entityM->getConnection()->beginTransaction();
+                $partner = new \MobilitySharp\model\Partner(password_hash($password, PASSWORD_DEFAULT), $username, $name, $email, $phone, $post, $department, $role, $country, $date);
+                $score = $entityM->getRepository("MobilitySharp\model\ScoreType")->findOneBy(["type" => 'REGISTER']);
+                $partner->setScore($score->getValue());
+                if ($vat) {
+                    $partner->setVat($vat);
+                }
+                if ($l_provider) {
+                    $partner->setLodging_provider($l_provider);
+                }
+                $entityM->persist($partner);
+                $entityM->flush();
+                $institution = new \MobilitySharp\model\Institution($iName, $iEmail, $iPhone, $postalCode, $iLocation, $country, $partner, $institutionType, $date);
+                $partner->setInstitution($institution);
 
-            if ($iVat) {
-                $institution->setVat($iVat);
-            }
-            if ($web) {
-                $institution->setWeb($web);
-            }
-            if ($description) {
-                $institution->setDescription($description);
-            }
-            $entityM->persist($institution);
-            $entityM->persist($partner);
-            $entityM->flush();
+                if ($iVat) {
+                    $institution->setVat($iVat);
+                }
+                if ($web) {
+                    $institution->setWeb($web);
+                }
+                if ($description) {
+                    $institution->setDescription($description);
+                }
+                $entityM->persist($institution);
+                $entityM->persist($partner);
+                $entityM->flush();
 
-            if ($entityM->getConnection()->commit()) {
-                $partnerParams = [
-                    ':id' => $partner->getId(),
-                    ':email' => $email,
-                    ':username' => $username,
-                    ':password' => password_hash($password, PASSWORD_DEFAULT),
-                    ':role' => $partner->getRole()->getId()
-                ];
+                if ($entityM->getConnection()->commit()) {
+                    $partnerParams = [
+                        ':id' => $partner->getId(),
+                        ':email' => $email,
+                        ':username' => $username,
+                        ':password' => password_hash($password, PASSWORD_DEFAULT),
+                        ':role' => $partner->getRole()->getId()
+                    ];
+                    sessionStoreUser($partnerParams);
+                    $location = "Location:index.php?registered";
+                } else {
+                    $entityM->getConnection()->rollback();
+                }
+            } else {
+
+                $partner = new \MobilitySharp\model\Partner(password_hash($password, PASSWORD_DEFAULT), $username, $name, $email, $phone, $post, $department, $role, $country, $date);
+                $partner->setInstitution($institution);
+                $score = $entityM->getRepository("MobilitySharp\model\ScoreType")->findOneBy(["type" => 'REGISTER']);
+                $partner->setScore($score->getValue());
+                if ($vat) {
+                    $partner->setVat($vat);
+                }
+                if ($l_provider) {
+                    $partner->setLodging_provider($l_provider);
+                }
+
+                $entityM->persist($partner);
+                $entityM->flush();
                 sessionStoreUser($partnerParams);
                 $location = "Location:index.php?registered";
-            } else {
-                $entityM->getConnection()->rollback();
             }
-        } else {
-
-            $partner = new \MobilitySharp\model\Partner(password_hash($password, PASSWORD_DEFAULT), $username, $name, $email, $phone, $post, $department, $role, $country, $date);
-            $partner->setInstitution($institution);
-            $score = $entityM->getRepository("MobilitySharp\model\ScoreType")->findOneBy(["type" => 'REGISTER']);
-            $partner->setScore($score->getValue());
-            if ($vat) {
-                $partner->setVat($vat);
-            }
-            if ($l_provider) {
-                $partner->setLodging_provider($l_provider);
-            }
-            
-            $entityM->persist($partner);
-            $entityM->flush();
-            sessionStoreUser($partnerParams);
-            $location = "Location:index.php?registered";
-        }
         }
         header($location);
     } catch (\Exception $e) {
@@ -389,58 +385,56 @@ function insertEnterprise() {
 
     $enterprise = $entityM->getRepository("MobilitySharp\model\Enterprise")->findOneBy(["email" => filter_input(INPUT_POST, "eEmail")]);
     $ceo = $entityM->getRepository("MobilitySharp\model\CEO")->findOneBy(["email" => filter_input(INPUT_POST, "email")]);
-    
-    if($vat = filter_input(INPUT_POST, "eVat")){
-        $repeatedVat=$entityM->getRepository("MobilitySharp\model\Enterprise")->findOneBy(["vat"=>$vat]);
-    }
-    else {
-        $vat=null;
-        $repeatedVat=null;
-    }
-    
-    if($repeatedVat==null){
-    if (is_null($enterprise)) {
-        $entityM->getConnection()->beginTransaction();
-        $ceo_post = filter_input(INPUT_POST, "ceoPost");
-        $name = filter_input(INPUT_POST, "eName");
-        $email = filter_input(INPUT_POST, "eEmail");
-        $telephone = filter_input(INPUT_POST, "ePhone");
-        $postal_code = filter_input(INPUT_POST, "postalCode");
-        $location = filter_input(INPUT_POST, "location");
-        $country = $entityM->find("MobilitySharp\model\Country", filter_input(INPUT_POST, "country"));
-        $partner = $entityM->find("MobilitySharp\model\Partner", $_SESSION["user"]["id"]);
-        $type = $entityM->find("MobilitySharp\model\EnterpriseType", filter_input(INPUT_POST, "enterpriseType"));
-        $registration_date = new \DateTime(date("Y-m-d"));
-        $ceoEmail = filter_input(INPUT_POST, "email");
-        $full_name = filter_input(INPUT_POST, "fName") . " " . filter_input(INPUT_POST, "lName");
-        if (!$ceo) {
-            $ceo = new \MobilitySharp\model\CEO($ceoEmail, $full_name);
-        }
 
-        if ($ceoPhone = filter_input(INPUT_POST, "phone")) {
-            $ceo->setTelephone($ceoPhone);
-        }
-        $entityM->persist($ceo);
-        $entityM->flush();
-        $enterprise = new \MobilitySharp\model\Enterprise($ceo_post, $name, $email, $telephone, $postal_code, $location, $country, $partner, $ceo, $type, $registration_date);
+    if ($vat = filter_input(INPUT_POST, "eVat")) {
+        $repeatedVat = $entityM->getRepository("MobilitySharp\model\Enterprise")->findOneBy(["vat" => $vat]);
+    } else {
+        $vat = null;
+        $repeatedVat = null;
+    }
 
-        
-        $enterprise->setVat($vat);
-        
-        if ($web = filter_input(INPUT_POST, "web")) {
-            $enterprise->setWeb($web);
+    if ($repeatedVat == null) {
+        if (is_null($enterprise)) {
+            $entityM->getConnection()->beginTransaction();
+            $ceo_post = filter_input(INPUT_POST, "ceoPost");
+            $name = filter_input(INPUT_POST, "eName");
+            $email = filter_input(INPUT_POST, "eEmail");
+            $telephone = filter_input(INPUT_POST, "ePhone");
+            $postal_code = filter_input(INPUT_POST, "postalCode");
+            $location = filter_input(INPUT_POST, "location");
+            $country = $entityM->find("MobilitySharp\model\Country", filter_input(INPUT_POST, "country"));
+            $partner = $entityM->find("MobilitySharp\model\Partner", $_SESSION["user"]["id"]);
+            $type = $entityM->find("MobilitySharp\model\EnterpriseType", filter_input(INPUT_POST, "enterpriseType"));
+            $registration_date = new \DateTime(date("Y-m-d"));
+            $ceoEmail = filter_input(INPUT_POST, "email");
+            $full_name = filter_input(INPUT_POST, "fName") . " " . filter_input(INPUT_POST, "lName");
+            if (!$ceo) {
+                $ceo = new \MobilitySharp\model\CEO($ceoEmail, $full_name);
+            }
+
+            if ($ceoPhone = filter_input(INPUT_POST, "phone")) {
+                $ceo->setTelephone($ceoPhone);
+            }
+            $entityM->persist($ceo);
+            $entityM->flush();
+            $enterprise = new \MobilitySharp\model\Enterprise($ceo_post, $name, $email, $telephone, $postal_code, $location, $country, $partner, $ceo, $type, $registration_date);
+
+
+            $enterprise->setVat($vat);
+
+            if ($web = filter_input(INPUT_POST, "web")) {
+                $enterprise->setWeb($web);
+            }
+            if ($description = filter_input(INPUT_POST, "description")) {
+                $enterprise->setDescription($description);
+            }
+            $entityM->persist($enterprise);
+            $entityM->flush();
+            $entityM->getConnection()->commit();
         }
-        if ($description = filter_input(INPUT_POST, "description")) {
-            $enterprise->setDescription($description);
-        }
-        $entityM->persist($enterprise);
-        $entityM->flush();
-        $entityM->getConnection()->commit();
-    } 
     }
     header("Location:index.php");
 }
-
 
 /**
  * Modifies a selected enterprise in the database.
@@ -450,32 +444,35 @@ function insertEnterprise() {
  * 
  * @param int $id Enterprise's identificator.
  */
-function modifyEnterprise($id){
-    $entityM=load("registered");
-    $enterprise=$entityM->find("MobilitySharp\model\Enterprise", $id);
-    $date=new \DateTime(date("Y-m-d H:i:s"));
+function modifyEnterprise($id) {
+    $entityM = load("registered");
+    $enterprise = $entityM->find("MobilitySharp\model\Enterprise", $id);
+    $date = new \DateTime(date("Y-m-d H:i:s"));
     $enterprise->setName(filter_input(INPUT_POST, "eName"));
     $enterprise->setEmail(filter_input(INPUT_POST, "eEmail"));
     $enterprise->setTelephone(filter_input(INPUT_POST, "ePhone"));
-    if($vat=filter_input(INPUT_POST, "eVat")){
-        $repeatedVat=$entityM->getRepository("MobilitySharp\model\Enterprise")->findOneBy(["vat"=>$vat]);
+    if ($vat = filter_input(INPUT_POST, "eVat")) {
+        $repeatedVat = $entityM->getRepository("MobilitySharp\model\Enterprise")->findOneBy(["vat" => $vat]);
+        if (!is_null($repeatedVat)) {
+            if ($repeatedVat->getId() == $id) {
+                $repeatedVat = null;
+            }
+        }
+    } else {
+        $repeatedVat = null;
+        $vat = null;
     }
-    else {
-        $repeatedVat=null;
-        $vat=null;
+    if ($repeatedVat == null) {
+        $enterprise->setVat($vat);
+        $enterprise->setPostal_code(filter_input(INPUT_POST, "postalCode"));
+        $enterprise->setLocation(filter_input(INPUT_POST, "location"));
+        $enterprise->setWeb(filter_input(INPUT_POST, "web") ?? NULL);
+        $enterprise->setCeo_post(filter_input(INPUT_POST, "ceoPost") ?? NULL);
+        $enterprise->setCountry($entityM->find("MobilitySharp\model\Country", filter_input(INPUT_POST, "country")));
+        $enterprise->setType($entityM->find("MobilitySharp\model\EnterpriseType", filter_input(INPUT_POST, "enterpriseType")));
+        $enterprise->setModification_date($date);
+        $entityM->flush();
     }
-    if($repeatedVat==null){
-    $enterprise->setVat($vat);
-    $enterprise->setPostal_code(filter_input(INPUT_POST, "postalCode"));
-    $enterprise->setLocation(filter_input(INPUT_POST, "location"));
-    $enterprise->setWeb(filter_input(INPUT_POST, "web")??NULL);
-    $enterprise->setCeo_post(filter_input(INPUT_POST, "ceoPost")??NULL);
-    $enterprise->setCountry($entityM->find("MobilitySharp\model\Country", filter_input(INPUT_POST, "country")));
-    $enterprise->setType($entityM->find("MobilitySharp\model\EnterpriseType", filter_input(INPUT_POST, "enterpriseType")));
-    $enterprise->setModification_date($date);
-    $entityM->flush();
-    }
-    
 }
 
 /**
@@ -492,29 +489,28 @@ function insertStudent() {
     $birth_date = filter_input(INPUT_POST, "birthDate");
     $partner = $entityM->find("MobilitySharp\model\Partner", $_SESSION["user"]["id"]);
     $registration_date = new \DateTime(date("Y-m-d"));
-    
-    if ($vat = filter_input(INPUT_POST, "sVat")){
-        $repeatedVat=$entityM->getRepository("MobilitySharp\model\Student")->findOneBy(["vat"=>$vat]);
+
+    if ($vat = filter_input(INPUT_POST, "sVat")) {
+        $repeatedVat = $entityM->getRepository("MobilitySharp\model\Student")->findOneBy(["vat" => $vat]);
+    } else {
+        $repeatedVat = null;
+        $vat = null;
     }
-    else {
-        $repeatedVat=null;
-        $vat=null;
-    }
-    
+
     if ($gender == "Male") {
         $gender = 'M';
     } else {
         $gender = 'F';
     }
-    if($repeatedVat==null){
-    $student = new \MobilitySharp\model\Student($full_name, $gender, new \DateTime($birth_date), $partner, $registration_date);
+    if ($repeatedVat == null) {
+        $student = new \MobilitySharp\model\Student($full_name, $gender, new \DateTime($birth_date), $partner, $registration_date);
 
-    
-    $student->setVat($vat);
-    
 
-    $entityM->persist($student);
-    $entityM->flush();
+        $student->setVat($vat);
+
+
+        $entityM->persist($student);
+        $entityM->flush();
     }
     header("Location:index.php");
 }
@@ -537,7 +533,7 @@ function insertSpecialty() {
         }
         $entityM->persist($specialtyType);
         $entityM->flush();
-    } 
+    }
 }
 
 /**
@@ -557,8 +553,9 @@ function insertInstitutionType() {
 
         $entityM->persist($institutionType);
         $entityM->flush();
-    } 
+    }
 }
+
 /**
  * Inserts a specialty in an institution. Gets all data to insert from a form with POST method.
  */
@@ -568,7 +565,7 @@ function insertInstitutionSpecialty() {
     $institution = $entityM->getRepository("\MobilitySharp\model\Institution")->findOneBy(["partner" => $partner]);
 
     $specialty = $entityM->find("\MobilitySharp\model\SpecialtyType", filter_input(INPUT_POST, "specialty"));
-   
+
     try {
         $entityM->getConnection()->beginTransaction();
         $institution->getSpecialties()->add($specialty);
@@ -580,8 +577,8 @@ function insertInstitutionSpecialty() {
     } catch (\Exception $ex) {
         $entityM->getConnection()->rollback();
     }
-    
 }
+
 /**
  * Inserts a specialty in an enterprise. Gets all data to insert from a form with POST method.
  */
@@ -609,17 +606,17 @@ function insertStudentSpecialty() {
     $entityM = load("registered");
     $student = $entityM->find("\MobilitySharp\model\Student", filter_input(INPUT_POST, "student")); //get this with a select
     $specialty = $entityM->find("\MobilitySharp\model\SpecialtyType", filter_input(INPUT_POST, "specialty")); //get this with a select
-try{
-    $entityM->getConnection()->beginTransaction();
-    $student->getSpecialties()->add($specialty);
-    $specialty->getStudents()->add($student);
-    $entityM->persist($student);
-    $entityM->persist($specialty);
-    $entityM->flush();
-    $entityM->getConnection()->commit();
-}catch(\Exception $ex){
-    $entityM->getConnection()->rollback();
-}
+    try {
+        $entityM->getConnection()->beginTransaction();
+        $student->getSpecialties()->add($specialty);
+        $specialty->getStudents()->add($student);
+        $entityM->persist($student);
+        $entityM->persist($specialty);
+        $entityM->flush();
+        $entityM->getConnection()->commit();
+    } catch (\Exception $ex) {
+        $entityM->getConnection()->rollback();
+    }
 }
 
 /**
@@ -674,12 +671,12 @@ function listPartnerEnterprises() {
     $entityM = load("registered");
     $partner = $entityM->find("MobilitySharp\model\Partner", $_SESSION["user"]["id"]);
     $enterprises = $entityM->getRepository("MobilitySharp\model\Enterprise")->findBy(["partner" => $partner]);
-   
+
     echo "<div class='row text-center justify-content-around'>";
     foreach ($enterprises as $enterprise) {
-        
-        if($enterprise->getTermination_date()==null){
-        echo "<div class='col-12 col-md-7 col-lg-5 my-2 my-lg-5'>
+
+        if ($enterprise->getTermination_date() == null) {
+            echo "<div class='col-12 col-md-7 col-lg-5 my-2 my-lg-5'>
         
         <div class='row'><div class='col col-10 bg-secondary border-right border-top border-left border-dark'><h2>Enterprise</h2></div><div class='col border border-top border-right'>
             <div class='dropleft'>
@@ -687,24 +684,23 @@ function listPartnerEnterprises() {
                     <i class='fa fa-ellipsis-v' aria-hidden='true'></i>
                 </button>
                 <div class='dropdown-menu' aria-labelledby='dropdownMenuButton'>
-                    <a class='dropdown-item' href='registerEnterprise.php?id=".$enterprise->getId()."'>Edit</a>
-                    <a class='dropdown-item' href='".$_SERVER['PHP_SELF']."?id=".$enterprise->getId()."'>Delete</a>
+                    <a class='dropdown-item' href='registerEnterprise.php?id=" . $enterprise->getId() . "'>Edit</a>
+                    <a class='dropdown-item' href='" . $_SERVER['PHP_SELF'] . "?id=" . $enterprise->getId() . "'>Delete</a>
                 </div>
             </div>
         </div></div>
-        <div class='row border-top border-right border-left border-dark'><div class='col border-right centerCol'><h3>".$enterprise->getName()."</h3></div>
-        <div class='col centerCol'><div class='row'><div class='col'><h4 class='text-secondary'>".$enterprise->getType()->getType()."</h4></div></div>
-        <div class='row '><div class='col border-right'><h5>".$enterprise->getCountry()->getName()."</h5></div></div></div></div>
+        <div class='row border-top border-right border-left border-dark'><div class='col border-right centerCol'><h3>" . $enterprise->getName() . "</h3></div>
+        <div class='col centerCol'><div class='row'><div class='col'><h4 class='text-secondary'>" . $enterprise->getType()->getType() . "</h4></div></div>
+        <div class='row '><div class='col border-right'><h5>" . $enterprise->getCountry()->getName() . "</h5></div></div></div></div>
         <div class='row bg-secondary p-2 border-right border-left border-top border-dark'><div class='col border-right border-dark'><h3>Email</h3></div><div class='col '><h3>Phone</h3></div></div>
         <div class='row border-right border-left border-top border-dark '>
-        <div class='col border-right p-2 centerCol'><h6>".$enterprise->getEmail()."</h6></div><div class='col p-2 centerCol'><h6>".$enterprise->getTelephone()."</h6></div></div>
+        <div class='col border-right p-2 centerCol'><h6>" . $enterprise->getEmail() . "</h6></div><div class='col p-2 centerCol'><h6>" . $enterprise->getTelephone() . "</h6></div></div>
         <div class='row border-right border-left border-top border-dark bg-secondary p-2 '><div class='col border-right border-dark centerCol'><h3>Location</h3></div><div class='col centerCol'><h3>Web</h3></div></div>
-        <div class='row border-right border-left border-top border-dark'><div class='col border-right p-2 centerCol'><h6>".$enterprise->getLocation().", ".$enterprise->getPostal_code()."</h6></div><div class='col border-right p-2 centerCol'><h6><a href='https://{$enterprise->getWeb()}'>{$enterprise->getWeb()}</a></h6></div></div>
+        <div class='row border-right border-left border-top border-dark'><div class='col border-right p-2 centerCol'><h6>" . $enterprise->getLocation() . ", " . $enterprise->getPostal_code() . "</h6></div><div class='col border-right p-2 centerCol'><h6><a href='https://{$enterprise->getWeb()}'>{$enterprise->getWeb()}</a></h6></div></div>
         <div class='row bg-secondary p-2 border-right border-left border-top border-dark'><div class='col centerCol'><h3>Description</h3></div></div>
-        <div class='row p-2 border border-dark'><div class='col centerCol'><h6>".$enterprise->getDescription()."</h6></div></div>
+        <div class='row p-2 border border-dark'><div class='col centerCol'><h6>" . $enterprise->getDescription() . "</h6></div></div>
         </div>";
-        
-    }
+        }
     }
     echo "</div>";
 }
@@ -729,17 +725,17 @@ function listPartnerStudents() {
         . "<div class='row bg-secondary border border-dark'><div class='col border-bottom border-dark p-1 p-lg-2'><h2>" . $student->getFull_Name() . "</h2></div></div>"
         . "<div class='row border border-dark'><div class='col border-bottom border-dark p-1 p-lg-2'><h5 class='text-secondary'>" . $gender . "</h5>"
         . "<h4>" . $date . "</h4></div></div>";
-        
-        if($student->getSpecialties()->count()>0){
-        echo "<div class='row bg-secondary border border-dark'><div class='col border-bottom border-dark p-1 p-lg-2'><h3>Specialties</h3></div></div>";
 
-        foreach ($student->getSpecialties() as $specialty) {
-            echo "<div class='row'>"
-            . "<div class='col p-1 p-lg-2 border-left border-right border-dark'>" .
-            "<h4>" . $specialty->getType() . "</h4></div></div>"
-            . "<div class='row border-bottom border-dark border-right border-left'>"
-            ."</div>";
-        }
+        if ($student->getSpecialties()->count() > 0) {
+            echo "<div class='row bg-secondary border border-dark'><div class='col border-bottom border-dark p-1 p-lg-2'><h3>Specialties</h3></div></div>";
+
+            foreach ($student->getSpecialties() as $specialty) {
+                echo "<div class='row'>"
+                . "<div class='col p-1 p-lg-2 border-left border-right border-dark'>" .
+                "<h4>" . $specialty->getType() . "</h4></div></div>"
+                . "<div class='row border-bottom border-dark border-right border-left'>"
+                . "</div>";
+            }
         }
 
 
@@ -813,42 +809,42 @@ function insertEnterpriseMobility() {
     $estimatedEndDate = new \DateTime(filter_input(INPUT_POST, "estimatedEndDate"));
     $startDate->format("Y-m-d");
     $estimatedEndDate->format("Y-m-d");
-    if($startDate<$estimatedEndDate){
-    $student = $entityM->find("MobilitySharp\model\Student", filter_input(INPUT_POST, "student"));
-    $queryEnterpriseMobilities = $entityM->createQueryBuilder();
-    $queryInstitutionMobilities=$entityM->createQueryBuilder();
-    
-    $queryEnterpriseMobilities->addSelect('em')
-            ->from("MobilitySharp\model\EnterpriseMobility", 'em')
-            ->where("em.student = :student")
-            ->andWhere(":start_date BETWEEN em.start_date AND em.estimated_end_date")
-            ->orWhere(":estimated_end_date BETWEEN em.start_date AND em.estimated_end_date")
-            ->setParameter("student", $student)
-            ->setParameter("start_date",$startDate)
-            ->setParameter("estimated_end_date",$estimatedEndDate);
-    $enterpriseMobilities = $queryEnterpriseMobilities->getQuery()->getResult();
-    
-    $queryInstitutionMobilities->addSelect('im')
-            ->from("MobilitySharp\model\InstitutionMobility", 'im')
-            ->where("im.student = :student")
-            ->andWhere(":start_date BETWEEN im.start_date AND im.estimated_end_date")
-            ->orWhere(":estimated_end_date BETWEEN im.start_date AND im.estimated_end_date")
-            ->setParameter("student", $student)
-            ->setParameter("start_date",$startDate)
-            ->setParameter("estimated_end_date",$estimatedEndDate);
-    
-    $institutionMobilities = $queryInstitutionMobilities->getQuery()->getResult();
-    $mobilities= array_merge($enterpriseMobilities,$institutionMobilities);
-    $enterprise = $entityM->find("MobilitySharp\model\Enterprise", filter_input(INPUT_POST, "enterprise"));
-    $registrationDate = new \DateTime(date("Y-m-d"));
-    
-    if($mobilities==null){
-    $mobility = new \MobilitySharp\model\EnterpriseMobility($startDate,$estimatedEndDate, $registrationDate, $student, $enterprise);
+    if ($startDate < $estimatedEndDate) {
+        $student = $entityM->find("MobilitySharp\model\Student", filter_input(INPUT_POST, "student"));
+        $queryEnterpriseMobilities = $entityM->createQueryBuilder();
+        $queryInstitutionMobilities = $entityM->createQueryBuilder();
 
-    $entityM->persist($mobility);
-    $entityM->flush();
+        $queryEnterpriseMobilities->addSelect('em')
+                ->from("MobilitySharp\model\EnterpriseMobility", 'em')
+                ->where("em.student = :student")
+                ->andWhere(":start_date BETWEEN em.start_date AND em.estimated_end_date")
+                ->orWhere(":estimated_end_date BETWEEN em.start_date AND em.estimated_end_date")
+                ->setParameter("student", $student)
+                ->setParameter("start_date", $startDate)
+                ->setParameter("estimated_end_date", $estimatedEndDate);
+        $enterpriseMobilities = $queryEnterpriseMobilities->getQuery()->getResult();
+
+        $queryInstitutionMobilities->addSelect('im')
+                ->from("MobilitySharp\model\InstitutionMobility", 'im')
+                ->where("im.student = :student")
+                ->andWhere(":start_date BETWEEN im.start_date AND im.estimated_end_date")
+                ->orWhere(":estimated_end_date BETWEEN im.start_date AND im.estimated_end_date")
+                ->setParameter("student", $student)
+                ->setParameter("start_date", $startDate)
+                ->setParameter("estimated_end_date", $estimatedEndDate);
+
+        $institutionMobilities = $queryInstitutionMobilities->getQuery()->getResult();
+        $mobilities = array_merge($enterpriseMobilities, $institutionMobilities);
+        $enterprise = $entityM->find("MobilitySharp\model\Enterprise", filter_input(INPUT_POST, "enterprise"));
+        $registrationDate = new \DateTime(date("Y-m-d"));
+
+        if ($mobilities == null) {
+            $mobility = new \MobilitySharp\model\EnterpriseMobility($startDate, $estimatedEndDate, $registrationDate, $student, $enterprise);
+
+            $entityM->persist($mobility);
+            $entityM->flush();
+        }
     }
-}
 }
 
 /**
@@ -873,42 +869,43 @@ function insertInstitutionMobility() {
     $estimatedEndDate = new \DateTime(filter_input(INPUT_POST, "estimatedEndDate"));
     $startDate->format("Y-m-d");
     $estimatedEndDate->format("Y-m-d");
-    if($startDate<$estimatedEndDate){
-    $student = $entityM->find("MobilitySharp\model\Student", filter_input(INPUT_POST, "student"));
-    $institution = $entityM->find("MobilitySharp\model\Institution", filter_input(INPUT_POST, "institution"));
-    $registrationDate = new \DateTime(date("Y-m-d"));
-    $queryEnterpriseMobilities = $entityM->createQueryBuilder();
-    $queryInstitutionMobilities=$entityM->createQueryBuilder();
-    
-    $queryEnterpriseMobilities->addSelect('em')
-            ->from("MobilitySharp\model\EnterpriseMobility", 'em')
-            ->where("em.student = :student")
-            ->andWhere(":start_date BETWEEN em.start_date AND em.estimated_end_date")
-            ->orWhere(":estimated_end_date BETWEEN em.start_date AND em.estimated_end_date")
-            ->setParameter("student", $student)
-            ->setParameter("start_date",$startDate)
-            ->setParameter("estimated_end_date",$estimatedEndDate);
-    $enterpriseMobilities = $queryEnterpriseMobilities->getQuery()->getResult();
-    
-    $queryInstitutionMobilities->addSelect('im')
-            ->from("MobilitySharp\model\InstitutionMobility", 'im')
-            ->where("im.student = :student")
-            ->andWhere(":start_date BETWEEN im.start_date AND im.estimated_end_date")
-            ->orWhere(":estimated_end_date BETWEEN im.start_date AND im.estimated_end_date")
-            ->setParameter("student", $student)
-            ->setParameter("start_date",$startDate)
-            ->setParameter("estimated_end_date",$estimatedEndDate);
-    
-    $institutionMobilities = $queryInstitutionMobilities->getQuery()->getResult();
-    $mobilities= array_merge($enterpriseMobilities,$institutionMobilities);
-    if($mobilities==null){
-    $mobility = new \MobilitySharp\model\InstitutionMobility(new \DateTime($startDate), new \DateTime($estimatedEndDate), $registrationDate, $student, $institution);
+    if ($startDate < $estimatedEndDate) {
+        $student = $entityM->find("MobilitySharp\model\Student", filter_input(INPUT_POST, "student"));
+        $institution = $entityM->find("MobilitySharp\model\Institution", filter_input(INPUT_POST, "institution"));
+        $registrationDate = new \DateTime(date("Y-m-d"));
+        $queryEnterpriseMobilities = $entityM->createQueryBuilder();
+        $queryInstitutionMobilities = $entityM->createQueryBuilder();
 
-    $entityM->persist($mobility);
-    $entityM->flush();
+        $queryEnterpriseMobilities->addSelect('em')
+                ->from("MobilitySharp\model\EnterpriseMobility", 'em')
+                ->where("em.student = :student")
+                ->andWhere(":start_date BETWEEN em.start_date AND em.estimated_end_date")
+                ->orWhere(":estimated_end_date BETWEEN em.start_date AND em.estimated_end_date")
+                ->setParameter("student", $student)
+                ->setParameter("start_date", $startDate)
+                ->setParameter("estimated_end_date", $estimatedEndDate);
+        $enterpriseMobilities = $queryEnterpriseMobilities->getQuery()->getResult();
+
+        $queryInstitutionMobilities->addSelect('im')
+                ->from("MobilitySharp\model\InstitutionMobility", 'im')
+                ->where("im.student = :student")
+                ->andWhere(":start_date BETWEEN im.start_date AND im.estimated_end_date")
+                ->orWhere(":estimated_end_date BETWEEN im.start_date AND im.estimated_end_date")
+                ->setParameter("student", $student)
+                ->setParameter("start_date", $startDate)
+                ->setParameter("estimated_end_date", $estimatedEndDate);
+
+        $institutionMobilities = $queryInstitutionMobilities->getQuery()->getResult();
+        $mobilities = array_merge($enterpriseMobilities, $institutionMobilities);
+        if ($mobilities == null) {
+            $mobility = new \MobilitySharp\model\InstitutionMobility(new \DateTime($startDate), new \DateTime($estimatedEndDate), $registrationDate, $student, $institution);
+
+            $entityM->persist($mobility);
+            $entityM->flush();
+        }
     }
 }
-}
+
 /**
  * List all partner mobilities sending HTML code.
  */
@@ -969,7 +966,7 @@ function listAllSpecialties() {
 
     $entityM = load("admin");
     $specialties = $entityM->getRepository("MobilitySharp\model\SpecialtyType")->findAll();
-    
+
     echo "<section class='container'><div class='row text-center mb-3 mb-lg-5 justify-content-around'>";
     foreach ($specialties as $specialty) {
         echo "<div class='col-12 col-md-7 col-lg-5 border border-dark rounded my-2 my-lg-5'>"
@@ -1100,16 +1097,16 @@ function listPartnerInstitution() {
 function insertEnterpriseType() {
     $entityM = load("admin");
     $type = filter_input(INPUT_POST, "type");
-    $repeatedType=$entityM->getRepository("MobilitySharp\model\EnterpriseType")->findOneBy(["type"=>$type]);
-    if($repeatedType==null){
-    $enterpriseType = new \MobilitySharp\model\EnterpriseType($type);
+    $repeatedType = $entityM->getRepository("MobilitySharp\model\EnterpriseType")->findOneBy(["type" => $type]);
+    if ($repeatedType == null) {
+        $enterpriseType = new \MobilitySharp\model\EnterpriseType($type);
 
-    if ($description = filter_input(INPUT_POST, "description")) {
-        $enterpriseType->setDescription($description);
-    }
+        if ($description = filter_input(INPUT_POST, "description")) {
+            $enterpriseType->setDescription($description);
+        }
 
-    $entityM->persist($enterpriseType);
-    $entityM->flush();
+        $entityM->persist($enterpriseType);
+        $entityM->flush();
     }
 }
 
@@ -1169,88 +1166,87 @@ function findMobilitiesBetweenDates() {
     $date1 = filter_input(INPUT_GET, "date1");
 
     $date2 = filter_input(INPUT_GET, "date2");
-    if($date1<$date2){
+    if ($date1 < $date2) {
 
-    $queryMobilitiesEnterprise = $entityM->createQueryBuilder();
-    $queryMobilitiesEnterprise->addSelect('em')
-            ->from("MobilitySharp\model\EnterpriseMobility", 'em')
-            ->where("em.start_date > '" . $date1 . "' ")
-            ->andWhere("em.estimated_end_date < '" . $date2 . "'")
+        $queryMobilitiesEnterprise = $entityM->createQueryBuilder();
+        $queryMobilitiesEnterprise->addSelect('em')
+                ->from("MobilitySharp\model\EnterpriseMobility", 'em')
+                ->where("em.start_date > '" . $date1 . "' ")
+                ->andWhere("em.estimated_end_date < '" . $date2 . "'")
 
 
-    ;
-    $queryMobilitiesInstitution = $entityM->createQueryBuilder();
-    $queryMobilitiesInstitution->addSelect('im')
-            ->from("MobilitySharp\model\InstitutionMobility", 'im')
-            ->where("im.start_date > '" . $date1 . "' ")
-            ->andWhere("im.estimated_end_date < '" . $date2 . "'");
-    $enterpriseMobilities = $queryMobilitiesEnterprise->getQuery()->getResult();
-    $institutionMobilities = $queryMobilitiesInstitution->getQuery()->getResult();
+        ;
+        $queryMobilitiesInstitution = $entityM->createQueryBuilder();
+        $queryMobilitiesInstitution->addSelect('im')
+                ->from("MobilitySharp\model\InstitutionMobility", 'im')
+                ->where("im.start_date > '" . $date1 . "' ")
+                ->andWhere("im.estimated_end_date < '" . $date2 . "'");
+        $enterpriseMobilities = $queryMobilitiesEnterprise->getQuery()->getResult();
+        $institutionMobilities = $queryMobilitiesInstitution->getQuery()->getResult();
 
-    $mobilities = array_merge($enterpriseMobilities, $institutionMobilities);
+        $mobilities = array_merge($enterpriseMobilities, $institutionMobilities);
 
-    echo "<div class='container-fluid mx-3 mx-lg-5'>"
-    . "<div class='container py-3 py-lg-5 border-bottom border-dark my-3 my-lg-5'><div class='row border-bottom border-dark mb-3 mb-lg-5'><div class='col'><h3>Mobilities between " . $date1 . " and " . $date2 . "</h3></div></div>"
-            . "
+        echo "<div class='container-fluid mx-3 mx-lg-5'>"
+        . "<div class='container py-3 py-lg-5 border-bottom border-dark my-3 my-lg-5'><div class='row border-bottom border-dark mb-3 mb-lg-5'><div class='col'><h3>Mobilities between " . $date1 . " and " . $date2 . "</h3></div></div>"
+        . "
                 <div class='row'><div class='col-12'>
                 <ul>
                 <li><h5><a href='findMobilities.php'>Search more mobilities</a></h5></div></li>
                 </ul>
                 </div>"
-            . "<div class='row justify-content-around '>";
-   
-    foreach ($mobilities as $mobility) {
+        . "<div class='row justify-content-around '>";
 
-        $startDate = date_format($mobility->getStart_date(), 'Y-m-d');
-        $estimatedEndDate = date_format($mobility->getEstimated_end_date(), 'Y-m-d');
-        if ($mobility instanceof \MobilitySharp\model\EnterpriseMobility) {
-            $institution = "Enterprise";
-            $name = $mobility->getEnterprise()->getName();
-            $country = $mobility->getEnterprise()->getCountry()->getName();
-        } else {
-            $institution = "Institution";
-            $name = $mobility->getInstitution()->getName();
-            $country = $mobility->getInstitution()->getCountry()->getName();
+        foreach ($mobilities as $mobility) {
+
+            $startDate = date_format($mobility->getStart_date(), 'Y-m-d');
+            $estimatedEndDate = date_format($mobility->getEstimated_end_date(), 'Y-m-d');
+            if ($mobility instanceof \MobilitySharp\model\EnterpriseMobility) {
+                $institution = "Enterprise";
+                $name = $mobility->getEnterprise()->getName();
+                $country = $mobility->getEnterprise()->getCountry()->getName();
+            } else {
+                $institution = "Institution";
+                $name = $mobility->getInstitution()->getName();
+                $country = $mobility->getInstitution()->getCountry()->getName();
+            }
+            echo "<div class='col col-12 col-lg-7 col-xl-5 border border-dark rounded my-2 my-lg-5 text-center'>" .
+            "<div class='row bg-secondary'>"
+            . "<div class='col border-bottom border-right border-dark'><h4>Student</h4></div>"
+            . "<div class='col border-bottom border-dark'><h4>$institution</h4></div>"
+            . "</div>"
+            . "<div class='row'><div class='col centerCol p-2 border-right'><h5>" . $mobility->getStudent()->getFull_name() . "</h5></div>"
+            . "<div class='col p-2'><div class='row'><div class='col centerCol'><h4 class='text-secondary'>" . $name . "</h4></col>"
+            . "<div class='col centerCol'><h5>" . $country . "</h5></div></div></div></div></div>"
+            . "<div class='row bg-secondary border-bottom border-dark'>"
+            . "<div class='col border-top border-right border-dark pt-2'>"
+            . "<h5>Start date</h5></div>"
+            . "<div class='col border-top border-dark pt-2'>"
+            . "<h5>Estimated end date</h5></div></div>"
+            . "<div class='row'>"
+            . "<div class='col border-right'>"
+            . "<h5>" . $startDate . "</h5></div>"
+            . "<div class='col'>"
+            . "<h5>" . $estimatedEndDate . "</h5></div></div></div>"
+            ;
         }
-        echo "<div class='col col-12 col-lg-7 col-xl-5 border border-dark rounded my-2 my-lg-5 text-center'>" .
-        "<div class='row bg-secondary'>"
-        . "<div class='col border-bottom border-right border-dark'><h4>Student</h4></div>"
-        . "<div class='col border-bottom border-dark'><h4>$institution</h4></div>"
-        . "</div>"
-        . "<div class='row'><div class='col centerCol p-2 border-right'><h5>" . $mobility->getStudent()->getFull_name() . "</h5></div>"
-        . "<div class='col p-2'><div class='row'><div class='col centerCol'><h4 class='text-secondary'>" . $name . "</h4></col>"
-        . "<div class='col centerCol'><h5>" . $country . "</h5></div></div></div></div></div>"
-        . "<div class='row bg-secondary border-bottom border-dark'>"
-        . "<div class='col border-top border-right border-dark pt-2'>"
-        . "<h5>Start date</h5></div>"
-        . "<div class='col border-top border-dark pt-2'>"
-        . "<h5>Estimated end date</h5></div></div>"
-        . "<div class='row'>"
-        . "<div class='col border-right'>"
-        . "<h5>" . $startDate . "</h5></div>"
-        . "<div class='col'>"
-        . "<h5>" . $estimatedEndDate . "</h5></div></div></div>"
-        ;
-    }
-    echo "</div></div></div>";
-}
-else {
-    
-    echo "<section class='container mt-3 pt-3 mb-3 mb-lg-5'>
+        echo "</div></div></div>";
+    } else {
+
+        echo "<section class='container mt-3 pt-3 mb-3 mb-lg-5'>
                 <div class='row'><div class='col'><h4>You have to search valid dates.</h4></div></div>
                 <ul>
                     <li><div class='row text-left m-3'><div class='col'><h5><a href='findMobilities.php'>Search mobilities</a></h5></div></div></li>
                 </ul>
                 </section>";
-}
+    }
 }
 
 /**
  * Gets all partner mobilities.
  * @return array Partner mobilities' data.
  */
-function partnerMobilities(){
-     $entityM = load("registered");
+function partnerMobilities() {
+    $entityM = load("registered");
 
     $partner = $entityM->find("MobilitySharp\model\Partner", $_SESSION["user"]["id"]);
     $students = $entityM->getRepository("MobilitySharp\model\Student")->findBy(["partner" => $partner]);
@@ -1264,11 +1260,11 @@ function partnerMobilities(){
 /**
  * Sends partner profile in HTML code.
  */
-function partnerProfile(){
+function partnerProfile() {
     $entityM = load("registered");
     $partner = $entityM->find("MobilitySharp\model\Partner", $_SESSION["user"]["id"]);
-    
-    
+
+
     echo "<section class='container'><div class='row border-bottom border-dark'><div class='col'><h2>" . $partner->getFull_name() . "</h2></div></div>"
     . "<div class='container text-center border-bottom border-dark mb-3 mb-lg-5'><div class='row text-center mt-2 mt-lg-5 justify-content-center '>"
     . "<div class='col col-12 col-lg-10 col-xl-8 border border-dark mb-3'>"
@@ -1285,56 +1281,51 @@ function partnerProfile(){
     . "<div class='col col-sm-6 col-md-4 col-lg-3 btn-group my-2 my-md-3'><a class='btn btn-secondary rounded ml-2 ml-md-3 ml-md-4' href='register.php?id={$_SESSION['user']['id']}' role='button'>Modify profile</button</div></div>"
     . "<div class='col col-sm-6 col-md-4 col-lg-3 btn-group my-2 my-md-3'><a class='btn btn-danger rounded ml-2 ml-md-3 ml-md-4' href='" . $_SERVER['PHP_SELF'] . "?account_deactivate' role='button'>Deactivate account</a></div></div>"
     . "</div></div></div></section>";
-    
 }
 
 /**
  * Registers a new petition in the DB. Gets all data to send from a form with POST method.
  */
-
 //IMPORTANT! QUERY NEEDS REWORK!!
-function sendPetition(){
-    $entityM= load("registered");
-    $senderPartner=$entityM->find("MobilitySharp\model\Partner",$_SESSION["user"]["id"]);
-    $date=new \DateTime(date("Y-m-d H:i:s"));
-    $role=$entityM->getRepository("MobilitySharp\model\Role")->findOneBy(["type"=>"ADMIN"]);
-    $subject= filter_input(INPUT_POST, "subject");
-    $status=$entityM->getRepository("MobilitySharp\model\Status")->findOneBy(["status"=>"REQUESTED"]);
-    
-    $queryPetition = $entityM->createQueryBuilder();
-    $alternativeQuery= $entityM->createQueryBuilder();
-    $queryPetition->addSelect('p')
-            ->from("MobilitySharp\model\PetitionHistory", 'p')
-            ->join("MobilitySharp\model\Partner",'pa')
-            ->where("pa.id=p.receiver_partner")
-            ->andWhere("pa.role=".$role->getId())
-            ->andWhere("p.status='".$status->getId()."'")
-            ->groupBy("p.receiver_partner")
-            ->orderBy("COUNT(p.receiver_partner)")
-            ->setMaxResults(1);
-    $petition = $queryPetition->getQuery()->getOneOrNullResult();
-    if($petition==null){
-    $alternativeQuery->addSelect('pa')
-            ->from("MobilitySharp\model\Partner",'pa')
-            ->where("pa.role=".$role->getId())
-            ->setMaxResults(1);
-    $petition=$alternativeQuery->getQuery()->getOneOrNullResult();
-    $receiverPartner=$petition;
-    }else {
-        $receiverPartner=$petition->getReceiver_partner();
+function sendPetition() {
+    $entityM = load("registered");
+    $senderPartner = $entityM->find("MobilitySharp\model\Partner", $id);
+    $date = new \DateTime(date("Y-m-d H:i:s"));
+    $role = $entityM->getRepository("MobilitySharp\model\Role")->findOneBy(["type" => "ADMIN"]);
+    $subject = filter_input(INPUT_POST, "subject");
+    $status = $entityM->getRepository("MobilitySharp\model\Status")->findOneBy(["status" => "REQUESTED"]);
+
+
+    $totalAdminsQuery = $entityM->createQueryBuilder();
+    $totalAdminsQuery->select('p.id')
+            ->from("MobilitySharp\model\Partner", 'p')
+            ->where("p.role=" . $role->getId());
+
+    $totalAdmins = $totalAdminsQuery->getQuery()->getResult();
+    $admins = [];
+    foreach ($totalAdmins as $admin) {
+        array_push($admins, $admin);
     }
-    
+    $index = array_rand($admins);
+
+    $adminQuery = $entityM->createQueryBuilder();
+    $adminQuery->select('p')
+            ->from("MobilitySharp\model\Partner", 'p')
+            ->where("p.role=" . $role->getId())
+            ->andWhere("p.id=" . $admins[$index]["id"]);
+
+    $receiverPartner = $adminQuery->getQuery()->getSingleResult();
+
+
     $newPetition = new \MobilitySharp\model\PetitionHistory(ucfirst($subject), $date, $status, $senderPartner, $receiverPartner);
-    if($description= filter_input(INPUT_POST, "description")){
+    if ($description = filter_input(INPUT_POST, "description")) {
         $newPetition->setDescription(ucfirst($description));
     }
     require_once 'sendMail.php';
-    if(sendMail($newPetition)){
+    if (sendMail($newPetition)) {
         $entityM->persist($newPetition);
         $entityM->flush();
-    
     }
-    
 }
 
 /**
@@ -1345,10 +1336,10 @@ function sendPetition(){
  * 
  * @return object|null The entity instance or NULL if the entity cannot be found.
  */
-function findEntity($class, $id){
-    $entityM=load("registered");
-    $entity=$entityM->find("MobilitySharp\\model\\".$class, $id);
-    
+function findEntity($class, $id) {
+    $entityM = load("registered");
+    $entity = $entityM->find("MobilitySharp\\model\\" . $class, $id);
+
     return $entity;
 }
 
@@ -1356,39 +1347,37 @@ function findEntity($class, $id){
  * List partner messages of the sender partner depending of the status type.
  * @param string $type Status type.
  */
-function listPartnerMessages($type){
-    $entityM=load("registered");
-    $partner=$entityM->find("MobilitySharp\model\Partner",$_SESSION["user"]["id"]);
-    
-    
+function listPartnerMessages($type) {
+    $entityM = load("registered");
+    $partner = $entityM->find("MobilitySharp\model\Partner", $_SESSION["user"]["id"]);
+
+
     $queryPetition = $entityM->createQueryBuilder();
     $queryPetition->addSelect('p')
             ->from("MobilitySharp\model\PetitionHistory", 'p')
-            ->where("p.sender_partner=".$partner->getId())
+            ->where("p.sender_partner=" . $partner->getId())
             ->andWhere("p.status=(SELECT s FROM MobilitySharp\model\Status s WHERE s.status='$type')")
-            ->orderBy("p.date","DESC");
+            ->orderBy("p.date", "DESC");
     $petitions = $queryPetition->getQuery()->getResult();
-    
-    foreach ($petitions as $petition){
-        
+
+    foreach ($petitions as $petition) {
+
         echo "
-            <li class='unread' id='".$petition->getId()."'>
+            <li class='unread' id='" . $petition->getId() . "'>
 		
 		<input type='checkbox' class='form-check-input'>
-		<span class='date'><span class='fa fa-paper-clip'></span>".date_format($petition->getDate(),"m-d h:i")."</span>
+		<span class='date'><span class='fa fa-paper-clip'></span>" . date_format($petition->getDate(), "m-d h:i") . "</span>
 		
 		<div class='title'>
 		
-		".$petition->getSubject()."
+		" . $petition->getSubject() . "
 		</div>	
 		<div class='description'>
-                ".$petition->getDescription()."
+                " . $petition->getDescription() . "
                 </div>
 			
 		</li>
                 ";
-        
-        
     }
 }
 
@@ -1397,44 +1386,42 @@ function listPartnerMessages($type){
  * @param string $type Status type.
 
  */
-function countMessages($type){
-    $entityM=load("registered");
-    $partner=$entityM->find("MobilitySharp\model\Partner",$_SESSION["user"]["id"]);
-    
-    
+function countMessages($type) {
+    $entityM = load("registered");
+    $partner = $entityM->find("MobilitySharp\model\Partner", $_SESSION["user"]["id"]);
+
+
     $queryPetition = $entityM->createQueryBuilder();
     $queryPetition->addSelect('COUNT(p)')
             ->from("MobilitySharp\model\PetitionHistory", 'p')
-            ->where("p.sender_partner=".$partner->getId())
+            ->where("p.sender_partner=" . $partner->getId())
             ->andWhere("p.status=(SELECT s FROM MobilitySharp\model\Status s WHERE s.status='$type')");
     $petitions = $queryPetition->getQuery()->getSingleScalarResult();
-    
-    if($petitions!=0){
+
+    if ($petitions != 0) {
         echo $petitions;
     }
-    
 }
 
 /**
  * Gets number of messages of the receiver partner depending of the status type.
  * @param string $type Status type.
-*/
-function countMessagesAdmin($type){
-    $entityM=load("admin");
-    $partner=$entityM->find("MobilitySharp\model\Partner",$_SESSION["user"]["id"]);
-    
-    
+ */
+function countMessagesAdmin($type) {
+    $entityM = load("admin");
+    $partner = $entityM->find("MobilitySharp\model\Partner", $_SESSION["user"]["id"]);
+
+
     $queryPetition = $entityM->createQueryBuilder();
     $queryPetition->addSelect('COUNT(p)')
             ->from("MobilitySharp\model\PetitionHistory", 'p')
-            ->where("p.receiver_partner=".$partner->getId())
+            ->where("p.receiver_partner=" . $partner->getId())
             ->andWhere("p.status=(SELECT s FROM MobilitySharp\model\Status s WHERE s.status='$type')");
     $petitions = $queryPetition->getQuery()->getSingleScalarResult();
-    
-    if($petitions!=0){
+
+    if ($petitions != 0) {
         echo $petitions;
-    }
-    else {
+    } else {
         return;
     }
 }
@@ -1443,33 +1430,33 @@ function countMessagesAdmin($type){
  * List partner messages of the receiver partner depending of the status type.
  * @param string $type Status type.
  */
-function listPartnerMessagesAdmin($type){
-    $entityM=load("registered");
-    $partner=$entityM->find("MobilitySharp\model\Partner",$_SESSION["user"]["id"]);
-    
-    
+function listPartnerMessagesAdmin($type) {
+    $entityM = load("registered");
+    $partner = $entityM->find("MobilitySharp\model\Partner", $_SESSION["user"]["id"]);
+
+
     $queryPetition = $entityM->createQueryBuilder();
     $queryPetition->addSelect('p')
             ->from("MobilitySharp\model\PetitionHistory", 'p')
-            ->where("p.receiver_partner=".$partner->getId())
+            ->where("p.receiver_partner=" . $partner->getId())
             ->andWhere("p.status=(SELECT s FROM MobilitySharp\model\Status s WHERE s.status='$type')")
-            ->orderBy("p.date","DESC");
+            ->orderBy("p.date", "DESC");
     $petitions = $queryPetition->getQuery()->getResult();
-    if($petitions>0){
-        foreach ($petitions as $petition){
-            
-            echo "<li class='unread' id='".$petition->getId()."'>
+    if ($petitions > 0) {
+        foreach ($petitions as $petition) {
+
+            echo "<li class='unread' id='" . $petition->getId() . "'>
             
             <input type='checkbox' class='form-check-input'>
-            <span class='from'>".$petition->getSender_partner()->getFull_name()."</span>
-            <span class='date'><span class='fa fa-paper-clip'></span>".date_format($petition->getDate(),"m-d H:i")."</span><small> &#60".$petition->getSender_partner()->getEmail()."&#62</small>
+            <span class='from'>" . $petition->getSender_partner()->getFull_name() . "</span>
+            <span class='date'><span class='fa fa-paper-clip'></span>" . date_format($petition->getDate(), "m-d H:i") . "</span><small> &#60" . $petition->getSender_partner()->getEmail() . "&#62</small>
             
             <div class='title'>
             
-            ".$petition->getSubject()."
+            " . $petition->getSubject() . "
             </div>	
             <div class='description'>
-                    ".$petition->getDescription()."
+                    " . $petition->getDescription() . "
                     </div>
             
             </li>
@@ -1480,85 +1467,124 @@ function listPartnerMessagesAdmin($type){
         . "<div class='row '><div class='col'><h4>Not messages yet</h4></div></div></div></div>";
     }
 }
-
-
-
-function changePetitionStatus($ids,$petitionStatus){
-    $entityM=load("admin");
-    $status=$entityM->getRepository("MobilitySharp\model\Status")->findOneBy(["status"=>$petitionStatus]);
-    foreach ($ids as $id){
-        $petition=$entityM->find("MobilitySharp\model\PetitionHistory",$id);
+/**
+ * Changes petitions status from array of ids and sets the status as petitionStatus parameter.
+ * @param array $ids
+ * @param string $petitionStatus
+ */
+function changePetitionStatus($ids, $petitionStatus) {
+    $entityM = load("admin");
+    $status = $entityM->getRepository("MobilitySharp\model\Status")->findOneBy(["status" => $petitionStatus]);
+    foreach ($ids as $id) {
+        $petition = $entityM->find("MobilitySharp\model\PetitionHistory", $id);
         $petition->setStatus($status);
     }
-    
+
     $entityM->flush();
-    
-    
+}
+/**
+ * Modifies the partner which is logged in with parameters received with $_POST
+ */
+function modifyPartner() {
+    $entityM = load("registered");
+    $id = filter_input(INPUT_POST, "id");
+    $partner = $entityM->find("MobilitySharp\model\Partner", $id);
+    $email = filter_input(INPUT_POST, "email");
+    $username = filter_input(INPUT_POST, "username");
+    $repeatedUser = $entityM->getRepository("MobilitySharp\model\Partner")->findOneBy(["username" => $username]);
+    $repeatedEmail = $entityM->getRepository("MobilitySharp\model\Partner")->findOneBy(["email" => $email]);
+    $country = $entityM->find("MobilitySharp\model\Country", filter_input(INPUT_POST, "country"));
+    if ($vat = filter_input(INPUT_POST, "vat")) {
+        $repeatedVat = $entityM->getRepository("MobilitySharp\model\Partner")->findOneBy(["vat" => $vat]);
+        if (!is_null($repeatedVat)) {
+            if ($repeatedVat->getId() == $id) {
+                $repeatedVat = null;
+            }
+        }
+    } else {
+        $repeatedVat = null;
+        $vat = null;
+    }
+    if (!is_null($repeatedUser)) {
+        if ($repeatedUser->getId() == $id) {
+            $repeatedUser = null;
+        }
+    }
+
+    if (!is_null($repeatedEmail)) {
+        if ($repeatedEmail->getId() == $id) {
+            $repeatedEmail = null;
+        }
+    }
+
+
+    if (is_null($repeatedUser) and is_null($repeatedVat) and is_null($repeatedEmail)) {
+        $partner->setFull_name(filter_input(INPUT_POST, "fName") . " " . filter_input(INPUT_POST, "lName"));
+        $partner->setUsername(filter_input(INPUT_POST, "username"));
+        $partner->setVat($vat);
+        $partner->setEmail(filter_input(INPUT_POST, "email"));
+        $partner->setTelephone(filter_input(INPUT_POST, "phone"));
+        $partner->setDepartment(filter_input(INPUT_POST, "department"));
+        $partner->setCountry($country);
+        $partner->setPost(filter_input(INPUT_POST, "post"));
+        $entityM->flush();
+    }
 }
 
+function modifyStudent($id) {
 
-function modifyStudent($id){
-    
-    $entityM=load("registered");
-    $student=$entityM->find("MobilitySharp\model\Student", $id);
-    $date=new \DateTime(date("Y-m-d H:i:s"));
-    $student->setFull_name(filter_input(INPUT_POST, "fName")." ". filter_input(INPUT_POST, "lName"));
+    $entityM = load("registered");
+    $student = $entityM->find("MobilitySharp\model\Student", $id);
+    $date = new \DateTime(date("Y-m-d H:i:s"));
+    $student->setFull_name(filter_input(INPUT_POST, "fName") . " " . filter_input(INPUT_POST, "lName"));
     $student->setBirth_date(filter_input(INPUT_POST, "birthDate"));
-    $vat= filter_input(INPUT_POST, "sVat");
-    $repeatedVat=$entityM->getRepository("MobilitySharp\model\Student")->findOneby(["vat"=>$vat]);
-    if($repeatedVat==null){
-    $student->setVat($vat);
-    $student->setModification_date($date);
-    if(filter_input(INPUT_POST, "gender")=="Male"){
-        $student->setGender('M');
+    $vat = filter_input(INPUT_POST, "sVat");
+    $repeatedVat = $entityM->getRepository("MobilitySharp\model\Student")->findOneby(["vat" => $vat]);
+    if ($repeatedVat == null) {
+        $student->setVat($vat);
+        $student->setModification_date($date);
+        if (filter_input(INPUT_POST, "gender") == "Male") {
+            $student->setGender('M');
+        } else {
+            $student->setGender('F');
+        }
+        $entityM->flush();
     }
-    else {
-        $student->setGender('F');
-    }
-    $entityM->flush();
-    }
-    
 }
 
+function modifyMobility($id, $mobilityType) {
 
-function modifyMobility($id,$mobilityType){
-    
-    $entityM=load("registered");
-    
-    if($mobilityType instanceof \MobilitySharp\model\EnterpriseMobility){
-        $enterpriseId= filter_input(INPUT_POST, "enterprise");
-        $mobility=$entityM->find("MobilitySharp\model\EnterpriseMobility", $id);
+    $entityM = load("registered");
+
+    if ($mobilityType instanceof \MobilitySharp\model\EnterpriseMobility) {
+        $enterpriseId = filter_input(INPUT_POST, "enterprise");
+        $mobility = $entityM->find("MobilitySharp\model\EnterpriseMobility", $id);
         $mobility->setEnterprise($entityM->find("MobilitySharp\model\Enterprise", $enterpriseId));
-    }
-    else {
-        $institutionId= filter_input(INPUT_POST, "institution");
-        $mobility=$entityM->find("MobilitySharp\model\InstitutionMobility", $id);
+    } else {
+        $institutionId = filter_input(INPUT_POST, "institution");
+        $mobility = $entityM->find("MobilitySharp\model\InstitutionMobility", $id);
         $mobility->setInstitution($entityM->find("MobilitySharp\model\Institution", $institutionId));
     }
-    
-    $date=new \DateTime(date("Y-m-d H:i:s"));
+
+    $date = new \DateTime(date("Y-m-d H:i:s"));
     $mobility->setStart_date(filter_input(INPUT_POST, "startDate"));
     $mobility->setEstimated_end_date(filter_input(INPUT_POST, "estimatedEndDate"));
     $mobility->setStudent(filter_input(INPUT_POST, ""));
     $mobility->setModification_date($date);
-    
+
     $entityM->flush();
 }
-
-
-function deleteUser(){
-    $entityM= load("registered");
-    $user=$entityM->find("MobilitySharp\model\Partner",$_SESSION["user"]["id"]);
+/**
+ * Sets the user which is logged in as inactive setting his termination date
+ * and clears the session login out
+ */
+function deleteUser() {
+    $entityM = load("registered");
+    $user = $entityM->find("MobilitySharp\model\Partner", $_SESSION["user"]["id"]);
     $user->setTermination_date(new \DateTime(date("Y-m-d")));
     $entityM->flush();
-    
+
     header("Location: logout.php");
 }
 
-function errorMessage($type){
-    
-    
-        if($type=="Termination date"){
-            
-        }
-}
+
