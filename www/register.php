@@ -11,7 +11,8 @@ include_once 'controller/db.php';
 use MobilitySharp\controller;
 
 if (isset($_POST) && isset($_POST['id']) && !empty($_POST['id'])) {
-    controller\modifyPartner();
+    controller\modifyPartner(filter_input(INPUT_POST, "id", FILTER_VALIDATE_INT));
+    header("Location: myProfile.php");
 } else if (isset($_POST) && !empty($_POST)) {
     controller\registerPartnerInstitution();
 } else if(isset($_GET) && isset($_GET['id']) && !empty($_GET['id'])){

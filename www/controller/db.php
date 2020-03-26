@@ -1485,9 +1485,8 @@ function changePetitionStatus($ids, $petitionStatus) {
 /**
  * Modifies the partner which is logged in with parameters received with $_POST
  */
-function modifyPartner() {
+function modifyPartner($id) {
     $entityM = load("registered");
-    $id = filter_input(INPUT_POST, "id");
     $partner = $entityM->find("MobilitySharp\model\Partner", $id);
     $email = filter_input(INPUT_POST, "email");
     $username = filter_input(INPUT_POST, "username");
