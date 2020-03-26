@@ -53,3 +53,18 @@ GRANT UPDATE ON GESTIONMOVILIDADES.RESPONSABLES TO 'movilidades_registered'@'loc
 GRANT UPDATE ON GESTIONMOVILIDADES.EMPRESAS TO 'movilidades_registered'@'localhost';
 GRANT SELECT ON GESTIONMOVILIDADES.TIPOS_ESPECIALIDAD TO 'movilidades_admin'@'localhost';
 GRANT UPDATE ON GESTIONMOVILIDADES.SOCIOS TO 'movilidades_registered'@'localhost';
+GRANT SELECT ON GESTIONMOVILIDADES.TIPOS_EMPRESA TO 'movilidades_admin'@'localhost';
+GRANT UPDATE ON GESTIONMOVILIDADES.HISTORICO_PETICIONES TO 'movilidades_admin'@'localhost';
+
+
+
+
+
+
+
+
+
+
+
+
+
