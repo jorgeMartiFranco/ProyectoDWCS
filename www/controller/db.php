@@ -1282,8 +1282,8 @@ function partnerProfile(){
     . "<div class='row p-2'><div class='col centerCol'><h6>" . $partner->getInstitution()->getName() . "</h6></div><div class='col centerCol'><h6>" . $partner->getCountry()->getName() . "</h6></div></div>"
     . "</div></div>"
     . "<div class='row mb-3 mb-lg-5 justify-content-center '>"
-    . "<div class='col col-sm-6 col-md-4 col-lg-3 btn-group my-2 my-md-3'><button class='btn btn-secondary rounded ml-2 ml-md-3 ml-md-4' type='button' href='#'>Modify profile</button</div></div>"
-    . "<div class='col col-sm-6 col-md-4 col-lg-3 btn-group my-2 my-md-3'><a class='btn btn-danger rounded ml-2 ml-md-3 ml-md-4' href='" . $_SERVER['PHP_SELF'] . "?account_deactivate'>Deactivate account</a></div></div>"
+    . "<div class='col col-sm-6 col-md-4 col-lg-3 btn-group my-2 my-md-3'><a class='btn btn-secondary rounded ml-2 ml-md-3 ml-md-4' href='register.php?id={$_SESSION['user']['id']}' role='button'>Modify profile</button</div></div>"
+    . "<div class='col col-sm-6 col-md-4 col-lg-3 btn-group my-2 my-md-3'><a class='btn btn-danger rounded ml-2 ml-md-3 ml-md-4' href='" . $_SERVER['PHP_SELF'] . "?account_deactivate' role='button'>Deactivate account</a></div></div>"
     . "</div></div></div></section>";
     
 }

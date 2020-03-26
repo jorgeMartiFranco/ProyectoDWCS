@@ -1,4 +1,4 @@
-var baseurl = '/www';
+var baseurl = '/www/';
 
 $("document").ready(function () {
 
@@ -15,6 +15,7 @@ $("document").ready(function () {
 });
 
 
+//REGISTER FORMS
 function createFormRegisterPartner() {
     var form = $("#partner");
     var arrayColumns = [
@@ -45,8 +46,8 @@ function createFormRegisterInstitution(){
         {type: "text", placeholder: "Location", name: "location", id: "location", required: true},
         {type: "text", placeholder: "Web", name: "web", id: "web"},
         {type: "text", placeholder: "Description", name: "description", id: "description"},
-        {type: "select", placeholder: "Select country...", name: "country", url: baseurl + '/controller/json.php?countries'},
-        {type: "select", placeholder: "Select institution type...", name: "institutionType", url: baseurl + '/controller/json.php?institutionTypes'}
+        {type: "select", placeholder: "Select country...", name: "country", url: baseurl + 'controller/json.php?countries'},
+        {type: "select", placeholder: "Select institution type...", name: "institutionType", url: baseurl + 'controller/json.php?institutionTypes'}
     ];
     
     createFormStruct(form, arrayColumns);
@@ -65,8 +66,8 @@ function createFormRegisterEnterprise(){
         {type: "text", placeholder: "Web", name: "web", id: "web"},
         {type: "text", placeholder: "Description", name: "description", id: "description"},
         {type: "text", placeholder: "Ceo post", name: "ceoPost", id: "ceoPost"},
-        {type: "select", placeholder: "Select enterprise type...", name: "enterpriseType", url: baseurl + '/controller/json.php?enterpriseTypes'},
-        {type: "select", placeholder: "Select country...", name: "country", url: baseurl + '/controller/json.php?countries'}
+        {type: "select", placeholder: "Select enterprise type...", name: "enterpriseType", url: baseurl + 'controller/json.php?enterpriseTypes'},
+        {type: "select", placeholder: "Select country...", name: "country", url: baseurl + 'controller/json.php?countries'}
     ];
     
     createFormStruct(form, arrayColumns);
@@ -128,10 +129,12 @@ function createFormInsertSpecialty(){
      createFormStruct(form,arrayColumns);
 }
 
+//EDIT FORMS
+
 async function createFormEditEnterprise(id){
     var form = $("#enterprise");
 
-    var enterprise = await getEnterpriseData();
+    var enterprise = await getJsonData(baseurl + 'controller/json.php?enterprise&id='+ id);
 
     var arrayColumns = [
         {type: "text", placeholder: "Name", name: "eName", id: "ename", required: true},
@@ -143,8 +146,8 @@ async function createFormEditEnterprise(id){
         {type: "text", placeholder: "Web", name: "web", id: "web"},
         {type: "text", placeholder: "Description", name: "description", id: "description"},
         {type: "text", placeholder: "Ceo post", name: "ceoPost", id: "ceoPost"},
-        {type: "select", name: "enterpriseType", url: baseurl + '/controller/json.php?enterpriseTypes'},
-        {type: "select", name: "country", url: baseurl + '/controller/json.php?countries'}
+        {type: "select", name: "enterpriseType", url: baseurl + 'controller/json.php?enterpriseTypes'},
+        {type: "select", name: "country", url: baseurl + 'controller/json.php?countries'}
     ];
 
     for(col of arrayColumns) {
@@ -155,16 +158,45 @@ async function createFormEditEnterprise(id){
         }
     }
 
-    
     createFormStruct(form, arrayColumns);
-    
-    
-    async function getEnterpriseData(){
-        request = await fetch(baseurl + '/controller/json.php?enterprise&id='+ id);
-        return await request.json();
-    }
 }
 
+async function createFormEditPartner(id) {
+    var form = $("#partner");
+
+    var partner = await getJsonData(baseurl + 'controller/json.php?profile&id='+ id);
+
+    var arrayColumns = [
+        {type: "text", placeholder: "First name", name: "fName", id: "fName", required: true},
+        {type: "text", placeholder: "Last name", name: "lName", id: "lName", required: true},
+        {type: "text", placeholder: "Username", name: "username", id: "username", required: true},
+        {type: "email", placeholder: "Email", name: "email", id: "email", required: true},
+        {type: "phone", placeholder: "Phone", name: "phone", id: "phone", required: true},
+        {type: "text", placeholder: "VAT", name: "vat", id: "vat"},
+        {type: "text", placeholder: "Department", name: "department", id: "department", required: true},
+        {type: "text", placeholder: "Post", name: "post", id: "post", required: true},
+        {type: "select", name: "country", url: baseurl + 'controller/json.php?countries'}
+    ];
+
+    for(col of arrayColumns) {
+        for(property in partner){
+            if(col.name === property) {
+                col.value = partner[property];
+                console.log(col.name);
+                console.log(property);
+                console.log(partner[property]);
+            }
+        }
+    }
+
+    createFormStruct(form, arrayColumns);
+}
+
+//JSON SUPPORT
+async function getJsonData($url){
+    request = await fetch($url);
+    return await request.json();
+}
 /*
 
 
