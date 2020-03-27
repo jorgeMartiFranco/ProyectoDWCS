@@ -215,7 +215,7 @@ function registerPartnerInstitution() {
                         ':email' => $email,
                         ':username' => $username,
                         ':password' => password_hash($password, PASSWORD_DEFAULT),
-                        ':role' => $partner->getRole()->getId()
+                        ':role' => $partner->getRole()->getType()
                     ];
                     sessionStoreUser($partnerParams);
                     $location = "Location:index.php?registered";
@@ -237,6 +237,13 @@ function registerPartnerInstitution() {
 
                 $entityM->persist($partner);
                 $entityM->flush();
+                $partnerParams = [
+                        ':id' => $partner->getId(),
+                        ':email' => $email,
+                        ':username' => $username,
+                        ':password' => password_hash($password, PASSWORD_DEFAULT),
+                        ':role' => $partner->getRole()->getType()
+                    ];
                 sessionStoreUser($partnerParams);
                 $location = "Location:index.php?registered";
             }
