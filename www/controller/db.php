@@ -1296,7 +1296,7 @@ function sendPetition() {
     $status = $entityM->getRepository("MobilitySharp\model\Status")->findOneBy(["status" => "REQUESTED"]);
 
 
-    $totalAdminsQuery = $entityM->createQueryBuilder();
+    /*$totalAdminsQuery = $entityM->createQueryBuilder();
     $totalAdminsQuery->select('p.id')
             ->from("MobilitySharp\model\Partner", 'p')
             ->where("p.role=" . $role->getId());
@@ -1314,8 +1314,26 @@ function sendPetition() {
             ->where("p.role=" . $role->getId())
             ->andWhere("p.id=" . $admins[$index]["id"]);
 
-    $receiverPartner = $adminQuery->getQuery()->getSingleResult();
-
+    $receiverPartner = $adminQuery->getQuery()->getSingleResult();*/
+    $adminsWithoutPetitionQuery=$entityM->createQueryBuilder();
+    $adminsWithoutPetitionQuery->addSelect('p')
+            ->from("MobilitySharp\model\Partner",'p')
+            ->where("p.role=".$role->getId())
+            ->andWhere("p.id NOT IN(SELECT DISTINCT(pe.receiver_partner) FROM MobilitySharp\model\PetitionHistory pe)")
+            ->setMaxResults(1);
+    $adminWithoutPetition=$adminsWithoutPetitionQuery->getQuery()->getOneOrNullResult();
+    if(!is_null($adminWithoutPetition)){
+        $receiverPartner=$adminWithoutPetition;
+    }else{
+        $adminWithLessPetitionsQuery=$entityM->createQueryBuilder();
+        $adminWithLessPetitionsQuery->select("pe")
+                ->from("MobilitySharp\model\PetitionHistory","pe")
+                ->groupBy("pe.receiver_partner")
+                ->orderBy("COUNT(pe.receiver_partner)")
+                ->setMaxResults(1);
+        $adminWithLessPetitions=$adminWithLessPetitionsQuery->getQuery()->getOneOrNullResult();
+        $receiverPartner=$adminWithLessPetitions->getReceiver_partner();
+    }
 
     $newPetition = new \MobilitySharp\model\PetitionHistory(ucfirst($subject), $date, $status, $senderPartner, $receiverPartner);
     if ($description = filter_input(INPUT_POST, "description")) {
