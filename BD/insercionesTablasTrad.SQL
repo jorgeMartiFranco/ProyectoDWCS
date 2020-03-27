@@ -69,6 +69,9 @@ INSERT INTO ESTADOS (ESTADO,DESCRIPCION) VALUES('DECLINED','Request declined by 
 
 
 
+INSERT INTO `tipos_institucion` (`ID_TIPO_INSTITUCION`, `TIPO`, `DESCRIPCION`) VALUES (NULL, 'High School', 'This is a high school'), 
+								(NULL, 'University', 'This is an university');
+
 
 
 

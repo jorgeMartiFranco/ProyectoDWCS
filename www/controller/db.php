@@ -176,7 +176,7 @@ function registerPartnerInstitution() {
         $web = filter_input(INPUT_POST, "web");
         $description = filter_input(INPUT_POST, "description");
         $institutionType = $entityM->find("MobilitySharp\model\InstitutionType", filter_input(INPUT_POST, "institutionType"));
-
+        
         $institution = $entityM->getRepository("MobilitySharp\model\Institution")->findOneBy(["email" => $iEmail]);
 
         if ($password == $confirmPassword or $repeatedEmailPartner == null or $repeatedPartnerVat == null or $repeatedUser == null) {
