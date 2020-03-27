@@ -3,6 +3,9 @@ namespace MobilitySharp\model;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * Creates an object who saves partner information
+ */
+/**
  * @ORM\Entity
  * @ORM\Table(name="SOCIOS")
  */
@@ -78,7 +81,19 @@ class Partner {
      * @ORM\JoinColumn(name="PAIS",referencedColumnName="ID_PAIS")
      */
     private $country;
-    
+    /**
+     * Creates the Partner and sets params to it.
+     * @param string $password Partner password.
+     * @param string $username Partner username.
+     * @param string $full_name Partner full name.
+     * @param string $email Partner email.
+     * @param string $telephone Partner phone.
+     * @param string $post Partner post.
+     * @param string $department Partner department.
+     * @param MobilitySharp\model\Role $role Partner role.
+     * @param MobilitySharp\model\Country $country Partner country.
+     * @param date $registration_date Partner registration date.
+     */
     function __construct($password, $username, $full_name, $email, $telephone, $post, $department, $role, $country,$registration_date) {
         $this->password = $password;
         $this->username = $username;

@@ -4,6 +4,9 @@ namespace MobilitySharp\model;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * Creates an object who saves institution type information
+ */
+/**
  * @ORM\Entity
  * @ORM\Table(name="TIPOS_INSTITUCION")
  */
@@ -21,7 +24,10 @@ class InstitutionType {
      */
     private $description;
     
-    
+    /**
+     * Creates the Country and sets params to it.
+     * @param string $type Institution type.
+     */
     function __construct($type) {
         $this->type = $type;
     }

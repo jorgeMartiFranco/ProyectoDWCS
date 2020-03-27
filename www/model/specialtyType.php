@@ -4,6 +4,9 @@ namespace MobilitySharp\model;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * Creates an object who saves specialty type information
+ */
+/**
  * @ORM\Entity
  * @ORM\Table(name="TIPOS_ESPECIALIDAD")
  */
@@ -33,7 +36,10 @@ class SpecialtyType    {
     * @ORM\ManyToMany(targetEntity="Student", mappedBy="specialties")
     */
     private $students;
-    
+    /**
+     * Creates the SpecialtyType and sets params to it.
+     * @param string $type Specialty type.
+     */
     function __construct($type) {
         $this->type = $type;
         $this->institutions = new \Doctrine\Common\Collections\ArrayCollection;

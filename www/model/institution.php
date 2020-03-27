@@ -2,7 +2,9 @@
 namespace MobilitySharp\model;
 use Doctrine\ORM\Mapping as ORM;
 
-
+/**
+ * Creates an object who saves institution information
+ */
 /**
  * @ORM\Entity
  * @ORM\Table(name="INSTITUCIONES")
@@ -79,7 +81,18 @@ class Institution {
      */
     private $specialties;
     
-    
+    /**
+     * Creates the Institution and sets params to it.
+     * @param string $name Institution name.
+     * @param string $email Institution email.
+     * @param string $telephone Institution phone.
+     * @param string $postal_code Institution postal code.
+     * @param string $location Institution location.
+     * @param MobilitySharp\model\Country $country Institution country.
+     * @param MobilitySharp\model\Partner $partner Institution partner.
+     * @param MobilitySharp\model\InstitutionType $type Institution type.
+     * @param date $registration_date
+     */
     function __construct($name, $email, $telephone, $postal_code, $location, $country, $partner, $type,$registration_date) {
         $this->name = $name;
         $this->email = $email;

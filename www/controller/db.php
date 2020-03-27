@@ -898,7 +898,7 @@ function insertInstitutionMobility() {
         $institutionMobilities = $queryInstitutionMobilities->getQuery()->getResult();
         $mobilities = array_merge($enterpriseMobilities, $institutionMobilities);
         if ($mobilities == null) {
-            $mobility = new \MobilitySharp\model\InstitutionMobility(new \DateTime($startDate), new \DateTime($estimatedEndDate), $registrationDate, $student, $institution);
+            $mobility = new \MobilitySharp\model\InstitutionMobility($startDate, $estimatedEndDate, $registrationDate, $student, $institution);
 
             $entityM->persist($mobility);
             $entityM->flush();

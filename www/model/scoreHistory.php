@@ -1,6 +1,8 @@
 <?php namespace MobilitySharp\model;
 use Doctrine\ORM\Mapping as ORM;
-
+/**
+ * Creates an object who saves score history information
+ */
 /**
  * @ORM\Entity
  * @ORM\Table(name="HISTORICO_PUNTUACIONES")
@@ -26,7 +28,12 @@ class ScoreHistory  {
      */
     private $partner;
     
-    
+    /**
+     * Creates the ScoreHistory and sets params to it.
+     * @param datetime $date Score date.
+     * @param MobilitySharp\model\ScoreType $score_type Score type.
+     * @param MobilitySharp\model\Partner $partner Partner who has done an action.
+     */
     function __construct($date, $score_type, $partner) {
         $this->date = $date;
         $this->score_type = $score_type;

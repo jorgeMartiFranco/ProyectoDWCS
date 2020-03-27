@@ -2,6 +2,9 @@
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * Creates an object who saves score type information
+ */
+/**
  * @ORM\Entity
  * @ORM\Table(name="TIPOS_PUNTUACION")
  */
@@ -24,7 +27,11 @@ class ScoreType  {
      */
     private $value;
     
-    
+    /**
+     * Creates the ScoreType and sets params to it.
+     * @param string $type Score type.
+     * @param integer $value Score value.
+     */
     function __construct($type, $value) {
         $this->type = $type;
         $this->value = $value;

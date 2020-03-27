@@ -3,6 +3,9 @@
 namespace MobilitySharp\model;
 use Doctrine\ORM\Mapping as ORM;
 /**
+ * Creates an object who saves role information
+ */
+/**
  * @ORM\Entity
  * @ORM\Table(name="ROL_USUARIOS")
  */
@@ -19,7 +22,10 @@ class Role {
      * @ORM\Column(type="integer", name="DESCRIPCION")
      */
     private $description;
-    
+    /**
+     * Creates the Role and sets params to it.
+     * @param string $type Role type.
+     */
     function __construct($type) {
         $this->type = $type;
     }

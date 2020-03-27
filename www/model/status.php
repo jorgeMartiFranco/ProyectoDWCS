@@ -3,6 +3,9 @@
 namespace MobilitySharp\model;
 use Doctrine\ORM\Mapping as ORM;
 /**
+ * Creates an object who saves status information
+ */
+/**
  * @ORM\Entity
  * @ORM\Table(name="ESTADOS")
  */
@@ -20,7 +23,10 @@ class Status  {
      */
     private $description;
     
-    
+    /**
+     * Creates the Status and sets params to it.
+     * @param string $status Status type.
+     */
     function __construct($status) {
         $this->status = $status;
     }

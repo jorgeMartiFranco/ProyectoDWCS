@@ -2,7 +2,9 @@
 namespace MobilitySharp\model;
 use Doctrine\ORM\Mapping as ORM;
 
-
+/**
+ * Creates an object who saves enterprise information
+ */
 /**
  * @ORM\Entity
  * @ORM\Table(name="EMPRESAS")
@@ -87,7 +89,20 @@ class Enterprise  {
      * inverseJoinColumns={@ORM\JoinColumn(name="ESPECIALIDAD", referencedColumnName="ID_ESPECIALIDAD")})
      */
     private $specialties;
-    
+    /**
+     * Creates the Enterprise and sets params to it.
+     * @param string $ceo_post Ceo post.
+     * @param string $name Enterprise name.
+     * @param string $email Enterprise email.
+     * @param string $telephone Enterprise phone.
+     * @param string $postal_code Enterprise postal code.
+     * @param string $location Enterprise location.
+     * @param MobilitySharp\model\Country $country Enterprise country.
+     * @param MobilitySharp\model\Partner $partner Enterprise partner.
+     * @param MobilitySharp\model\CEO $ceo Enterprise ceo.
+     * @param MobilitySharp\model\EnterpriseType $type Enterprise type.
+     * @param date $registration_date Enterprise registration date.
+     */
     function __construct($ceo_post, $name, $email, $telephone, $postal_code, $location, $country, $partner, $ceo, $type,$registration_date) {
         $this->ceo_post = $ceo_post;
         $this->name = $name;

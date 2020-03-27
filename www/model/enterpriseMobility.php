@@ -3,6 +3,9 @@ namespace MobilitySharp\model;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * Creates an object who saves enterprise mobility information
+ */
+/**
  * @ORM\Entity
  * @ORM\Table(name="MOVILIDADES_EMPRESAS")
  */
@@ -38,6 +41,14 @@ class EnterpriseMobility  {
      */
     private $enterprise;
     
+    /**
+     * Creates the EnterpriseMobility and sets params to it.
+     * @param date $start_date Mobility start date.
+     * @param date $estimated_end_date Mobility estimated end date.
+     * @param date $registration_date Mobility registration date.
+     * @param MobilitySharp\model\Student $student Mobility student
+     * @param MobilitySharp\model\Enterprise $enterprise Mobility enterprise
+     */
     function __construct($start_date, $estimated_end_date, $registration_date, $student, $enterprise) {
         $this->start_date = $start_date;
         $this->estimated_end_date = $estimated_end_date;

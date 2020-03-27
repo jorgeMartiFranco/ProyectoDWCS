@@ -1,5 +1,5 @@
 
-USE GESTIONMOVILIDADES;
+USE gestionmovilidades;
 
 INSERT INTO `PAISES` VALUES (null, 'AT', 'Austria');
 INSERT INTO `PAISES` VALUES (null, 'BE', 'Belgium');
@@ -32,25 +32,6 @@ INSERT INTO `PAISES` VALUES (null, 'SE', 'Sweden');
 
 
 
-/*INSERT INTO ROL_USUARIOS  (tipo,descripcion) VALUES ('ADMINISTRADOR','Usuario con permisos de administración, cambio de roles de los usuarios gestores, alta de especialidades, tipos de institución y tipos de empresa');
-INSERT INTO ROL_USUARIOS (tipo,descripcion) VALUES('REGISTRADO','Usuario con permisos de alta a alumnos, empresas, instituciones, generar movilidades');
-INSERT INTO ROL_USUARIOS (tipo,descripcion) VALUES('ANÓNIMO','Usuario no registrado que solamente tiene permisos de búsqueda básicas');
-
-
-INSERT INTO TIPOS_PUNTUACION(TIPO,DESCRIPCION,VALOR) VALUES('DEFICIT','Puntuación mínima exigible para ejecutar operaciones que consuman puntuación',-30);
-INSERT INTO TIPOS_PUNTUACION(TIPO,DESCRIPCION,VALOR) VALUES('REGISTRO','Puntuación que se suma por defecto al crear una cuenta',10);
-INSERT INTO TIPOS_PUNTUACION(TIPO,DESCRIPCION,VALOR) VALUES('ALTA DE EMPRESA','Puntuación que se suma al socio que da de alta una empresa',20);
-INSERT INTO TIPOS_PUNTUACION(TIPO,DESCRIPCION,VALOR) VALUES('GESTIÓN DE ALOJAMIENTO','Puntuación que se suma a un socio que se encarga de la gestión de alojamiento de una movilidad ',15);
-INSERT INTO TIPOS_PUNTUACION(TIPO,DESCRIPCION,VALOR) VALUES('ALTA DE MOVILIDAD','Puntuación que se resta al socio al dar de alta una movilidad de un alumno',-20);
-
-
-INSERT INTO ESTADOS (ESTADO,DESCRIPCION) VALUES('SOLICITADO','Se ha enviado la solicitud pero no ha sido revisada por el socio a la que fue solicitado');
-INSERT INTO ESTADOS (ESTADO,DESCRIPCION) VALUES('EN TRÁMITE','La solicitud ha sido aceptada por el socio y está en proceso de tramitación');
-INSERT INTO ESTADOS (ESTADO,DESCRIPCION) VALUES('RESUELTO','La solicitud ha sido revisada y solucionada por el socio al que le fue solicitada');
-INSERT INTO ESTADOS (ESTADO,DESCRIPCION) VALUES('CANCELADA','La solicitud ha sido cancelada por el socio que la solicitó');
-INSERT INTO ESTADOS (ESTADO,DESCRIPCION) VALUES('RECHAZADA','La solicitud ha sido rechazada por el socio a la que fue solicitado');*/
-
-
 INSERT INTO ROL_USUARIOS  (tipo,descripcion) VALUES ('ADMIN','User with administration permissions, user changing roles, register specialties and institution or companies types.');
 INSERT INTO ROL_USUARIOS (tipo,descripcion) VALUES('REGISTERED','User who can register students, companies, institutions and generate mobilities.');
 INSERT INTO ROL_USUARIOS (tipo,descripcion) VALUES('ANONYMOUS','Not registered user that can only look for simple searches.');
@@ -77,7 +58,7 @@ INSERT INTO TIPOS_EMPRESA(TIPO,DESCRIPCION) VALUES('IT','Informática');
 
 
 
-
+INSERT INTO TIPOS_EMPRESA(TIPO,DESCRIPCION) VALUES('Programación web','Programación');
 
 
 

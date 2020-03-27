@@ -1,7 +1,9 @@
 <?php
 namespace MobilitySharp\model;
 use Doctrine\ORM\Mapping as ORM;
-
+/**
+ * Creates an object who saves petition
+ */
 /**
  * @ORM\Entity
  * @ORM\Table(name="HISTORICO_PETICIONES")
@@ -41,7 +43,14 @@ class PetitionHistory   {
      * @ORM\JoinColumn(name="SOCIO_RECEPTOR",referencedColumnName="ID_SOCIO")
      */
     private $receiver_partner;
-    
+    /**
+     * Creates the PetitionHistory and sets params to it.
+     * @param string $subject Petition subject.
+     * @param datetime $date Petition date.
+     * @param MobilitySharp\model\Status $status Petition status.
+     * @param MobilitySharp\model\Partner $sender_partner Partner which sends the petition.
+     * @param MobilitySharp\model\Partner $receiver_partner Partner which receives the petition.
+     */
     function __construct($subject, $date, $status, $sender_partner, $receiver_partner) {
         $this->subject = $subject;
         $this->date = $date;

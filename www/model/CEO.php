@@ -3,6 +3,9 @@
 namespace MobilitySharp\model;
 use Doctrine\ORM\Mapping as ORM;
 /**
+ * Creates an object who saves CEO information
+ */
+/**
  * @ORM\Entity
  * @ORM\Table(name="RESPONSABLES")
  */
@@ -24,7 +27,11 @@ class CEO   {
      */
     private $telephone;
             
-    
+    /**
+     * Creates the CEO and sets params to it.
+     * @param string $email CEO's email.
+     * @param string $full_name CEO's full name.
+     */
     function __construct($email, $full_name) {
         $this->email = $email;
         $this->full_name = $full_name;

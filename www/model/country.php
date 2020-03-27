@@ -3,7 +3,9 @@
 namespace MobilitySharp\model;
 
 use Doctrine\ORM\Mapping as ORM;
-
+/**
+ * Creates an object who saves country information
+ */
 /**
  * @ORM\Entity
  * @ORM\Table(name="PAISES")
@@ -25,7 +27,11 @@ class Country {
      */
     private $name;
 
-    
+    /**
+     * Creates the Country and sets params to it.
+     * @param string $country_code Country code.
+     * @param string $name Country name.
+     */
     function __construct($country_code, $name) {
         $this->country_code = $country_code;
         $this->name = $name;

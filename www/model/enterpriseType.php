@@ -2,6 +2,10 @@
 
 namespace MobilitySharp\model;
 use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Creates an object who saves enterprise type information
+ */
 /**
  * @ORM\Entity
  * @ORM\Table(name="TIPOS_EMPRESA")
@@ -19,7 +23,10 @@ class EnterpriseType  {
      * @ORM\Column(type="string", name="DESCRIPCION")
      */
     private $description;
-    
+    /**
+     * Creates the EnterpriseType and sets params to it.
+     * @param string $type Enterprise type.
+     */
     function __construct($type) {
         $this->type = $type;
     }

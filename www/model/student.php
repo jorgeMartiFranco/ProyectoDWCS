@@ -4,6 +4,9 @@ namespace MobilitySharp\model;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * Creates an object who saves student information
+ */
+/**
  * @ORM\Entity
  * @ORM\Table(name="ALUMNOS")
  */
@@ -54,6 +57,14 @@ class Student  {
      */
     private $specialties;
     
+    /**
+     * Creates the Student and sets params to it.
+     * @param string $full_name Student full name.
+     * @param string $gender Student gender.
+     * @param date $birth_date Student birth date.
+     * @param MobilitySharp\model\Partner $partner Student partner.
+     * @param date $registration_date Student registration date.
+     */
     function __construct($full_name, $gender, $birth_date, $partner,$registration_date) {
         $this->full_name = $full_name;
         $this->gender = $gender;
