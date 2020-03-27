@@ -3,6 +3,13 @@ use PHPMailer\PHPMailer\PHPMailer;
 require_once __DIR__ . '/../vendor/autoload.php';
 
 
+/**
+ * Sends a mail to the user.
+ * 
+ * Uses Gmail as mailing service to send mails between users.
+ * 
+ * @param \MobilitySharp\model\petitionHistory petition data received from the user.
+ */
 function sendMail($petition){
     $mail=new PHPMailer;
     $mail->isSMTP();

@@ -34,13 +34,19 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
                 controller\getInstitutionTypes();
                 break;
             case "enterprise":
-                getEnterprise(filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT));
+                if(is_logged_in()) {
+                    getEnterprise(filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT));
+                }
                 break;
             case "profile":
-                getProfile(filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT));
+                if(is_logged_in()) {
+                    getProfile(filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT));
+                }
                 break;
             case "student":
-                getStudent(filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT));
+                if(is_logged_in()) {
+                    getStudent(filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT));
+                }
         }
         
     }
@@ -61,6 +67,10 @@ function is_logged_in() : bool {
 
 use function MobilitySharp\controller\findEntity;
 
+/**
+ * Sends enterprise json data to the client-side.
+ * @see \MobilitySharp\model\Enterprise
+ */
 function getEnterprise($id) {
     
     if(isset($id)){
@@ -84,6 +94,10 @@ function getEnterprise($id) {
     }
 }
 
+/**
+ * Sends partner json data to the client-side.
+ * @see \MobilitySharp\model\Partner
+ */
 function getProfile($id) {
     
     if(isset($id)){
@@ -109,6 +123,10 @@ function getProfile($id) {
     }
 }
 
+/**
+ * Sends student json data to the client-side.
+ * @see \MobilitySharp\model\Student
+ */
 function getStudent($id) {
     
     if(isset($id)){
