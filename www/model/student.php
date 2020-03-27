@@ -49,7 +49,7 @@ class Student  {
     
     /**
      * @ORM\ManyToMany(targetEntity="SpecialtyType", inversedBy="students")
-     * @ORM\JoinTable(name="alumnos_especialidades", joinColumns={@ORM\JoinColumn(name="ALUMNO", referencedColumnName="ID_ALUMNO")},
+     * @ORM\JoinTable(name="ALUMNOS_ESPECIALIDADES", joinColumns={@ORM\JoinColumn(name="ALUMNO", referencedColumnName="ID_ALUMNO")},
      * inverseJoinColumns={@ORM\JoinColumn(name="ESPECIALIDAD", referencedColumnName="ID_ESPECIALIDAD")})
      */
     private $specialties;

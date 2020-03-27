@@ -83,7 +83,7 @@ class Enterprise  {
     
     /**
      * @ORM\ManyToMany(targetEntity="SpecialtyType", inversedBy="companies")
-     * @ORM\JoinTable(name="empresas_especialidades", joinColumns={@ORM\JoinColumn(name="EMPRESA", referencedColumnName="ID_EMPRESA")},
+     * @ORM\JoinTable(name="EMPRESAS_ESPECIALIDADES", joinColumns={@ORM\JoinColumn(name="EMPRESA", referencedColumnName="ID_EMPRESA")},
      * inverseJoinColumns={@ORM\JoinColumn(name="ESPECIALIDAD", referencedColumnName="ID_ESPECIALIDAD")})
      */
     private $specialties;
