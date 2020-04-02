@@ -1,5 +1,5 @@
 <?php
-include_once "controller\db.php";
+include_once "controller/db.php";
 
 \MobilitySharp\controller\listLastPartnerScores();
 ?>

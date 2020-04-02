@@ -1,4 +1,5 @@
-<?php namespace MobilitySharp\model;
+<?php 
+
 use Doctrine\ORM\Mapping as ORM;
 /**
  * Creates an object who saves score history information

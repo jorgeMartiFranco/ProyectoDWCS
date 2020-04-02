@@ -1,6 +1,6 @@
 <?php
 if((isset($_GET['enterpriseName']))) {
-    include_once "controller\db.php";
+    include_once "controller/db.php";
 ?>
 <!DOCTYPE html>
 <html>

@@ -25,10 +25,6 @@ class ComposerStaticInit8985cd4b52d357f9a02bda12ee43ee3a
             'PackageVersions\\' => 16,
             'PHPMailer\\PHPMailer\\' => 20,
         ),
-        'M' => 
-        array (
-            'MobilitySharp\\model\\' => 20,
-        ),
         'D' => 
         array (
             'Doctrine\\Persistence\\' => 21,
@@ -72,10 +68,6 @@ class ComposerStaticInit8985cd4b52d357f9a02bda12ee43ee3a
         'PHPMailer\\PHPMailer\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
-        ),
-        'MobilitySharp\\model\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/model',
         ),
         'Doctrine\\Persistence\\' => 
         array (
@@ -122,6 +114,10 @@ class ComposerStaticInit8985cd4b52d357f9a02bda12ee43ee3a
         ),
     );
 
+    public static $fallbackDirsPsr4 = array (
+        0 => __DIR__ . '/../..' . '/model',
+    );
+
     public static $classMap = array (
         'JsonException' => __DIR__ . '/..' . '/symfony/polyfill-php73/Resources/stubs/JsonException.php',
     );
@@ -131,6 +127,7 @@ class ComposerStaticInit8985cd4b52d357f9a02bda12ee43ee3a
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInit8985cd4b52d357f9a02bda12ee43ee3a::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit8985cd4b52d357f9a02bda12ee43ee3a::$prefixDirsPsr4;
+            $loader->fallbackDirsPsr4 = ComposerStaticInit8985cd4b52d357f9a02bda12ee43ee3a::$fallbackDirsPsr4;
             $loader->classMap = ComposerStaticInit8985cd4b52d357f9a02bda12ee43ee3a::$classMap;
 
         }, null, ClassLoader::class);

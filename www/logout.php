@@ -5,4 +5,4 @@ if(isset($_SESSION['user'])) {
     setcookie(session_name(), '', time() - 1000);
 }
 session_destroy();
-header('Location: /www');
+header('Location: /');

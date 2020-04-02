@@ -1,6 +1,6 @@
 <?php
 
-namespace MobilitySharp\model;
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**

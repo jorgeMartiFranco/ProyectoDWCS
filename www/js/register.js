@@ -1,4 +1,4 @@
-var baseurl = '/www/';
+var baseurl = '/';
 
 $("document").ready(function () {
 

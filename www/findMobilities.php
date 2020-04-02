@@ -5,7 +5,7 @@
     ?>
         <body>
 <?php
-include "controller\db.php";
+include "controller/db.php";
 include "header.php";
 ?>
         <div class="wrapper">
